@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+mybatis-plus:
+  global-config:
+    banner: false
