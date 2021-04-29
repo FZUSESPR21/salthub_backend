@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.CollectionDao;
 import com.team_five.salthub.model.Collection;
 import com.team_five.salthub.service.CollectionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +16,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection> implements CollectionService {
+    @Autowired
+    private CollectionDao collectionDao;
+    @Override
+    public int addCollection(Collection collection) {
+
+        return collectionDao.insert(collection);
+    }
 
 }

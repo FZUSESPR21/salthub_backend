@@ -21,6 +21,8 @@ import lombok.Getter;
 public enum ExceptionInfo {
     OK(200, "OK");
 
+    //PASSWORD_ERROR(511, "密码错误");
+
     private Integer code;
     private String message;
 }
