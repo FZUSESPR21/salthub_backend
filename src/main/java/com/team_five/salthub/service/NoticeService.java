@@ -11,5 +11,6 @@ import com.team_five.salthub.model.Notice;
  * @date 2021/04/26
  */
 public interface NoticeService extends IService<Notice> {
+	public void publishNotice(Notice notice, String name);
 
 }
