@@ -19,7 +19,13 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ExceptionInfo {
-    OK(200, "OK");
+    OK(200, "OK"),
+    EMPTYCONTENT(551,"内容为空"),
+    EMPTYTITLE(552,"标题为空"),
+    AUTHOREMPTY(553,"发布人为空"),
+    RECIVEREMPTY(554,"未指定接收人"),
+    ILLEGALLENGTH(555,"内容长度过长"),
+    ILLEGALTITLELENGTH(556,"标题长度过长");
 
     //PASSWORD_ERROR(511, "密码错误");
 
