@@ -10,6 +10,7 @@ import com.team_five.salthub.model.Account;
  *
  * @date 2021/04/26
  */
+
 public interface AccountDao extends BaseMapper<Account> {
 
 }

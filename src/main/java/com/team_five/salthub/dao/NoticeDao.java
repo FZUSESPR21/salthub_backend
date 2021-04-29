@@ -2,6 +2,7 @@ package com.team_five.salthub.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.team_five.salthub.model.Notice;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>

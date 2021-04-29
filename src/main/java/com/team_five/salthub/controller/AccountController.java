@@ -1,6 +1,8 @@
 package com.team_five.salthub.controller;
 
 
+import com.team_five.salthub.model.Blog;
+import com.team_five.salthub.model.ResponseMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
+
+    public ResponseMessage login(){
+        Blog blog;
+        return ResponseMessage.success();
+    }
 
 }
 

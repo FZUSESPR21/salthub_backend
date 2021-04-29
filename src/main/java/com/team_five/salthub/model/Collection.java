@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -19,6 +21,8 @@ import java.io.Serializable;
  * @date 2021/04/26
  */
 @Data
+@NoArgsConstructor                 //无参构造
+@AllArgsConstructor                //有参构造
 @EqualsAndHashCode(callSuper = false)
 @TableName("collection")
 @ApiModel(value="Collection对象", description="")

@@ -18,8 +18,18 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum ExceptionInfo{
+public enum ExceptionInfo {
     OK(200, "OK"),
+
+    EMPTYCONTENT(551,"内容为空"),
+    EMPTYTITLE(552,"标题为空"),
+    AUTHOREMPTY(553,"发布人为空"),
+    RECIVEREMPTY(554,"未指定接收人"),
+    ILLEGALLENGTH(555,"内容长度过长"),
+    ILLEGALTITLELENGTH(556,"标题长度过长"),
+
+    //PASSWORD_ERROR(511, "密码错误");
+
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),
     MODULE_ID_ERROR(522,"模块id不属于预设模块"),
     TITLE_EMPTY_ERROR(523,"标题为空"),

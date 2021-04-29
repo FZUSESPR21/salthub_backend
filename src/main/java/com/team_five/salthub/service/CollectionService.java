@@ -11,5 +11,7 @@ import com.team_five.salthub.model.Collection;
  * @date 2021/04/26
  */
 public interface CollectionService extends IService<Collection> {
+    public int addCollection(Collection collection);
+
 
 }
