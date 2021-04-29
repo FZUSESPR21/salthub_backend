@@ -5,7 +5,7 @@ import com.team_five.salthub.model.Blog;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @date 2021/04/26
