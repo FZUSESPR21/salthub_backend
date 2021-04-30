@@ -29,6 +29,12 @@ public enum ExceptionInfo {
     ILLEGAL_TITLELENGTH(556,"标题长度过长"),
 
     //PASSWORD_ERROR(511, "密码错误");
+    COLLECTION_BLOG_ID_ERROR(531,"该博客不存在"),
+    COLLECTION_ACCOUNT_ERROR(531,"该用户不存在"),
+    COLLECTION_ALREADY_EXIST_ERROR(532,"您已收藏该文章"),
+    COLLECTION_ACCOUNT_EMPTY_ERROR(533,"用户名为空"),
+    BLOD_ID_EMPTY_ERROR(534,"博客id为空"),
+    COLLECTION_NOT_ERRO(535,"您未收藏该文章"),
 
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),
     MODULE_ID_ERROR(522,"模块id不属于预设模块"),
@@ -39,4 +45,8 @@ public enum ExceptionInfo {
 
     private Integer code;
     private String message;
+
+
+
+
 }

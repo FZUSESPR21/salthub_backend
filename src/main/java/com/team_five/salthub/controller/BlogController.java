@@ -1,15 +1,12 @@
 package com.team_five.salthub.controller;
 
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.RequestMessage;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
