@@ -21,12 +21,12 @@ import lombok.Getter;
 public enum ExceptionInfo {
     OK(200, "OK"),
 
-    EMPTYCONTENT(551,"内容为空"),
-    EMPTYTITLE(552,"标题为空"),
-    AUTHOREMPTY(553,"发布人为空"),
-    RECIVEREMPTY(554,"未指定接收人"),
-    ILLEGALLENGTH(555,"内容长度过长"),
-    ILLEGALTITLELENGTH(556,"标题长度过长"),
+    EMPTY_CONTENT(551,"内容为空"),
+    EMPTY_TITLE(552,"标题为空"),
+    EMPTY_AUTHOR(553,"发布人为空"),
+    EMPTY_ACCOUNTNAME(554,"用户名为空"),
+    ILLEGAL_LENGTH(555,"内容长度过长"),
+    ILLEGAL_TITLELENGTH(556,"标题长度过长"),
 
     //PASSWORD_ERROR(511, "密码错误");
 
