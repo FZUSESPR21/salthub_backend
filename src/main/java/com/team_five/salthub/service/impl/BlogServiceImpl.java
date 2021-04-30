@@ -1,5 +1,6 @@
 package com.team_five.salthub.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.BlogDao;
 import com.team_five.salthub.exception.BaseException;
@@ -10,9 +11,11 @@ import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @date 2021/04/26
@@ -21,36 +24,36 @@ import org.springframework.stereotype.Service;
 public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogService {
     @Autowired
     private BlogDao blogDao;
+
     @Override
     public void validityCheck(Blog blog) {
         boolean flag = false;
-        if(blog.getModuleId() == null){//判断模块id是否为空
+        if (blog.getModuleId() == null) {//判断模块id是否为空
             throw new BaseException(ExceptionInfo.MODULE_ID_EMPTY_ERROR);
-        }
-        else{//判断模块id是否属于预设模块
-            for (ModuleEnum moduleEnum: ModuleEnum.values()
-                 ) {
-                if(blog.getModuleId().equals(moduleEnum.getId())){
+        } else {//判断模块id是否属于预设模块
+            for (ModuleEnum moduleEnum : ModuleEnum.values()
+            ) {
+                if (blog.getModuleId().equals(moduleEnum.getId())) {
                     flag = true;
                     break;
                 }
             }
-            if(!flag){
+            if (!flag) {
                 throw new BaseException(ExceptionInfo.MODULE_ID_ERROR);
 
             }
         }
 
-        if(blog.getTitle() == null){
+        if (blog.getTitle() == null) {
             throw new BaseException(ExceptionInfo.TITLE_EMPTY_ERROR);
         }
-        if(blog.getTitle().length() > 256){
+        if (blog.getTitle().length() > 256) {
             throw new BaseException(ExceptionInfo.TITLE_ERROR);
         }
-        if(blog.getContent() == null){
+        if (blog.getContent() == null) {
             throw new BaseException(ExceptionInfo.CONTENT_EMPTY_ERROR);
         }
-        if(blog.getContent().length() > 65535){
+        if (blog.getContent().length() > 65535) {
             throw new BaseException(ExceptionInfo.CONTENT_ERROR);
         }
     }
@@ -59,5 +62,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public boolean insert(Blog blog) {
         blogDao.insert(blog);
         return true;
+    }
+
+    @Override
+    public void moduleIdValidityCheck(Long moduleId) {
+        if (moduleId == null) {//判断模块id是否为空
+            throw new BaseException(ExceptionInfo.MODULE_ID_EMPTY_ERROR);
+        } else {//判断模块id是否属于预设模块
+            for (ModuleEnum moduleEnum : ModuleEnum.values()
+            ) {
+                if (moduleId.equals(moduleEnum.getId())) {
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Blog> searchBlogByModuleId(Long moduleId) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("moduleId", moduleId);
+        List<Blog> blogList = blogDao.selectList(wrapper);
+        return blogList;
     }
 }

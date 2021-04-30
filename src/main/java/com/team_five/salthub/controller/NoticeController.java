@@ -7,6 +7,8 @@ import com.team_five.salthub.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -25,7 +27,7 @@ public class NoticeController {
 
 	/***
 	* @Description: 发布通知
-	* @Param:  body：公告主体 param：name
+	* @Param:  body：公告主体 param：name 发布公告的人
 	 * {
 	 *     "title":,
 	 *     "content":,
@@ -37,16 +39,9 @@ public class NoticeController {
 	* @Author: top
 	* @Date: 2021/4/28
 	*/
-	// TODO: 2021/4/28
 	@PostMapping
 	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
-
-		try {
-			noticeService.publishNotice(notice, name);		//service层实现业务逻辑
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+		noticeService.publishNotice(notice, name);		//service层实现业务逻辑
 
 		return ResponseMessage.success();
 	}
@@ -54,16 +49,16 @@ public class NoticeController {
 	/*** 
 	* @Description: 通过用户名查询公告
 	* @Param:  用户名 name
-	* @return:  
+	* @return:  Notice
 	* @Author: top
 	* @Date: 2021/4/28 
 	*/
-	// TODO: 2021/4/28
 	@GetMapping
-	public ResponseMessage queryNoticeByName(){
+	public ResponseMessage queryNoticeByName(@RequestParam String accountName){
 
+		List<Notice> notices = noticeService.queryNoticeByName(accountName);
 
-		return ResponseMessage.success();
+		return ResponseMessage.success(notices);
 	}
 
 	/*** 
