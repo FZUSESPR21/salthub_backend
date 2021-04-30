@@ -27,5 +27,11 @@ public class CollectionController {
         collection.setAccountName("221801310");
         return ResponseMessage.success(collectionService.addCollection(collection));
     }
+    @DeleteMapping
+    public ResponseMessage deleteCollection( @RequestParam("id") long id) {
+        collection.setAccountName("221801310");
+        collection.setBlogId(id);
+        return ResponseMessage.success(collectionService.deleteCollection(collection));
+    }
 }
 
