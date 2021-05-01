@@ -132,7 +132,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public void deleteBlogByBlogId(Long blogId) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("bolg_id", blogId);
+        map.put("id", blogId);
         blogDao.deleteByMap(map);
     }
 
