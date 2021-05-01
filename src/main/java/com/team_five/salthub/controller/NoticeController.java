@@ -1,15 +1,12 @@
 package com.team_five.salthub.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import java.util.List;
 
 /**
  * <p>
@@ -24,8 +21,6 @@ public class NoticeController {
 
 	@Autowired
 	NoticeService noticeService;
-
-//region 	公告增删改查
 
 	/***
 	* @Description: 发布通知
@@ -89,18 +84,6 @@ public class NoticeController {
 		
 		return ResponseMessage.success();
 	}
-
-//endregion
-
-//region	评论增删改查
-
-
-
-//endregion
-
-//region	管理员操作
-
-
 
 }
 
