@@ -58,6 +58,18 @@ public class AccountController {
         return ResponseMessage.success(account1);
     }
 
+    /**
+     * 用户登出接口
+     *
+     * @return
+     */
+    @GetMapping("/logout")
+    @ApiOperation(value = "用户登出接口")
+    public ResponseMessage logout() {
+        StpUtil.logout();
+        return ResponseMessage.success();
+    }
+
 
 }
 
