@@ -1,6 +1,5 @@
 package com.team_five.salthub.service.impl;
 
-import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.NoticeDao;
@@ -8,17 +7,12 @@ import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.service.NoticeService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.prefs.BackingStoreException;
+
 
 /**
  * <p>
@@ -32,6 +26,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 
 	@Autowired
 	private NoticeDao noticeDao;
+
+
 
 	/*** 
 	 * @Description: 发布博客
@@ -75,17 +71,16 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 * @Date: 2021/4/30
 	 */
 	@Override
-	public List<Notice> queryNoticeByName(String accountName) {
+	public Page<Notice> queryNoticeByName(String accountName, Long current) {
 		if (accountName == null || accountName.isEmpty()) {
 			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNTNAME);
 		}
 
 		QueryWrapper wrapper = new QueryWrapper();
 		wrapper.eq("account_name", accountName);
-//		Page<Notice> page = new Page<Notice>(1,2);
-//		Page<Notice> notices = noticeDao.selectPage(page, wrapper);
 
-		List<Notice> notices = noticeDao.selectList(wrapper);
+		Page<Notice> page = new Page<Notice>(current,PAGESIZE);		//当前页数， 页面大小(定义在接口中的常量)
+		Page<Notice> notices = noticeDao.selectPage(page, wrapper);
 
 		return notices;
 	}

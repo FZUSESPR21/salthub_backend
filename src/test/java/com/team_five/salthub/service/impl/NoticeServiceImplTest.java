@@ -42,9 +42,9 @@ class NoticeServiceImplTest {
 
 	@ParameterizedTest
 	@MethodSource("args1")
-	void testQueryNoticeByName(String accountName, Object correct){
+	void testQueryNoticeByName(String accountName, Long current,String correct){
 		try {
-			this.service.queryNoticeByName(accountName);
+			this.service.queryNoticeByName(accountName, current);
 //			Assertions.assertEquals();
 		} catch (BaseException exception){
 			Assertions.assertEquals(correct,exception.getMessage());
@@ -53,7 +53,7 @@ class NoticeServiceImplTest {
 
 	static Stream args1(){
 		return Stream.of(
-				Arguments.of(null, "用户名为空")
+				Arguments.of(null, 1L,"用户名为空")
 
 		);
 	}

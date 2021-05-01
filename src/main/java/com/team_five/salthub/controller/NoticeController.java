@@ -1,11 +1,13 @@
 package com.team_five.salthub.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 
@@ -54,9 +56,9 @@ public class NoticeController {
 	* @Date: 2021/4/28 
 	*/
 	@GetMapping
-	public ResponseMessage queryNoticeByName(@RequestParam String accountName){
+	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Long current){
 
-		List<Notice> notices = noticeService.queryNoticeByName(accountName);
+		Page<Notice> notices = noticeService.queryNoticeByName(accountName, current);
 
 		return ResponseMessage.success(notices);
 	}
