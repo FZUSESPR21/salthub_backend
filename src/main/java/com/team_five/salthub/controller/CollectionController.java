@@ -1,7 +1,6 @@
 package com.team_five.salthub.controller;
 
 
-import com.team_five.salthub.dao.CollectionDao;
 import com.team_five.salthub.model.Collection;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.CollectionService;

@@ -1,15 +1,16 @@
 package com.team_five.salthub.controller;
 
 
-import com.team_five.salthub.dao.FirstCommentDao;
-import com.team_five.salthub.dao.SecondaryCommentDao;
 import com.team_five.salthub.model.FirstComment;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.SecondaryComment;
 import com.team_five.salthub.service.FirstCommentService;
 import com.team_five.salthub.service.SecondaryCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -26,8 +27,6 @@ public class CommentController {
 	private FirstCommentService firstCommentService;
 	@Autowired
 	private SecondaryCommentService secondaryCommentService;
-
-//region	评论增删改查
 
 	/***
 	 * @Description: 添加评论
@@ -56,9 +55,6 @@ public class CommentController {
 
 		return ResponseMessage.success();
 	}
-
-
-//endregion
 
 
 }

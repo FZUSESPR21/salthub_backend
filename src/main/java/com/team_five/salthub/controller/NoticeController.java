@@ -7,6 +7,7 @@ import com.team_five.salthub.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
 /**
@@ -40,7 +41,7 @@ public class NoticeController {
 	* @Date: 2021/4/28
 	*/
 	@PostMapping
-	public ResponseMessage publishNotice(@RequestBody Notice notice){
+	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
 		noticeService.publishNotice(notice);		//service层实现业务逻辑
 
 		return ResponseMessage.success();
@@ -89,9 +90,6 @@ public class NoticeController {
 	}
 
 //endregion
-
-//region	管理员操作
-
 
 
 }
