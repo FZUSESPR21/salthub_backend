@@ -104,6 +104,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         QueryWrapper<Account> condition = new QueryWrapper<>();
         condition.eq("name", collection.getAccountName());
         Integer integer = accountDao.selectCount(condition);
+        System.out.println(integer);
         if (integer>0) {
             return true;
         }
