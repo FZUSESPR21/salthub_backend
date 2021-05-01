@@ -20,9 +20,9 @@ class NoticeServiceImplTest {
 
 	@ParameterizedTest
 	@MethodSource("args")
-	void testPublishNotice(Notice notice, String name, String correct){
+	void testPublishNotice(Notice notice, String correct){
 		try {
-			this.service.publishNotice(notice,name);
+			this.service.publishNotice(notice);
 		} catch (BaseException exception){
 			Assertions.assertEquals(correct,exception.getMessage());
 		}

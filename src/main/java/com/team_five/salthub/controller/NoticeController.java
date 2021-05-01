@@ -1,7 +1,6 @@
 package com.team_five.salthub.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import java.util.List;
 
 /**
  * <p>
@@ -29,7 +27,7 @@ public class NoticeController {
 
 	/***
 	* @Description: 发布通知
-	* @Param:  body：公告主体 param：name 发布公告的人
+	* @Param:  body：公告主体
 	 * {
 	 *     "title":,
 	 *     "content":,
@@ -42,8 +40,8 @@ public class NoticeController {
 	* @Date: 2021/4/28
 	*/
 	@PostMapping
-	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
-		noticeService.publishNotice(notice, name);		//service层实现业务逻辑
+	public ResponseMessage publishNotice(@RequestBody Notice notice){
+		noticeService.publishNotice(notice);		//service层实现业务逻辑
 
 		return ResponseMessage.success();
 	}
@@ -89,12 +87,6 @@ public class NoticeController {
 		
 		return ResponseMessage.success();
 	}
-
-//endregion
-
-//region	评论增删改查
-
-
 
 //endregion
 

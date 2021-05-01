@@ -33,7 +33,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		} else if (secondaryComment.getCommentId() == null) {
 			throw new BaseException(ExceptionInfo.EMPTY_COMMENT_ID);
 		} else if (secondaryComment.getAccountName()==null){
-			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNTNAME);
+			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
 		}
 
 		secondaryComment.setAuthor(StpUtil.getLoginIdAsString());    //设置评论者	登陆后可使用

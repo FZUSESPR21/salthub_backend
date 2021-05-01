@@ -14,9 +14,15 @@ import java.util.List;
  */
 public interface NoticeService extends IService<Notice> {
 
-//	定义常量
+	//定义常量
 	Long PAGESIZE = 20L;
+	Integer MAX_CONTENT_LENGTH = 65536;
+	Integer MAX_TITLE_LENGTH = 256;
 
-	void publishNotice(Notice notice, String name);
-	public Page<Notice> queryNoticeByName(String accountName, Long current);
+	void publishNotice(Notice notice);
+	Page<Notice> queryNoticeByName(String accountName, Long current);
+	void deleteNotice(String id);
+	void modifyNotice(Notice notice);
+
+
 }
