@@ -1,5 +1,6 @@
 package com.team_five.salthub.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,10 +42,10 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     public int addCollection(Collection collection) {
 
-       if (collection.getBlogId() == null) {
+       if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
-       else if(collection.getAccountName() == null) {
+       else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
        else if(judgeCollection(collection)) {
@@ -56,10 +57,10 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     @Override
     public int deleteCollection(Collection collection) {
 
-        if (collection.getBlogId() == null) {
+        if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
-        else if(collection.getAccountName() == null) {
+        else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
         else if(!judgeCollection(collection)) {
@@ -74,7 +75,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     }
     @Override
     public List<Blog> queryCollection(Collection collection) {
-        if(collection.getAccountName() == null) {
+        if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
         else if(!judgeAccount(collection)) {
