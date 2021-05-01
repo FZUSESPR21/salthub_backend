@@ -21,6 +21,12 @@ import lombok.Getter;
 public enum ExceptionInfo {
     OK(200, "OK"),
 
+    // 用户异常
+    NAME_EMPTY(511, "用户名为空"),
+    PASSWORD_EMPTY(512, "密码为空"),
+    NAME_NOT_EXIST(513, "用户名不存在"),
+    PASSWORD_ERROR(514, "密码错误"),
+
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),
     EMPTY_AUTHOR(553,"发布人为空"),
