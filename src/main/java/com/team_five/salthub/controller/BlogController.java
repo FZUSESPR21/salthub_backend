@@ -1,6 +1,8 @@
 package com.team_five.salthub.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.RequestMessage;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.BlogService;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -33,11 +36,41 @@ public class BlogController {
     }
 
     @PostMapping("/module")
-    public ResponseMessage searchBlogByModuleId(@RequestParam("moduleId") Long moduleId) {
-        blogService.moduleIdValidityCheck(moduleId);
+    public ResponseMessage searchBlogByModuleId(@RequestParam("current") int current, @RequestParam("moduleId") int moduleId) {
+        blogService.moduleIdValidityCheck(Long.valueOf(moduleId));
 
-        List<Blog> blogList = blogService.searchBlogByModuleId(moduleId);
+        Page<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(moduleId), Long.valueOf(current));
         return ResponseMessage.success(blogList);
+
+    }
+
+    @PostMapping("/tag")
+    public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
+        blogService.moduleIdValidityCheck(Long.valueOf(tagId));
+
+        blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
+        return ResponseMessage.success();
+    }
+
+    @PostMapping("/account")
+    public ResponseMessage searchBlogByAccount(@RequestParam("current") int current, @RequestParam("account") String account) {
+        blogService.accountValidityCheck(account);
+
+        Page<Blog> blogList = blogService.searchBlogByAccount(account, Long.valueOf(current));
+        return ResponseMessage.success(blogList);
+    }
+
+    @PostMapping
+    public ResponseMessage searchBlogByBolgId(@RequestParam("current") int current, @RequestParam("blogId") int blogId) {
+        Page<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(blogId), Long.valueOf(current));
+        return ResponseMessage.success(blogList);
+
+    }
+
+    @PostMapping
+    public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
+        blogService.deleteBlogByBlogId(Long.valueOf(blogId));
+        return ResponseMessage.success();
     }
 }
 
