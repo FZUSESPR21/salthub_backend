@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -22,6 +24,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @TableName("account")
 @ApiModel(value="Account对象", description="")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account implements Serializable {
 
     private static final long serialVersionUID=1L;

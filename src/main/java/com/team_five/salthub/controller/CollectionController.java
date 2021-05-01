@@ -1,7 +1,7 @@
 package com.team_five.salthub.controller;
 
 
-import com.team_five.salthub.dao.CollectionDao;
+import cn.dev33.satoken.stp.StpUtil;
 import com.team_five.salthub.model.Collection;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.CollectionService;
@@ -21,17 +21,24 @@ public class CollectionController {
     @Autowired
     private CollectionService collectionService;
     private Collection collection=new Collection();
+
     @PostMapping
     public ResponseMessage addCollection(@RequestParam("id") long id) {
         collection.setBlogId(id);
-        collection.setAccountName("221801310");
+        collection.setAccountName(StpUtil.getLoginIdAsString());
         return ResponseMessage.success(collectionService.addCollection(collection));
     }
     @DeleteMapping
     public ResponseMessage deleteCollection( @RequestParam("id") long id) {
-        collection.setAccountName("221801310");
+        collection.setAccountName(StpUtil.getLoginIdAsString());
         collection.setBlogId(id);
         return ResponseMessage.success(collectionService.deleteCollection(collection));
+    }
+    @GetMapping
+    public ResponseMessage queryCollection( ) {
+        collection.setAccountName(StpUtil.getLoginIdAsString());
+        System.out.println(collection.getAccountName());
+        return ResponseMessage.success(collectionService.queryCollection(collection));
     }
 }
 
