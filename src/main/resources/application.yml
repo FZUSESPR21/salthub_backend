@@ -15,8 +15,14 @@ spring:
     url: jdbc:mysql://47.100.89.20:3306/salt_hub?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: lw091211
+
 server:
-  port: 8080
+  ssl:
+    key-store: classpath:tomcat.keystore
+    key-store-password: 123456
+    key-alias: tomcat
+    key-store-type: JKS
+  port: 443
 
 mybatis-plus:
   global-config:
