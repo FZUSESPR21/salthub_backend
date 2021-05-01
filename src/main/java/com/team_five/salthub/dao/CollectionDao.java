@@ -2,6 +2,7 @@ package com.team_five.salthub.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.team_five.salthub.model.Collection;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -11,5 +12,7 @@ import com.team_five.salthub.model.Collection;
  * @date 2021/04/26
  */
 public interface CollectionDao extends BaseMapper<Collection> {
+
+
 
 }

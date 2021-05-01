@@ -43,8 +43,10 @@ public enum ExceptionInfo {
     COLLECTION_ACCOUNT_ERROR(531,"该用户不存在"),
     COLLECTION_ALREADY_EXIST_ERROR(532,"您已收藏该文章"),
     COLLECTION_ACCOUNT_EMPTY_ERROR(533,"用户名为空"),
-    BLOD_ID_EMPTY_ERROR(534,"博客id为空"),
-    COLLECTION_NOT_ERRO(535,"您未收藏该文章"),
+    BLOG_ID_EMPTY_ERROR(534,"博客id为空"),
+    COLLECTION_NOT_ERROR(535,"您未收藏该文章"),
+    COLLECTION_Account_NOT_ERROR(536,"该收藏用户不存在"),
+
 
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),
     MODULE_ID_ERROR(522,"模块id不属于预设模块"),
