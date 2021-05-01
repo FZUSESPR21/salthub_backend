@@ -6,8 +6,9 @@ import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import java.util.List;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ public class NoticeController {
 
 	/***
 	* @Description: 发布通知
-	* @Param:  body：公告主体 param：name 发布公告的人
+	* @Param:  body：公告主体
 	 * {
 	 *     "title":,
 	 *     "content":,
@@ -41,7 +42,7 @@ public class NoticeController {
 	*/
 	@PostMapping
 	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
-		noticeService.publishNotice(notice, name);		//service层实现业务逻辑
+		noticeService.publishNotice(notice);		//service层实现业务逻辑
 
 		return ResponseMessage.success();
 	}
@@ -54,9 +55,9 @@ public class NoticeController {
 	* @Date: 2021/4/28 
 	*/
 	@GetMapping
-	public ResponseMessage queryNoticeByName(@RequestParam String accountName){
+	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Long current){
 
-		List<Notice> notices = noticeService.queryNoticeByName(accountName);
+		Page<Notice> notices = noticeService.queryNoticeByName(accountName, current);
 
 		return ResponseMessage.success(notices);
 	}
@@ -70,7 +71,8 @@ public class NoticeController {
 	*/
 	// TODO: 2021/4/28
 	@DeleteMapping
-	public ResponseMessage deleteNotice(){
+	public ResponseMessage deleteNotice(@RequestParam String id){
+		noticeService.deleteNotice(id);
 		
 		return ResponseMessage.success();
 	}
@@ -83,21 +85,13 @@ public class NoticeController {
 	* @Date: 2021/4/28 
 	*/
 	@PutMapping
-	public ResponseMessage modifyNotice(){
-		
+	public ResponseMessage modifyNotice(@RequestBody Notice notice){
+		noticeService.modifyNotice(notice);
+
 		return ResponseMessage.success();
 	}
 
 //endregion
-
-//region	评论增删改查
-
-
-
-//endregion
-
-//region	管理员操作
-
 
 
 }

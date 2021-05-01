@@ -2,7 +2,7 @@ package com.team_five.salthub.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.Notice;
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 
 /**
@@ -13,6 +13,16 @@ import java.util.List;
  * @date 2021/04/26
  */
 public interface NoticeService extends IService<Notice> {
-	void publishNotice(Notice notice, String name);
-	public List<Notice> queryNoticeByName(String accountName);
+
+	//定义常量
+	Long PAGESIZE = 20L;
+	Integer MAX_CONTENT_LENGTH = 65536;
+	Integer MAX_TITLE_LENGTH = 256;
+
+	void publishNotice(Notice notice);
+	Page<Notice> queryNoticeByName(String accountName, Long current);
+	void deleteNotice(String id);
+	void modifyNotice(Notice notice);
+
+
 }

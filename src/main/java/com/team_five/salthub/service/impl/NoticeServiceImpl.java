@@ -1,6 +1,7 @@
 package com.team_five.salthub.service.impl;
 
-import cn.hutool.core.date.DateTime;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.NoticeDao;
@@ -8,21 +9,16 @@ import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.service.NoticeService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.prefs.BackingStoreException;
+
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @date 2021/04/26
@@ -32,6 +28,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 
 	@Autowired
 	private NoticeDao noticeDao;
+	private QueryWrapper wrapper = new QueryWrapper();
 
 	/*** 
 	 * @Description: 发布博客
@@ -41,28 +38,29 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 * @Date: 2021/4/28
 	 */
 	@Override
-	public void publishNotice(Notice notice, String name) {
+	public void publishNotice(Notice notice) {
 		//非空检测
-		if (notice.getContent() == null) {
+		if (StrUtil.isEmpty(notice.getContent())) {
 			throw new BaseException(ExceptionInfo.EMPTY_CONTENT);
-		} else if (notice.getTitle() == null) {
+		} else if (StrUtil.isEmpty(notice.getTitle())) {
 			throw new BaseException(ExceptionInfo.EMPTY_TITLE);
-		} else if (notice.getAccountName() == null) {
-			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNTNAME);
-		} else if (name == null) {
+		} else if (StrUtil.isEmpty(notice.getAccountName())) {
+			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
+		} else if (StrUtil.isEmpty(StpUtil.getLoginIdAsString())) {
 			throw new BaseException(ExceptionInfo.EMPTY_AUTHOR);
 		}
 		//合法性检测
-		else if (notice.getContent().length() > 65536) {
+		else if (notice.getContent().length() > MAX_CONTENT_LENGTH) {
 			throw new BaseException(ExceptionInfo.ILLEGAL_LENGTH);
-		} else if (notice.getTitle().length() > 256) {
-			throw new BaseException(ExceptionInfo.ILLEGAL_TITLELENGTH);
+		} else if (notice.getTitle().length() > MAX_TITLE_LENGTH) {
+			throw new BaseException(ExceptionInfo.ILLEGAL_TITLE_LENGTH);
 		}
 
 
 		Date releaseTime = new Date();
-		notice.setAuthor(name);
 		notice.setReleaseTime(releaseTime);
+		notice.setAuthor(StpUtil.getLoginIdAsString());
+
 
 		noticeDao.insert(notice);
 	}
@@ -75,18 +73,52 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 * @Date: 2021/4/30
 	 */
 	@Override
-	public List<Notice> queryNoticeByName(String accountName) {
-		if (accountName == null || accountName.isEmpty()) {
-			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNTNAME);
+	public Page<Notice> queryNoticeByName(String accountName, Long current) {
+		if (StrUtil.isEmpty(accountName)) {
+			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
 		}
 
-		QueryWrapper wrapper = new QueryWrapper();
 		wrapper.eq("account_name", accountName);
-//		Page<Notice> page = new Page<Notice>(1,2);
-//		Page<Notice> notices = noticeDao.selectPage(page, wrapper);
 
-		List<Notice> notices = noticeDao.selectList(wrapper);
+		Page<Notice> page = new Page<Notice>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+		Page<Notice> notices = noticeDao.selectPage(page, wrapper);
 
 		return notices;
+	}
+	/*** 
+	 * @Description: 根据通知id删除通知
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/1
+	 */
+	@Override
+	public void deleteNotice(String id) {
+
+//		wrapper.eq("id", id);    //判断该id是否存在
+//		//通知id不存在
+//		if (noticeDao.selectOne(wrapper) == null) {
+//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+//		}
+//
+//		noticeDao.delete(wrapper);
+	}
+
+	/*** 
+	 * @Description: 修改通知
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/1
+	 */
+	@Override
+	public void modifyNotice(Notice notice) {
+//		wrapper.eq("id", notice.getId());    //判断该id是否存在
+//		//通知id不存在
+//		if (noticeDao.selectOne(wrapper) == null) {
+//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+//		}
+//
+//		noticeDao.update(notice, wrapper);
 	}
 }

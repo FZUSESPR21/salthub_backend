@@ -1,7 +1,6 @@
 package com.team_five.salthub.controller;
 
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.RequestMessage;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.BlogService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -35,10 +33,10 @@ public class BlogController {
     }
 
     @PostMapping("/module")
-    public ResponseMessage searchBlogByModuleId(@RequestParam("moduleId") int moduleId) {
-        blogService.moduleIdValidityCheck(Long.valueOf(moduleId));
+    public ResponseMessage searchBlogByModuleId(@RequestParam("moduleId") Long moduleId) {
+        blogService.moduleIdValidityCheck(moduleId);
 
-        List<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(moduleId));
+        List<Blog> blogList = blogService.searchBlogByModuleId(moduleId);
         return ResponseMessage.success(blogList);
     }
 }

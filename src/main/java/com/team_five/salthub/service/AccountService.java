@@ -12,4 +12,11 @@ import com.team_five.salthub.model.Account;
  */
 public interface AccountService extends IService<Account> {
 
+    /**
+     * 登录
+     *
+     * @param account
+     * @return
+     */
+    Account login(Account account);
 }

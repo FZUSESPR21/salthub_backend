@@ -4,6 +4,7 @@ import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.service.NoticeService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,9 +21,9 @@ class NoticeServiceImplTest {
 
 	@ParameterizedTest
 	@MethodSource("args")
-	void testPublishNotice(Notice notice, String name, String correct){
+	void testPublishNotice(Notice notice, String correct){
 		try {
-			this.service.publishNotice(notice,name);
+			this.service.publishNotice(notice);
 		} catch (BaseException exception){
 			Assertions.assertEquals(correct,exception.getMessage());
 		}
@@ -42,9 +43,9 @@ class NoticeServiceImplTest {
 
 	@ParameterizedTest
 	@MethodSource("args1")
-	void testQueryNoticeByName(String accountName, Object correct){
+	void testQueryNoticeByName(String accountName, Long current,String correct){
 		try {
-			this.service.queryNoticeByName(accountName);
+			this.service.queryNoticeByName(accountName, current);
 //			Assertions.assertEquals();
 		} catch (BaseException exception){
 			Assertions.assertEquals(correct,exception.getMessage());
@@ -53,11 +54,10 @@ class NoticeServiceImplTest {
 
 	static Stream args1(){
 		return Stream.of(
-				Arguments.of(null, "用户名为空")
+				Arguments.of(null, 1L,"用户名为空")
 
 		);
 	}
-
 
 
 }

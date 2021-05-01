@@ -11,5 +11,5 @@ import com.team_five.salthub.model.SecondaryComment;
  * @date 2021/04/26
  */
 public interface SecondaryCommentService extends IService<SecondaryComment> {
-
+	void publishSecondaryComment(SecondaryComment comment);
 }
