@@ -33,6 +33,10 @@ public enum ExceptionInfo {
     EMPTY_ACCOUNTNAME(554,"用户名为空"),
     ILLEGAL_LENGTH(555,"内容长度过长"),
     ILLEGAL_TITLELENGTH(556,"标题长度过长"),
+    ACCOUNT_NO_EXIST(557,"该用户名不存在"),
+    NOTICE_NO_EXIST(558,"该通知id不存在"),
+    EMPTY_BLOG_ID(559,"blog_id为空"),
+    EMPTY_COMMENT_ID(560,"被评论commentId为空"),
 
     //PASSWORD_ERROR(511, "密码错误");
     COLLECTION_BLOG_ID_ERROR(531,"该博客不存在"),
