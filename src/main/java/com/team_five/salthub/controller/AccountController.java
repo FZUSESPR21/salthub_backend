@@ -23,10 +23,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @date 2021/04/26
  */
+@Api("与用户相关的接口")
 @RestController
 @RequestMapping("/account")
 @Slf4j
-@Api("与用户相关的接口")
 public class AccountController {
 
     @Autowired
