@@ -91,21 +91,23 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     public boolean judgeCollection(Collection collection)
     {
-        QueryWrapper<Collection> condition = new QueryWrapper<>();
-        condition.equals(collection);
-        Integer integer = collectionDao.selectCount(condition);
-        if (integer>0) {
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("account_name",collection.getAccountName());
+        map.put("blog_id",collection.getBlogId());
+        List<Collection>  list = collectionDao.selectByMap(map);
+        if (list.size()>0) {
             return true;
         }
         return false;
     }
     public boolean judgeAccount(Collection collection)
     {
-        QueryWrapper<Account> condition = new QueryWrapper<>();
-        condition.eq("name", collection.getAccountName());
-        Integer integer = accountDao.selectCount(condition);
-        System.out.println(integer);
-        if (integer>0) {
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("name",collection.getAccountName());
+        List<Account>  list = accountDao.selectByMap(map);
+        if (list.size()>0) {
             return true;
         }
         return false;
