@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +32,14 @@ public class BlogController {
         //处理一下文件
         blogService.insert(blog);//将博客存储到数据库中
         return ResponseMessage.success();
+    }
+
+    @PostMapping("/module")
+    public ResponseMessage searchBlogByModuleId(@RequestParam("moduleId") int moduleId) {
+        blogService.moduleIdValidityCheck(Long.valueOf(moduleId));
+
+        List<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(moduleId));
+        return ResponseMessage.success(blogList);
     }
 }
 
