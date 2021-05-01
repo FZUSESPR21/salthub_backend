@@ -71,7 +71,8 @@ public class NoticeController {
 	*/
 	// TODO: 2021/4/28
 	@DeleteMapping
-	public ResponseMessage deleteNotice(){
+	public ResponseMessage deleteNotice(@RequestParam String id){
+		noticeService.deleteNotice(id);
 		
 		return ResponseMessage.success();
 	}
@@ -84,8 +85,9 @@ public class NoticeController {
 	* @Date: 2021/4/28 
 	*/
 	@PutMapping
-	public ResponseMessage modifyNotice(){
-		
+	public ResponseMessage modifyNotice(@RequestBody Notice notice){
+		noticeService.modifyNotice(notice);
+
 		return ResponseMessage.success();
 	}
 

@@ -85,4 +85,40 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 
 		return notices;
 	}
+	/*** 
+	 * @Description: 根据通知id删除通知
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/1
+	 */
+	@Override
+	public void deleteNotice(String id) {
+
+//		wrapper.eq("id", id);    //判断该id是否存在
+//		//通知id不存在
+//		if (noticeDao.selectOne(wrapper) == null) {
+//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+//		}
+//
+//		noticeDao.delete(wrapper);
+	}
+
+	/*** 
+	 * @Description: 修改通知
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/1
+	 */
+	@Override
+	public void modifyNotice(Notice notice) {
+//		wrapper.eq("id", notice.getId());    //判断该id是否存在
+//		//通知id不存在
+//		if (noticeDao.selectOne(wrapper) == null) {
+//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+//		}
+//
+//		noticeDao.update(notice, wrapper);
+	}
 }
