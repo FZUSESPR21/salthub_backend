@@ -36,7 +36,10 @@ public enum ExceptionInfo {
     ACCOUNT_NO_EXIST(557,"该用户名不存在"),
     NOTICE_NO_EXIST(558,"该通知id不存在"),
     EMPTY_BLOG_ID(559,"blog_id为空"),
-    EMPTY_COMMENT_ID(560,"被评论commentId为空"),
+    EMPTY_COMMENT_ID(5510,"被评论commentId为空"),
+    FLAG_ERROR(5511, "flag错误"),
+    BLOG_NO_EXIST(5512,"该博客id不存在"),
+    FIRST_COMMENT_NO_EXIST(5513,"该一级评论id不存在"),
 
     //PASSWORD_ERROR(511, "密码错误");
     COLLECTION_BLOG_ID_ERROR(531,"该博客不存在"),
