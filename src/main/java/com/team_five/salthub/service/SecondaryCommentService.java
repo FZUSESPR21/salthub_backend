@@ -3,6 +3,8 @@ package com.team_five.salthub.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.SecondaryComment;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -12,4 +14,5 @@ import com.team_five.salthub.model.SecondaryComment;
  */
 public interface SecondaryCommentService extends IService<SecondaryComment> {
 	void publishSecondaryComment(SecondaryComment comment);
+	List<SecondaryComment> querySecondaryComment(Long id);
 }

@@ -83,7 +83,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public Page<Blog> searchBlogByModuleId(Long moduleId, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("moduleId", moduleId);
+        wrapper.eq("module_id", moduleId);
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
         return blogList;
@@ -106,7 +106,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public Page<Blog> searchBlogByBlogId(Long blogId, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("blogId", blogId);
+        wrapper.eq("blog_id", blogId);
 
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
@@ -123,7 +123,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public Page<Blog> searchBlogByAccount(String account, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("account", account);
+        wrapper.eq("author", account);
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
         return blogList;
@@ -132,7 +132,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public void deleteBlogByBlogId(Long blogId) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("bolgId", blogId);
+        map.put("id", blogId);
         blogDao.deleteByMap(map);
     }
 

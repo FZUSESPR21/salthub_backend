@@ -3,10 +3,16 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
+import com.team_five.salthub.exception.BaseException;
+import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.mail.VerificationCodeEmail;
 import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.AccountService;
 import com.team_five.salthub.util.DeviceUtil;
+import com.team_five.salthub.util.RedisUtil;
+import com.team_five.salthub.util.VerificationCodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -28,9 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/account")
 @Slf4j
 public class AccountController {
+    private static final int CODE_LENGTH = 6;
 
     @Autowired
     private AccountService accountService;
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 登录接口
@@ -67,6 +77,24 @@ public class AccountController {
     @ApiOperation(value = "用户登出接口")
     public ResponseMessage logout() {
         StpUtil.logout();
+        return ResponseMessage.success();
+    }
+
+    /**
+     * 发送邮箱验证码
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping("/code")
+    @ApiOperation(value = "发送邮箱验证码")
+    public ResponseMessage getMailCode(@RequestParam("email") String email) {
+        if (StrUtil.isEmpty(email)) {
+            throw new BaseException(ExceptionInfo.MAIL_EMPTY);
+        }
+        String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
+        new VerificationCodeEmail(email, code).send();
+        redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
         return ResponseMessage.success();
     }
 

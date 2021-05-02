@@ -1,7 +1,9 @@
 package com.team_five.salthub.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.dao.BlogDao;
@@ -41,25 +43,26 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     public int addCollection(Collection collection) {
 
-       if (collection.getBlogId() == null) {
+       if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
-       else if(collection.getAccountName() == null) {
+       else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
        else if(judgeCollection(collection)) {
            throw new BaseException(ExceptionInfo.COLLECTION_ALREADY_EXIST_ERROR);
        }
+        blogDao.addCollectionCount(collection.getBlogId());
         return collectionDao.insert(collection);
     }
 
     @Override
     public int deleteCollection(Collection collection) {
 
-        if (collection.getBlogId() == null) {
+        if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
-        else if(collection.getAccountName() == null) {
+        else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
         else if(!judgeCollection(collection)) {
@@ -68,22 +71,30 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         HashMap<String,Object> map = new HashMap<>();
         map.put("account_name",collection.getAccountName());
         map.put("blog_id",collection.getBlogId());
+        blogDao.deleteCollectionCount(collection.getBlogId());
         int sum = collectionDao.deleteByMap(map);
         return sum;
 
     }
     @Override
-    public List<Blog> queryCollection(Collection collection) {
-        if(collection.getAccountName() == null) {
+    public Page<Blog> queryCollection(Collection collection,long current) {
+        if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
         else if(!judgeAccount(collection)) {
             throw  new BaseException(ExceptionInfo.COLLECTION_Account_NOT_ERROR);
         }
         System.out.println(collection.getAccountName());
-            List<Blog>  collectionBLog =blogDao.collectionBLog(collection.getAccountName());
-            collectionBLog.forEach(item->item.setState(null));
-            return collectionBLog;
+        Page<Blog> page = new Page<>(current,10);
+        List<Blog> list =blogDao.collectionBLog(collection.getAccountName());
+        page.setRecords(list);
+        page.setTotal(list.size());
+        list.forEach(item->System.out.println(item.toString()));
+        return page;
+
+//        Page<Blog>  collectionBLog = new blogDao.collectionBLog(collection.getAccountName());
+//            collectionBLog.forEach(item->item.setState(null));
+//            return collectionBLog;
     }
 
 
@@ -91,21 +102,23 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     public boolean judgeCollection(Collection collection)
     {
-        QueryWrapper<Collection> condition = new QueryWrapper<>();
-        condition.equals(collection);
-        Integer integer = collectionDao.selectCount(condition);
-        if (integer>0) {
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("account_name",collection.getAccountName());
+        map.put("blog_id",collection.getBlogId());
+        List<Collection>  list = collectionDao.selectByMap(map);
+        if (list.size()>0) {
             return true;
         }
         return false;
     }
     public boolean judgeAccount(Collection collection)
     {
-        QueryWrapper<Account> condition = new QueryWrapper<>();
-        condition.eq("name", collection.getAccountName());
-        Integer integer = accountDao.selectCount(condition);
-        System.out.println(integer);
-        if (integer>0) {
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("name",collection.getAccountName());
+        List<Account>  list = accountDao.selectByMap(map);
+        if (list.size()>0) {
             return true;
         }
         return false;

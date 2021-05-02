@@ -31,7 +31,6 @@ class CollectionServiceImplTest {
     private BlogDao blogDao;
     @Autowired
     private CollectionServiceImpl collectionService;
-
     @ParameterizedTest
     @MethodSource("args")
     void addCollectionTest(Collection collection, String correct) {
@@ -77,8 +76,7 @@ class CollectionServiceImplTest {
     @MethodSource("args3")
     void queryCollectionTest(Collection collection, String correct) {
         try {
-            this.collectionService.queryCollection(collection);
-           // System.out.println(this.collectionService.queryCollection(collection));
+            this.collectionService.queryCollection(collection,1);
         } catch (BaseException baseException) {
             Assertions.assertEquals(correct, baseException.getMessage());
         }
@@ -89,10 +87,9 @@ class CollectionServiceImplTest {
         return Stream.of(
 
                 Arguments.of(new Collection((long)0,"12356",(long)1),"该收藏用户不存在"),
-                Arguments.of(new Collection((long)0,"123456",(long)1),"该收藏用户不存在")
+                Arguments.of(new Collection((long)0,"123456",(long)1),"")
         );
     }
-
 
 
 }
