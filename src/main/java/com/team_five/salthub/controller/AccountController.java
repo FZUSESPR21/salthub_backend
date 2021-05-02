@@ -11,6 +11,7 @@ import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.AccountService;
 import com.team_five.salthub.util.DeviceUtil;
+import com.team_five.salthub.util.RedisUtil;
 import com.team_five.salthub.util.VerificationCodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -37,6 +39,8 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 登录接口
@@ -90,7 +94,7 @@ public class AccountController {
         }
         String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
         new VerificationCodeEmail(email, code).send();
-        // TODO : 保存验证码
+        redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
         return ResponseMessage.success();
     }
 
