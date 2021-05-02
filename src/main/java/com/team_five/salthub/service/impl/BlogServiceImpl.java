@@ -1,18 +1,18 @@
 package com.team_five.salthub.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.BlogDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Blog;
+import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
  * <p>
@@ -84,6 +84,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public Page<Blog> searchBlogByModuleId(Long moduleId, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("module_id", moduleId);
+        wrapper.eq("state", BlogStateEnum.NORMAL.getId());
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
         return blogList;
@@ -107,7 +108,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public Page<Blog> searchBlogByBlogId(Long blogId, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("blog_id", blogId);
-
+        wrapper.eq("state", BlogStateEnum.NORMAL.getId());
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
         return blogList;
@@ -124,6 +125,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public Page<Blog> searchBlogByAccount(String account, Long current) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("author", account);
+        wrapper.eq("state", BlogStateEnum.NORMAL.getId());
         Page<Blog> page = new Page<Blog>(current, PAGESIZE);
         Page<Blog> blogList = blogDao.selectPage(page, wrapper);
         return blogList;
@@ -131,9 +133,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void deleteBlogByBlogId(Long blogId) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("id", blogId);
-        blogDao.deleteByMap(map);
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        updateWrapper.eq("id", blogId).set("state", BlogStateEnum.DELETE.getId());
+        blogDao.update(null, updateWrapper);
     }
-
 }
