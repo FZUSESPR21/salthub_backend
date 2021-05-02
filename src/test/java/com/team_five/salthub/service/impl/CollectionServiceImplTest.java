@@ -1,9 +1,13 @@
 package com.team_five.salthub.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.team_five.salthub.dao.BlogDao;
 import com.team_five.salthub.dao.CollectionDao;
 import com.team_five.salthub.exception.BaseException;
+import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.Collection;
+import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +28,9 @@ class CollectionServiceImplTest {
     @Autowired
     private CollectionDao collectionDao;
     @Autowired
+    private BlogDao blogDao;
+    @Autowired
     private CollectionServiceImpl collectionService;
-
     @ParameterizedTest
     @MethodSource("args")
     void addCollectionTest(Collection collection, String correct) {
@@ -36,7 +42,7 @@ class CollectionServiceImplTest {
     }
 
     static Stream args() {
-        Date date= Calendar.getInstance().getTime();
+
         return Stream.of(
                 Arguments.of(new Collection((long)0,"221801310",(long)1),"1"),
                 Arguments.of(new Collection((long)0,null,(long)1),"用户名为空"),
@@ -57,7 +63,7 @@ class CollectionServiceImplTest {
     }
 
     static Stream args2() {
-        Date date= Calendar.getInstance().getTime();
+
         return Stream.of(
                 Arguments.of(new Collection((long)0,"221801310",(long)1),"1"),
                 Arguments.of(new Collection((long)0,null,(long)1),"用户名为空"),
@@ -66,7 +72,24 @@ class CollectionServiceImplTest {
 
         );
     }
+    @ParameterizedTest
+    @MethodSource("args3")
+    void queryCollectionTest(Collection collection, String correct) {
+        try {
+            this.collectionService.queryCollection(collection,1);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
 
+    static Stream args3() {
+
+        return Stream.of(
+
+                Arguments.of(new Collection((long)0,"12356",(long)1),"该收藏用户不存在"),
+                Arguments.of(new Collection((long)0,"123456",(long)1),"")
+        );
+    }
 
 
 }

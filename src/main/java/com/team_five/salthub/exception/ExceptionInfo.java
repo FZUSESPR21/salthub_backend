@@ -26,6 +26,7 @@ public enum ExceptionInfo {
     PASSWORD_EMPTY(512, "密码为空"),
     NAME_NOT_EXIST(513, "用户名不存在"),
     PASSWORD_ERROR(514, "密码错误"),
+    MAIL_EMPTY(515, "邮箱为空"),
 
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),
@@ -41,20 +42,24 @@ public enum ExceptionInfo {
     BLOG_NO_EXIST(5512,"该博客id不存在"),
     FIRST_COMMENT_NO_EXIST(5513,"该一级评论id不存在"),
 
+
     //PASSWORD_ERROR(511, "密码错误");
     COLLECTION_BLOG_ID_ERROR(531,"该博客不存在"),
     COLLECTION_ACCOUNT_ERROR(531,"该用户不存在"),
     COLLECTION_ALREADY_EXIST_ERROR(532,"您已收藏该文章"),
     COLLECTION_ACCOUNT_EMPTY_ERROR(533,"用户名为空"),
-    BLOD_ID_EMPTY_ERROR(534,"博客id为空"),
-    COLLECTION_NOT_ERRO(535,"您未收藏该文章"),
+    BLOG_ID_EMPTY_ERROR(534,"博客id为空"),
+    COLLECTION_NOT_ERROR(535,"您未收藏该文章"),
+    COLLECTION_Account_NOT_ERROR(536,"该收藏用户不存在"),
 
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),
     MODULE_ID_ERROR(522,"模块id不属于预设模块"),
     TITLE_EMPTY_ERROR(523,"标题为空"),
     TITLE_ERROR(524,"标题过长"),
     CONTENT_EMPTY_ERROR(525,"内容为空"),
-    CONTENT_ERROR(526,"内容过长");
+    CONTENT_ERROR(526, "内容过长"),
+    ACCOUNT_EMPTY_ERROR(526, "用户名为空"),
+    TAG_ID_EMPTY_ERROR(527, "标签id为空");
 
     private Integer code;
     private String message;

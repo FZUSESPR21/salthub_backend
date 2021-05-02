@@ -11,5 +11,5 @@ import com.team_five.salthub.model.TipOff;
  * @date 2021/04/26
  */
 public interface TipOffService extends IService<TipOff> {
-
+    public boolean tipOffBlog(TipOff tipOff);
 }
