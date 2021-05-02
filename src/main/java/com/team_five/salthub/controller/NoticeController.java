@@ -4,6 +4,7 @@ package com.team_five.salthub.controller;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -40,6 +41,7 @@ public class NoticeController {
 	* @Author: top
 	* @Date: 2021/4/28
 	*/
+	@ApiOperation(value = "公告发布接口")
 	@PostMapping
 	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
 		noticeService.publishNotice(notice);		//service层实现业务逻辑
@@ -54,6 +56,7 @@ public class NoticeController {
 	* @Author: top
 	* @Date: 2021/4/28 
 	*/
+	@ApiOperation(value = "公告查询接口")
 	@GetMapping
 	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Long current){
 
@@ -70,6 +73,7 @@ public class NoticeController {
 	* @Date: 2021/4/28 
 	*/
 	// TODO: 2021/4/28
+	@ApiOperation(value = "公告删除接口")
 	@DeleteMapping
 	public ResponseMessage deleteNotice(@RequestParam String id){
 		noticeService.deleteNotice(id);
@@ -84,6 +88,7 @@ public class NoticeController {
 	* @Author: top
 	* @Date: 2021/4/28 
 	*/
+	@ApiOperation(value = "公告修改")
 	@PutMapping
 	public ResponseMessage modifyNotice(@RequestBody Notice notice){
 		noticeService.modifyNotice(notice);

@@ -1,16 +1,19 @@
 package com.team_five.salthub.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.team_five.salthub.exception.BaseException;
+import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.FirstComment;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.SecondaryComment;
 import com.team_five.salthub.service.FirstCommentService;
 import com.team_five.salthub.service.SecondaryCommentService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -35,7 +38,8 @@ public class CommentController {
 	 * @Author: top
 	 * @Date: 2021/5/1
 	 */
-	@PostMapping("/{0}")
+	@ApiOperation(value = "一级评论发布接口")
+	@PostMapping("/0")
 	public ResponseMessage publishFirstComment(@RequestBody FirstComment firstComment) {
 		firstCommentService.publishFirstComment(firstComment);
 
@@ -49,13 +53,35 @@ public class CommentController {
 	 * @Author: top
 	 * @Date: 2021/5/1
 	 */
-	@PostMapping("/{1}")
+	@ApiOperation(value = "二级评论发布接口")
+	@PostMapping("/1")
 	public ResponseMessage publishSecondaryComment(@RequestBody SecondaryComment secondaryComment) {
 		secondaryCommentService.publishSecondaryComment(secondaryComment);
 
 		return ResponseMessage.success();
 	}
 
+	/*** 
+	 * @Description: 查询一级评论
+	 * @Param: id  flag:标记是一级评论0还是二级评论1
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/2
+	 */
+	@ApiOperation(value = "一级评论查询接口")
+	@GetMapping("/2")
+	public ResponseMessage queryFirstComment(@RequestParam Long id, @RequestParam Integer flag) {
+		if (flag == 0){		//查询一级评论
+			List<FirstComment> firstComments = firstCommentService.queryFirstComment(id);
+			return ResponseMessage.success(firstComments);
+		}
+		else if (flag == 1){		//查询二级评论
+			List<SecondaryComment> secondaryComments = secondaryCommentService.querySecondaryComment(id);
+			return ResponseMessage.success(secondaryComments);
+		}
+
+		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
+	}
 
 }
 

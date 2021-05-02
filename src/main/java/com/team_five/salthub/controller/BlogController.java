@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @date 2021/04/26
@@ -25,7 +25,7 @@ public class BlogController {
     private BlogService blogService;
 
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments){
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
         blog.setAuthor(name);
         blog.setLikeNumber(Long.valueOf(0));

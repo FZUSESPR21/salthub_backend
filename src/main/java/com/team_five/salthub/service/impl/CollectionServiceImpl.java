@@ -3,6 +3,7 @@ package com.team_five.salthub.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.dao.BlogDao;
@@ -51,6 +52,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
        else if(judgeCollection(collection)) {
            throw new BaseException(ExceptionInfo.COLLECTION_ALREADY_EXIST_ERROR);
        }
+        blogDao.addCollectionCount(collection.getBlogId());
         return collectionDao.insert(collection);
     }
 
@@ -69,12 +71,13 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         HashMap<String,Object> map = new HashMap<>();
         map.put("account_name",collection.getAccountName());
         map.put("blog_id",collection.getBlogId());
+        blogDao.deleteCollectionCount(collection.getBlogId());
         int sum = collectionDao.deleteByMap(map);
         return sum;
 
     }
     @Override
-    public List<Blog> queryCollection(Collection collection) {
+    public Page<Blog> queryCollection(Collection collection,long current) {
         if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
@@ -82,9 +85,16 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
             throw  new BaseException(ExceptionInfo.COLLECTION_Account_NOT_ERROR);
         }
         System.out.println(collection.getAccountName());
-            List<Blog>  collectionBLog =blogDao.collectionBLog(collection.getAccountName());
-            collectionBLog.forEach(item->item.setState(null));
-            return collectionBLog;
+        Page<Blog> page = new Page<>(current,10);
+        List<Blog> list =blogDao.collectionBLog(collection.getAccountName());
+        page.setRecords(list);
+        page.setTotal(list.size());
+        list.forEach(item->System.out.println(item.toString()));
+        return page;
+
+//        Page<Blog>  collectionBLog = new blogDao.collectionBLog(collection.getAccountName());
+//            collectionBLog.forEach(item->item.setState(null));
+//            return collectionBLog;
     }
 
 

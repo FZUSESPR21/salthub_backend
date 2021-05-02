@@ -23,7 +23,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("first_comment")
 @ApiModel(value="FirstComment对象", description="")
-public class FirstComment implements Serializable {
+public class FirstComment implements Serializable{
 
     private static final long serialVersionUID=1L;
 

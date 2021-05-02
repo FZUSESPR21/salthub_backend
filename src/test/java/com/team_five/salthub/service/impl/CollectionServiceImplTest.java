@@ -76,7 +76,7 @@ class CollectionServiceImplTest {
     @MethodSource("args3")
     void queryCollectionTest(Collection collection, String correct) {
         try {
-            this.collectionService.queryCollection(collection);
+            this.collectionService.queryCollection(collection,1);
         } catch (BaseException baseException) {
             Assertions.assertEquals(correct, baseException.getMessage());
         }
