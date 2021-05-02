@@ -35,10 +35,10 @@ public class CollectionController {
         return ResponseMessage.success(collectionService.deleteCollection(collection));
     }
     @GetMapping
-    public ResponseMessage queryCollection( ) {
+    public ResponseMessage queryCollection(@RequestParam("current") long current) {
         collection.setAccountName(StpUtil.getLoginIdAsString());
         System.out.println(collection.getAccountName());
-        return ResponseMessage.success(collectionService.queryCollection(collection));
+        return ResponseMessage.success(collectionService.queryCollection(collection,current));
     }
 }
 
