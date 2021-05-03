@@ -27,6 +27,11 @@ public enum ExceptionInfo {
     NAME_NOT_EXIST(513, "用户名不存在"),
     PASSWORD_ERROR(514, "密码错误"),
     MAIL_EMPTY(515, "邮箱为空"),
+    NAME_EXIST(516, "用户名已存在"),
+    PASSWORD_ILLEGAL(517, "密码非法"),
+    VERIFICATION_CODE_INVALID(518, "验证码无效"),
+    NAME_ILLEGAL(519, "用户名非法"),
+    EMAIL_EXIST(5110, "邮箱已存在"),
 
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),
@@ -58,8 +63,8 @@ public enum ExceptionInfo {
     TITLE_ERROR(524,"标题过长"),
     CONTENT_EMPTY_ERROR(525,"内容为空"),
     CONTENT_ERROR(526, "内容过长"),
-    ACCOUNT_EMPTY_ERROR(526, "用户名为空"),
-    TAG_ID_EMPTY_ERROR(527, "标签id为空");
+    ACCOUNT_EMPTY_ERROR(527, "用户名为空"),
+    TAG_ID_EMPTY_ERROR(528, "标签id为空");
 
     private Integer code;
     private String message;

@@ -19,7 +19,7 @@ public interface BlogDao extends BaseMapper<Blog> {
     @Select("SELECT b.* FROM blog b,collection c WHERE c.blog_id=b.id  and account_name= #{account_name} and b.state= 2")
     List<Blog> collectionBLog(String account_name);
 
-    @Select("SELECT b.* FROM blog b,blog_tag bt,tag t WHERE b.id=bt.blog_id and bt.tag_id=t.id and t.id= #{tagId}")
+    @Select("SELECT b.* FROM blog b,blog_tag bt,tag t WHERE b.id=bt.blog_id and bt.tag_id=t.id and t.id= #{tagId} and b.state=2")
     Page<Blog> selectBlogByTagId(Page<Blog> page, Long tagId);
     @Select("update blog set collection_number=collection_number+1 where id=#{id}")
     void addCollectionCount(long id);

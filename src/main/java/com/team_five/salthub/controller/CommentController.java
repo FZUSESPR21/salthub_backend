@@ -62,33 +62,50 @@ public class CommentController {
 	}
 
 	/*** 
-	 * @Description: 查询一级评论
-	 * @Param:
+	 * @Description: 查询评论
+	 * @Param: id  flag:标记是一级评论0还是二级评论1
 	 * @return:
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
 	@ApiOperation(value = "一级评论查询接口")
 	@GetMapping("/2")
-	public ResponseMessage queryFirstComment(@RequestParam Long blogId) {
-		List<FirstComment> commentPage = firstCommentService.queryFirstComment(blogId);
+	public ResponseMessage queryComment(@RequestParam Long id, @RequestParam Integer flag) {
+		if (flag == 0){		//查询一级评论
+			List<FirstComment> firstComments = firstCommentService.queryFirstComment(id);
+			return ResponseMessage.success(firstComments);
+		}
+		else if (flag == 1){		//查询二级评论
+			List<SecondaryComment> secondaryComments = secondaryCommentService.querySecondaryComment(id);
+			return ResponseMessage.success(secondaryComments);
+		}
 
-		return ResponseMessage.success(commentPage);
+		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
 	}
 
-	/***
-	 * @Description:
-	 * @Param:
-	 * @return:
-	 * @Author: top
-	 * @Date: 2021/5/2
-	 */
-	@ApiOperation(value = "二级评论查询接口")
-	@GetMapping("/3")
-	public ResponseMessage querySecondaryComment(@RequestParam Long id) {
-		List<SecondaryComment> secondaryComments = secondaryCommentService.querySecondaryComment(id);
+//	/***
+//	* @Description: 删除评论
+//	* @Param:
+//	* @return:
+//	* @Author: top
+//	* @Date: 2021/5/2
+//	*/
+//	@ApiOperation(value = "删除评论")
+//	@DeleteMapping
+//	public ResponseMessage deleteComment(@RequestParam Long id, @RequestParam Integer flag){
+//		if (flag == 0){
+//			firstCommentService.deleteComment(id);
+//			return ResponseMessage.success();
+//		}
+//		else if (flag==1){
+//			secondaryCommentService.deleteComment(id);
+//			return ResponseMessage.success();
+//		}
+//
+//		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
+//	}
 
-		return ResponseMessage.success(secondaryComments);
-	}
+
+
 }
 

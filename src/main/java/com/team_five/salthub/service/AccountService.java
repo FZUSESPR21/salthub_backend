@@ -19,4 +19,11 @@ public interface AccountService extends IService<Account> {
      * @return
      */
     Account login(Account account);
+
+    /**
+     * 注册
+     *
+     * @param account
+     */
+    void register(Account account);
 }
