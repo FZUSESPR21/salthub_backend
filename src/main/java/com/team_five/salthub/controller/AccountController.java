@@ -100,6 +100,13 @@ public class AccountController {
         return ResponseMessage.success();
     }
 
+    /**
+     * 注册
+     *
+     * @param account
+     * @param code
+     * @return
+     */
     @PostMapping("/register")
     @ApiOperation(value = "用户注册接口")
     public ResponseMessage register(@RequestBody Account account, @RequestParam("code") String code) {
