@@ -155,4 +155,20 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         blogDao.update(null, updateWrapper);
     }
 
+
+    public void updateBlogByBlogId(Blog blog, Long bolgId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        if (blog.getModuleId() != null) {
+            updateWrapper.set("module_id", blog.getModuleId());
+        }
+        if (blog.getTitle() != null) {
+            updateWrapper.set("title", blog.getTitle());
+        }
+        if (blog.getContent() != null) {
+            updateWrapper.set("content", blog.getContent());
+        }
+        updateWrapper.eq("id", bolgId);
+        blogDao.update(null, updateWrapper);
+    }
+//>>>>>>> origin/dev
 }

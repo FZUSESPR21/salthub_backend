@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.dao.NoticeDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
@@ -28,6 +29,9 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 
 	@Autowired
 	private NoticeDao noticeDao;
+	@Autowired
+	private AccountDao accountDao;
+
 	private QueryWrapper wrapper = new QueryWrapper();
 
 	/*** 
@@ -55,7 +59,10 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 		} else if (notice.getTitle().length() > MAX_TITLE_LENGTH) {
 			throw new BaseException(ExceptionInfo.ILLEGAL_TITLE_LENGTH);
 		}
-
+		//判断要通知的用户是否存在
+		else if (!isAccountExist(notice.getAccountName())){
+			throw new BaseException(ExceptionInfo.ACCOUNT_NO_EXIST);
+		}
 
 		Date releaseTime = new Date();
 		notice.setReleaseTime(releaseTime);
@@ -76,6 +83,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	public Page<Notice> queryNoticeByName(String accountName, Long current) {
 		if (StrUtil.isEmpty(accountName)) {
 			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
+		} else if (!isAccountExist(accountName)){
+			throw new BaseException(ExceptionInfo.ACCOUNT_NO_EXIST);
 		}
 
 		wrapper.eq("account_name", accountName);
@@ -113,12 +122,30 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 */
 	@Override
 	public void modifyNotice(Notice notice) {
-//		wrapper.eq("id", notice.getId());    //判断该id是否存在
-//		//通知id不存在
-//		if (noticeDao.selectOne(wrapper) == null) {
-//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
-//		}
-//
-//		noticeDao.update(notice, wrapper);
+		wrapper.eq("id", notice.getId());    //判断该id是否存在
+		//通知id不存在
+		if (noticeDao.selectOne(wrapper) == null) {
+			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+		}
+
+		noticeDao.update(notice, wrapper);
 	}
+
+	/*** 
+	* @Description: 判断用户是否存在
+	* @Param:  
+	* @return:  
+	* @Author: top
+	* @Date: 2021/5/2 
+	*/
+	private boolean isAccountExist(String name){
+		QueryWrapper queryWrapper = new QueryWrapper();
+		queryWrapper.eq("name", name);
+		if (accountDao.selectOne(wrapper) == null){
+			return false;
+		}
+		return true;
+	}
+
+
 }
