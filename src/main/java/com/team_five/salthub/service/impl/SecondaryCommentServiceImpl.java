@@ -40,7 +40,6 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
-	// FIXME: 2021/5/2 需要判断该博客是否存在
 	@Override
 	public void publishSecondaryComment(SecondaryComment secondaryComment) {
 		if (secondaryComment.getContent() == null) {
@@ -96,4 +95,22 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		}
 		return true;
 	}
+
+	/*** 
+	* @Description: 判断二级评论是否存在
+	* @Param:  
+	* @return:  
+	* @Author: top
+	* @Date: 2021/5/2 
+	*/
+	public boolean isSecondaryCommentExist(Long id){
+		QueryWrapper queryWrapper = new QueryWrapper();
+		queryWrapper.eq("id",id);
+		if (secondaryCommentDao.selectOne(queryWrapper) == null) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

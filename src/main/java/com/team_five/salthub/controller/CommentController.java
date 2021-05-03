@@ -62,7 +62,7 @@ public class CommentController {
 	}
 
 	/*** 
-	 * @Description: 查询一级评论
+	 * @Description: 查询评论
 	 * @Param: id  flag:标记是一级评论0还是二级评论1
 	 * @return:
 	 * @Author: top
@@ -70,7 +70,7 @@ public class CommentController {
 	 */
 	@ApiOperation(value = "一级评论查询接口")
 	@GetMapping("/2")
-	public ResponseMessage queryFirstComment(@RequestParam Long id, @RequestParam Integer flag) {
+	public ResponseMessage queryComment(@RequestParam Long id, @RequestParam Integer flag) {
 		if (flag == 0){		//查询一级评论
 			List<FirstComment> firstComments = firstCommentService.queryFirstComment(id);
 			return ResponseMessage.success(firstComments);
@@ -82,6 +82,30 @@ public class CommentController {
 
 		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
 	}
+
+//	/***
+//	* @Description: 删除评论
+//	* @Param:
+//	* @return:
+//	* @Author: top
+//	* @Date: 2021/5/2
+//	*/
+//	@ApiOperation(value = "删除评论")
+//	@DeleteMapping
+//	public ResponseMessage deleteComment(@RequestParam Long id, @RequestParam Integer flag){
+//		if (flag == 0){
+//			firstCommentService.deleteComment(id);
+//			return ResponseMessage.success();
+//		}
+//		else if (flag==1){
+//			secondaryCommentService.deleteComment(id);
+//			return ResponseMessage.success();
+//		}
+//
+//		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
+//	}
+
+
 
 }
 
