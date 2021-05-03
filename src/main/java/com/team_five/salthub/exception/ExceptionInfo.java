@@ -63,8 +63,8 @@ public enum ExceptionInfo {
     TITLE_ERROR(524,"标题过长"),
     CONTENT_EMPTY_ERROR(525,"内容为空"),
     CONTENT_ERROR(526, "内容过长"),
-    ACCOUNT_EMPTY_ERROR(526, "用户名为空"),
-    TAG_ID_EMPTY_ERROR(527, "标签id为空");
+    ACCOUNT_EMPTY_ERROR(527, "用户名为空"),
+    TAG_ID_EMPTY_ERROR(528, "标签id为空");
 
     private Integer code;
     private String message;
