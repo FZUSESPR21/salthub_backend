@@ -7,6 +7,7 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.service.BlogService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,6 +75,18 @@ public class BlogController {
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
         blogService.deleteBlogByBlogId(Long.valueOf(blogId));
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id封禁博客")
+    @PutMapping("/ban")
+    public ResponseMessage banBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.banBlogByBlogId(blogId);
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id取消封禁博客")
+    @PutMapping("/cancelBan")
+    public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.cancelBanBlogByBlogId(blogId);
         return ResponseMessage.success();
     }
 }

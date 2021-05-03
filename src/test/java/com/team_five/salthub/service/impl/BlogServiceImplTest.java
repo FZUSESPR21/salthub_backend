@@ -71,4 +71,11 @@ class BlogServiceImplTest {
                         , 1l, 1l, 1), "模块id不属于预设模块")
         );
     }
+
+    @Test
+    void banBlogByBlogIdTest(){
+
+        blogService.banBlogByBlogId((long)7);
+
+    }
 }

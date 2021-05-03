@@ -2,6 +2,7 @@ package com.team_five.salthub.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.BlogDao;
@@ -13,6 +14,8 @@ import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 /**
  * <p>
@@ -137,4 +140,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.DELETE.getId());
         blogDao.update(null, updateWrapper);
     }
+
+    @Override
+    public void banBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.BAN.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void cancelBanBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.NORMAL.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
 }
