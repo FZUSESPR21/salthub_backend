@@ -43,5 +43,8 @@ public interface BlogService extends IService<Blog> {
     //通过博客id删除博客
     public void deleteBlogByBlogId(Long blogId);
 
+    //通过博客id更新博客
+    public void updateBlogByBlogId(Blog blog, Long bolgId);
+
 
 }
