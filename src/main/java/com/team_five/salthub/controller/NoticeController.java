@@ -72,7 +72,6 @@ public class NoticeController {
 	* @Author: top
 	* @Date: 2021/4/28 
 	*/
-	// TODO: 2021/4/28
 	@ApiOperation(value = "公告删除接口")
 	@DeleteMapping
 	public ResponseMessage deleteNotice(@RequestParam String id){

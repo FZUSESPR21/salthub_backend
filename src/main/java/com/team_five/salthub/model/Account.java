@@ -31,7 +31,7 @@ public class Account implements Serializable {
     private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "用户名")
-    @TableId(value = "name", type = IdType.AUTO)
+    @TableId(value = "name", type = IdType.INPUT)
     private String name;
 
     @ApiModelProperty(value = "昵称")

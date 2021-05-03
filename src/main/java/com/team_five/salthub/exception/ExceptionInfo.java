@@ -27,6 +27,11 @@ public enum ExceptionInfo {
     NAME_NOT_EXIST(513, "用户名不存在"),
     PASSWORD_ERROR(514, "密码错误"),
     MAIL_EMPTY(515, "邮箱为空"),
+    NAME_EXIST(516, "用户名已存在"),
+    PASSWORD_ILLEGAL(517, "密码非法"),
+    VERIFICATION_CODE_INVALID(518, "验证码无效"),
+    NAME_ILLEGAL(519, "用户名非法"),
+    EMAIL_EXIST(5110, "邮箱已存在"),
 
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),

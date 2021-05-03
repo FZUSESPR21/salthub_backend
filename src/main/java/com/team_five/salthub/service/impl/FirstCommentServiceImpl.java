@@ -41,7 +41,6 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
-	// FIXME: 2021/5/2 需要判断该博客是否存在
 	@Override
 	public void publishFirstComment(FirstComment firstComment) {
 		//发布一级评论
@@ -96,4 +95,16 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 		}
 		return true;
 	}
+
+	public boolean isFirstCommentExist(Long id){
+		QueryWrapper queryWrapper = new QueryWrapper();
+		queryWrapper.eq("id", id);
+		if (firstCommentDao.selectOne(queryWrapper) == null) {
+			return false;
+		}
+		return true;
+	}
+
+
+
 }

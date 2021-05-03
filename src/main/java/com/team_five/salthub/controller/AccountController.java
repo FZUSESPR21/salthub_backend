@@ -4,11 +4,13 @@ package com.team_five.salthub.controller;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.mail.VerificationCodeEmail;
 import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.ResponseMessage;
+import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
 import com.team_five.salthub.util.DeviceUtil;
 import com.team_five.salthub.util.RedisUtil;
@@ -92,10 +94,60 @@ public class AccountController {
         if (StrUtil.isEmpty(email)) {
             throw new BaseException(ExceptionInfo.MAIL_EMPTY);
         }
+        // TODO : 邮箱合法性
         String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
         new VerificationCodeEmail(email, code).send();
         redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
         return ResponseMessage.success();
+    }
+
+    /**
+     * 注册
+     *
+     * @param account
+     * @param code
+     * @return
+     */
+    @PostMapping("/register")
+    @ApiOperation(value = "用户注册接口")
+    public ResponseMessage register(@RequestBody Account account, @RequestParam("code") String code) {
+        String email = account.getEmail();
+        if (StrUtil.isEmpty(email)) {
+            throw new BaseException(ExceptionInfo.MAIL_EMPTY);
+        }
+        if (redisUtil.hasKey(email) && redisUtil.get(email).equals(code.toLowerCase())) {
+            account.setRoleId(RoleEnum.NORMAL.getId());
+            account.setAvatar("default.jpg");
+            account.setNickname(account.getName());
+            accountService.register(account);
+            return ResponseMessage.success();
+        }
+        throw new BaseException(ExceptionInfo.VERIFICATION_CODE_INVALID);
+    }
+
+    /**
+     * 判断用户名是否存在
+     *
+     * @param name
+     * @return
+     */
+    @GetMapping("/name")
+    @ApiOperation(value = "判断用户名是否存在")
+    public ResponseMessage nameExist(@RequestParam("name") String name) {
+        return ResponseMessage.success(accountService.getById(name) != null);
+    }
+
+    /**
+     * 判断邮箱是否存在
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping("/email")
+    @ApiOperation(value = "判断邮箱是否存在")
+    public ResponseMessage emailExist(@RequestParam("email") String email) {
+        return ResponseMessage.success(accountService.getOne(new QueryWrapper<Account>().
+            eq("email", email)) != null);
     }
 
 

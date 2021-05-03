@@ -11,11 +11,20 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum RoleEnum {
-    cancel(0L, "注销用户"),
-    BAN(1L, "封禁用户"),
-    tourist(2L, "游客用户"),
-    NORMAL(3L, "普通用户"),
-    ADMINISTRATORS(4L, "管理员用户");
+    CANCEL(0L, "cancel"),
+    BAN(1L, "ban"),
+    TOURIST(2L, "tourist"),
+    NORMAL(3L, "normal"),
+    ADMINISTRATORS(4L, "administrators");
+
+    public static RoleEnum getRole(Long id) {
+        for (RoleEnum role : RoleEnum.values()) {
+            if (role.getId().equals(id)) {
+                return role;
+            }
+        }
+        return RoleEnum.BAN;
+    }
 
     private Long id;
     private String name;
