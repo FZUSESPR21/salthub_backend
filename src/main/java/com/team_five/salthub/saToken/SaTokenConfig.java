@@ -28,8 +28,6 @@ public class SaTokenConfig implements WebMvcConfigurer {
             // TODO : 举报权限、标签权限
 
             // 角色验证
-            SaRouterUtil.match("/account/**", () -> StpUtil.checkRoleOr("normal", "ban",
-                "administrators"));
             SaRouterUtil.match("/test/**", () -> StpUtil.checkRoleOr("administrators"));
             SaRouterUtil.match("/admin/**", () -> StpUtil.checkRoleOr("administrators"));
             SaRouterUtil.match("/collection/**", () -> StpUtil.checkRoleOr("normal", "administrators"));
@@ -75,6 +73,8 @@ public class SaTokenConfig implements WebMvcConfigurer {
         whiteList.add("/oauth/**");
         // 注册
         whiteList.add("/account/register");
+        whiteList.add("/account/name");
+        whiteList.add("/account/email");
         // 验证码
         whiteList.add("/account/code");
         // druid数据库连接池

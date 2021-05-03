@@ -4,6 +4,7 @@ package com.team_five.salthub.controller;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.mail.VerificationCodeEmail;
@@ -122,6 +123,31 @@ public class AccountController {
             return ResponseMessage.success();
         }
         throw new BaseException(ExceptionInfo.VERIFICATION_CODE_INVALID);
+    }
+
+    /**
+     * 判断用户名是否存在
+     *
+     * @param name
+     * @return
+     */
+    @GetMapping("/name")
+    @ApiOperation(value = "判断用户名是否存在")
+    public ResponseMessage nameExist(@RequestParam("name") String name) {
+        return ResponseMessage.success(accountService.getById(name) != null);
+    }
+
+    /**
+     * 判断邮箱是否存在
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping("/email")
+    @ApiOperation(value = "判断邮箱是否存在")
+    public ResponseMessage emailExist(@RequestParam("email") String email) {
+        return ResponseMessage.success(accountService.getOne(new QueryWrapper<Account>().
+            eq("email", email)) != null);
     }
 
 
