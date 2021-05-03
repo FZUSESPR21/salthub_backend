@@ -90,7 +90,7 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	public boolean isBlogExist(Long blogId){
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("id", blogId);
-		if (blogDao.selectOne(queryWrapper) == null) {
+		if (blogDao.selectList(queryWrapper).size()==0) {
 			return false;
 		}
 		return true;
@@ -99,7 +99,7 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	public boolean isFirstCommentExist(Long id){
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("id", id);
-		if (firstCommentDao.selectOne(queryWrapper) == null) {
+		if (firstCommentDao.selectList(queryWrapper).size()==0) {
 			return false;
 		}
 		return true;

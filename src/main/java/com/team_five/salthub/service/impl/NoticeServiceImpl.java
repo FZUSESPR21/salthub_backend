@@ -124,7 +124,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	public void modifyNotice(Notice notice) {
 		wrapper.eq("id", notice.getId());    //判断该id是否存在
 		//通知id不存在
-		if (noticeDao.selectOne(wrapper) == null) {
+		if (noticeDao.selectList(wrapper).size()==0) {
 			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
 		}
 
@@ -141,7 +141,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	private boolean isAccountExist(String name){
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("name", name);
-		if (accountDao.selectOne(wrapper) == null){
+		if (accountDao.selectList(wrapper).size()==0){
 			return false;
 		}
 		return true;
