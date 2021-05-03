@@ -7,13 +7,14 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.service.BlogService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @date 2021/04/26
@@ -25,7 +26,7 @@ public class BlogController {
     private BlogService blogService;
 
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments){
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
         blog.setAuthor(name);
         blog.setLikeNumber(Long.valueOf(0));
@@ -74,6 +75,18 @@ public class BlogController {
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
         blogService.deleteBlogByBlogId(Long.valueOf(blogId));
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id封禁博客")
+    @PutMapping("/ban")
+    public ResponseMessage banBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.banBlogByBlogId(blogId);
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id取消封禁博客")
+    @PutMapping("/cancelBan")
+    public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.cancelBanBlogByBlogId(blogId);
         return ResponseMessage.success();
     }
 

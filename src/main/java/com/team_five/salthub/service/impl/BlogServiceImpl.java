@@ -137,7 +137,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.DELETE.getId());
         blogDao.update(null, updateWrapper);
     }
-
     @Override
     public void updateBlogByBlogId(Blog blog, Long bolgId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
@@ -153,4 +152,35 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         updateWrapper.eq("id", bolgId);
         blogDao.update(null, updateWrapper);
     }
+
+    @Override
+    public void banBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.BAN.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void cancelBanBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.NORMAL.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
+
+    public void updateBlogByBlogId(Blog blog, Long bolgId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        if (blog.getModuleId() != null) {
+            updateWrapper.set("module_id", blog.getModuleId());
+        }
+        if (blog.getTitle() != null) {
+            updateWrapper.set("title", blog.getTitle());
+        }
+        if (blog.getContent() != null) {
+            updateWrapper.set("content", blog.getContent());
+        }
+        updateWrapper.eq("id", bolgId);
+        blogDao.update(null, updateWrapper);
+    }
+//>>>>>>> origin/dev
 }
