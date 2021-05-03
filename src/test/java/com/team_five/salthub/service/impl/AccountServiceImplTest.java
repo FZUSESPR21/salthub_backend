@@ -51,4 +51,29 @@ class AccountServiceImplTest {
                 ""), "")
         );
     }
+
+//    @ParameterizedTest
+//    @MethodSource("registerArgs")
+//    void register(Account account, String expect) {
+//        try {
+//            accountService.register(account);
+//        } catch (BaseException e) {
+//            Assertions.assertEquals(expect, e.getMessage());
+//        }
+//    }
+//
+//    static Stream registerArgs() {
+//        return Stream.of(
+//            Arguments.of(new Account("", "null", "123456", 0L, "", "",
+//                ""), "用户名为空"),
+//            Arguments.of(new Account("456", "null", "", 0L, "", "",
+//                ""), "密码为空"),
+//            Arguments.of(new Account("123456", "null", "123456", 0L, "", "",
+//                ""), "用户名已存在"),
+//            Arguments.of(new Account("456", "null", "123456", 0L, "", "",
+//                ""), "邮箱已存在"),
+//            Arguments.of(new Account("456", "null", "12范德萨3", 0L, "", "",
+//                ""), "密码非法")
+//        );
+//    }
 }

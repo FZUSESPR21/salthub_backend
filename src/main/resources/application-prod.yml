@@ -1,6 +1,6 @@
 spring:
   redis:
-    host: localhost
+    host: 8.140.10.177
     port: 6379
     database: 0
     jedis:

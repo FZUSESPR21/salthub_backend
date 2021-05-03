@@ -9,6 +9,7 @@ import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.mail.VerificationCodeEmail;
 import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.ResponseMessage;
+import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
 import com.team_five.salthub.util.DeviceUtil;
 import com.team_five.salthub.util.RedisUtil;
@@ -92,10 +93,28 @@ public class AccountController {
         if (StrUtil.isEmpty(email)) {
             throw new BaseException(ExceptionInfo.MAIL_EMPTY);
         }
+        // TODO : 邮箱合法性
         String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
         new VerificationCodeEmail(email, code).send();
         redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
         return ResponseMessage.success();
+    }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "用户注册接口")
+    public ResponseMessage register(@RequestBody Account account, @RequestParam("code") String code) {
+        String email = account.getEmail();
+        if (StrUtil.isEmpty(email)) {
+            throw new BaseException(ExceptionInfo.MAIL_EMPTY);
+        }
+        if (redisUtil.hasKey(email) && redisUtil.get(email).equals(code.toLowerCase())) {
+            account.setRoleId(RoleEnum.NORMAL.getId());
+            account.setAvatar("default.jpg");
+            account.setNickname(account.getName());
+            accountService.register(account);
+            return ResponseMessage.success();
+        }
+        throw new BaseException(ExceptionInfo.VERIFICATION_CODE_INVALID);
     }
 
 
