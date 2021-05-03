@@ -89,5 +89,12 @@ public class BlogController {
         blogService.cancelBanBlogByBlogId(blogId);
         return ResponseMessage.success();
     }
+
+    @PutMapping
+    public ResponseMessage updateBlogByBlogId(@RequestBody Blog blog, @RequestParam("blogId") int blogId) {
+        blogService.updateBlogByBlogId(blog, Long.valueOf(blogId));
+        //如果全为空怎么判断
+        return ResponseMessage.success();
+    }
 }
 

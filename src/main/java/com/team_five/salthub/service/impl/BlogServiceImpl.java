@@ -2,7 +2,6 @@ package com.team_five.salthub.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.BlogDao;
@@ -14,8 +13,6 @@ import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
  * <p>
@@ -138,6 +135,21 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public void deleteBlogByBlogId(Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.DELETE.getId());
+        blogDao.update(null, updateWrapper);
+    }
+    @Override
+    public void updateBlogByBlogId(Blog blog, Long bolgId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        if (blog.getModuleId() != null) {
+            updateWrapper.set("module_id", blog.getModuleId());
+        }
+        if (blog.getTitle() != null) {
+            updateWrapper.set("title", blog.getTitle());
+        }
+        if (blog.getContent() != null) {
+            updateWrapper.set("content", blog.getContent());
+        }
+        updateWrapper.eq("id", bolgId);
         blogDao.update(null, updateWrapper);
     }
 

@@ -46,5 +46,8 @@ public interface BlogService extends IService<Blog> {
     public void banBlogByBlogId(Long blogId);
 
 
+    //通过博客id更新博客
+    public void updateBlogByBlogId(Blog blog, Long bolgId);
+
 
 }
