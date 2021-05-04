@@ -50,7 +50,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     StpUtil.checkRoleOr("normal", "administrators");
                 }
                 if (method.equals(HttpMethod.GET.toString())) {
-                    StpUtil.checkRoleOr("tourist", "normal", "ban", "administrators");
+//                    StpUtil.checkRoleOr("tourist", "normal", "ban", "administrators");
                 }
                 if (method.equals(HttpMethod.DELETE.toString())) {
                     StpUtil.checkLogin();
@@ -61,8 +61,8 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 StpUtil.checkLogin();
                 StpUtil.checkRoleOr("normal", "administrators");
             });
-            SaRouterUtil.match("/blog/**", () -> StpUtil.checkRoleOr("tourist", "normal", "ban",
-                "administrators"));
+//            SaRouterUtil.match("/blog/**", () -> StpUtil.checkRoleOr("tourist", "normal", "ban",
+//                "administrators"));
         })).addPathPatterns("/**");
     }
 

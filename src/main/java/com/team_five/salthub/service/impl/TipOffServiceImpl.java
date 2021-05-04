@@ -3,6 +3,8 @@ package com.team_five.salthub.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.TipOffDao;
+import com.team_five.salthub.exception.BaseException;
+import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Collection;
 import com.team_five.salthub.model.TipOff;
 import com.team_five.salthub.service.TipOffService;
@@ -41,6 +43,21 @@ public class TipOffServiceImpl extends ServiceImpl<TipOffDao, TipOff> implements
         }
 
         return false;
+    }
+
+    @Override
+    public void deleteTipOff(TipOff tipOff) {
+        long count =judgeTipOff(tipOff);
+        if (count>0){//已有举报记录，删除该条举报
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("blog_id",tipOff.getBlogId());
+            tipOffDao.deleteByMap(map);
+        }
+        else {//没有查到该id举报信息 新增一条，设置举报数为1
+            throw  new BaseException(ExceptionInfo.TIP_OFF_EXIST_ERROR);
+        }
+
+
     }
 
     public long judgeTipOff(TipOff tipOff)

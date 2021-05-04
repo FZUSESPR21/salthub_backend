@@ -12,4 +12,5 @@ import com.team_five.salthub.model.TipOff;
  */
 public interface TipOffService extends IService<TipOff> {
     public boolean tipOffBlog(TipOff tipOff);
+    public void deleteTipOff(TipOff tipOff);
 }

@@ -11,8 +11,11 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
+import com.team_five.salthub.userBasedCollaborativeFiltering.UserCF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -105,13 +108,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
     @Override
-    public Page<Blog> searchBlogByBlogId(Long blogId, Long current) {
-        QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("blog_id", blogId);
+    public Blog searchBlogByBlogId(Long blogId) {
+        Blog blog = blogDao.selectById(blogId);
+        return blog;
+        /*QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("id", blogId);
         wrapper.eq("state", BlogStateEnum.NORMAL.getId());
-        Page<Blog> page = new Page<Blog>(current, PAGESIZE);
-        Page<Blog> blogList = blogDao.selectPage(page, wrapper);
-        return blogList;
+        List<Blog> blogList = blogDao.selectList(wrapper);
+        return blogList;*/
     }
 
     @Override
@@ -137,8 +141,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.DELETE.getId());
         blogDao.update(null, updateWrapper);
     }
+
     @Override
-    public void updateBlogByBlogId(Blog blog, Long bolgId) {
+    public void updateBlogByBlogId(Blog blog, Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
         if (blog.getModuleId() != null) {
             updateWrapper.set("module_id", blog.getModuleId());
@@ -149,38 +154,46 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         if (blog.getContent() != null) {
             updateWrapper.set("content", blog.getContent());
         }
-        updateWrapper.eq("id", bolgId);
+        updateWrapper.eq("id", blogId);
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void whetherLikeBlogOrNot(Boolean flag, Long blogId) {
+        Blog blog = blogDao.selectById(blogId);//主键必须是id  否则应该用@TableId("主键名")
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        if (flag) {
+            updateWrapper.set("like_number", blog.getLikeNumber() + 1);
+        } else {
+            updateWrapper.set("like_number", blog.getLikeNumber() - 1);
+        }
+        updateWrapper.eq("id", blogId);
         blogDao.update(null, updateWrapper);
     }
 
     @Override
     public void banBlogByBlogId(Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.BAN.getId());
+        updateWrapper.eq("id", blogId).set("state", BlogStateEnum.BAN.getId());
         blogDao.update(null, updateWrapper);
     }
 
     @Override
     public void cancelBanBlogByBlogId(Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.NORMAL.getId());
+        updateWrapper.eq("id", blogId).set("state", BlogStateEnum.NORMAL.getId());
         blogDao.update(null, updateWrapper);
     }
 
-
-    public void updateBlogByBlogId(Blog blog, Long bolgId) {
-        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
-        if (blog.getModuleId() != null) {
-            updateWrapper.set("module_id", blog.getModuleId());
+    @Override
+    public List<Blog> readAll(String name) {
+        List<Blog> blogList = blogDao.selectList(new QueryWrapper<Blog>().eq("state",
+                BlogStateEnum.NORMAL.getId()));
+        List<Blog> defaultBlog = blogList.subList(0, Math.min(blogList.size(), 500));
+        if ("".equals(name)) {
+            return defaultBlog;
         }
-        if (blog.getTitle() != null) {
-            updateWrapper.set("title", blog.getTitle());
-        }
-        if (blog.getContent() != null) {
-            updateWrapper.set("content", blog.getContent());
-        }
-        updateWrapper.eq("id", bolgId);
-        blogDao.update(null, updateWrapper);
+        List<Blog> result = UserCF.getResult(name);
+        return (result != null) ? result.subList(0, Math.min(result.size(), 500)) : defaultBlog;
     }
-//>>>>>>> origin/dev
 }
