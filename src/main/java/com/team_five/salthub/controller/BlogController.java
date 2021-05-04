@@ -11,7 +11,6 @@ import com.team_five.salthub.util.RedisUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,7 +37,8 @@ public class BlogController {
 
     @ApiOperation(value = "发布博客")
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog) {
+        //, @RequestParam("attachments") MultipartFile[] attachments
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
         blog.setAuthor(name);
         blog.setLikeNumber(Long.valueOf(0));
