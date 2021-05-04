@@ -89,12 +89,26 @@ public class BlogController {
         return ResponseMessage.success();
     }
 
+    @ApiOperation(value = "根据id封禁博客")
+    @PutMapping("/ban")
+    public ResponseMessage banBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.banBlogByBlogId(blogId);
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id取消封禁博客")
+    @PutMapping("/cancelBan")
+    public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.cancelBanBlogByBlogId(blogId);
+        return ResponseMessage.success();
+    }
+
     @PutMapping
     public ResponseMessage updateBlogByBlogId(@RequestBody Blog blog, @RequestParam("blogId") int blogId) {
         blogService.updateBlogByBlogId(blog, Long.valueOf(blogId));
         //如果全为空怎么判断
         return ResponseMessage.success();
     }
+
 
     /**
      * 查询所有博客（智能推荐）
