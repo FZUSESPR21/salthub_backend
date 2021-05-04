@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.Blog;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -46,5 +48,7 @@ public interface BlogService extends IService<Blog> {
     //通过博客id更新博客
     public void updateBlogByBlogId(Blog blog, Long bolgId);
 
+    // 读取所有博客
+    List<Blog> readAll(String name);
 
 }

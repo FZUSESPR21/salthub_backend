@@ -7,9 +7,14 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.service.BlogService;
+import com.team_five.salthub.util.RedisUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -21,6 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
+    private static final String BLOG_LIST_PREFIX = "BLOG_LIST_";
+    private static final long EXPIRE_TIME = 60L * 60L * 1000L;
+    private static final int PAGE_SIZE = 50;
+
+    @Resource
+    private RedisUtil redisUtil;
+
     @Autowired
     private BlogService blogService;
 
@@ -82,6 +94,27 @@ public class BlogController {
         blogService.updateBlogByBlogId(blog, Long.valueOf(blogId));
         //如果全为空怎么判断
         return ResponseMessage.success();
+    }
+
+    /**
+     * 查询所有博客（智能推荐）
+     *
+     * @param page
+     * @return
+     */
+    @GetMapping("/all/{page}")
+    @ApiOperation(value = "查询所有博客（智能推荐）")
+    public ResponseMessage readAll(@PathVariable("page") long page) {
+        String name = StpUtil.getLoginId("");
+        String key = BLOG_LIST_PREFIX + name;
+        if (redisUtil.hasKey(key)) {
+            page = (page < 0) ? 0 : page;
+            long start = page * PAGE_SIZE;
+            return ResponseMessage.success(redisUtil.getList(key, start, start + PAGE_SIZE));
+        }
+        List<Blog> blogList = blogService.readAll(name);
+        redisUtil.setList(key, blogList, EXPIRE_TIME);
+        return ResponseMessage.success(redisUtil.getList(key, 0, PAGE_SIZE));
     }
 }
 
