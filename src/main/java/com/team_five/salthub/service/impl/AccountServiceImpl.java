@@ -4,12 +4,17 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Account;
+import com.team_five.salthub.model.Blog;
+import com.team_five.salthub.model.constant.BlogStateEnum;
+import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
+import com.team_five.salthub.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +91,33 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         }
         account.setPassword(md5BySalt(account.getPassword()));
         accountDao.insert(account);
+    }
+
+    @Override
+    public void banAccount(Account account) {
+
+        if (accountDao.selectById(account.getName()) == null) {
+            throw new BaseException(ExceptionInfo.BAN_ACCOUNT_ERROR);
+        }
+        if (accountDao.selectById(account.getName()).getRoleId() == RoleEnum.BAN.getId()) {
+            throw new BaseException(ExceptionInfo.BAN_EXIST_ERROR);
+        }
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("name", account.getName()).set("role_id", RoleEnum.BAN.getId());
+        accountDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void cancelBanAccount(Account account) {
+        if (accountDao.selectById(account.getName()) == null) {
+            throw new BaseException(ExceptionInfo.BAN_ACCOUNT_ERROR);
+        }
+        if (accountDao.selectById(account.getName()).getRoleId() == RoleEnum.NORMAL.getId()) {
+            throw new BaseException(ExceptionInfo.BAN_NOT_EXIST_ERROR);
+        }
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("name", account.getName()).set("role_id", RoleEnum.NORMAL.getId());
+        accountDao.update(null, updateWrapper);
     }
 
     /**

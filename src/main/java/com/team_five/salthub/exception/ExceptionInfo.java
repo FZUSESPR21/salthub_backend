@@ -57,7 +57,9 @@ public enum ExceptionInfo {
     COLLECTION_NOT_ERROR(535,"您未收藏该文章"),
     COLLECTION_Account_NOT_ERROR(536,"该收藏用户不存在"),
     TIP_OFF_EXIST_ERROR(561,"该举报记录不存"),
-
+    BAN_ACCOUNT_ERROR(562,"该封禁用户不存在"),
+    BAN_NOT_EXIST_ERROR(563,"该用户未被封禁"),
+    BAN_EXIST_ERROR(563,"该用户已是封禁状态"),
 
 
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),
