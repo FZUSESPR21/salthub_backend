@@ -110,7 +110,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Override
     public List<Blog> searchBlogByBlogId(Long blogId) {
         QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("blog_id", blogId);
+        wrapper.eq("id", blogId);
         wrapper.eq("state", BlogStateEnum.NORMAL.getId());
         List<Blog> blogList = blogDao.selectList(wrapper);
         return blogList;
@@ -141,7 +141,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
     @Override
-    public void updateBlogByBlogId(Blog blog, Long bolgId) {
+    public void updateBlogByBlogId(Blog blog, Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
         if (blog.getModuleId() != null) {
             updateWrapper.set("module_id", blog.getModuleId());
@@ -152,28 +152,41 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         if (blog.getContent() != null) {
             updateWrapper.set("content", blog.getContent());
         }
-        updateWrapper.eq("id", bolgId);
+        updateWrapper.eq("id", blogId);
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void whetherLikeBlogOrNot(Boolean flag, Long blogId) {
+        Blog blog = blogDao.selectById(blogId);//主键必须是id  否则应该用@TableId("主键名")
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
+        if (flag) {
+            updateWrapper.set("like_num", blog.getLikeNumber() + 1);
+        } else {
+            updateWrapper.set("like_num", blog.getLikeNumber() - 1);
+        }
+        updateWrapper.eq("id", blogId);
         blogDao.update(null, updateWrapper);
     }
 
     @Override
     public void banBlogByBlogId(Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.BAN.getId());
+        updateWrapper.eq("id", blogId).set("state", BlogStateEnum.BAN.getId());
         blogDao.update(null, updateWrapper);
     }
 
     @Override
     public void cancelBanBlogByBlogId(Long blogId) {
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.NORMAL.getId());
+        updateWrapper.eq("id", blogId).set("state", BlogStateEnum.NORMAL.getId());
         blogDao.update(null, updateWrapper);
     }
 
     @Override
     public List<Blog> readAll(String name) {
         List<Blog> blogList = blogDao.selectList(new QueryWrapper<Blog>().eq("state",
-            BlogStateEnum.NORMAL.getId()));
+                BlogStateEnum.NORMAL.getId()));
         List<Blog> defaultBlog = blogList.subList(0, Math.min(blogList.size(), 500));
         if ("".equals(name)) {
             return defaultBlog;

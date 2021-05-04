@@ -12,8 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import java.util.List;
+
 /**
  * <p>
  * 前端控制器
@@ -34,6 +36,7 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    @ApiOperation(value = "发布博客")
     @PostMapping
     public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) {
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
@@ -49,6 +52,7 @@ public class BlogController {
         return ResponseMessage.success();
     }
 
+    @ApiOperation(value = "根据板块id查询博客")
     @PostMapping("/module")
     public ResponseMessage searchBlogByModuleId(@RequestParam("current") int current, @RequestParam("moduleId") int moduleId) {
         blogService.moduleIdValidityCheck(Long.valueOf(moduleId));
@@ -58,6 +62,7 @@ public class BlogController {
 
     }
 
+    @ApiOperation(value = "根据用户id查询博客")
     @PostMapping("/tag")
     public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
         blogService.tagIdValidityCheck(Long.valueOf(tagId));
@@ -66,6 +71,7 @@ public class BlogController {
         return ResponseMessage.success();
     }
 
+    @ApiOperation(value = "根据用户名查询博客")
     @PostMapping("/account")
     public ResponseMessage searchBlogByAccount(@RequestParam("current") int current, @RequestParam("account") String account) {
         blogService.accountValidityCheck(account);
@@ -74,6 +80,7 @@ public class BlogController {
         return ResponseMessage.success(blogList);
     }
 
+    @ApiOperation(value = "通过博客id查询博客")
     @GetMapping
     public ResponseMessage searchBlogByBolgId(@RequestParam("blogId") int blogId) {
         List<Blog> blogList = blogService.searchBlogByBlogId(Long.valueOf(blogId));
@@ -81,6 +88,7 @@ public class BlogController {
 
     }
 
+    @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
         blogService.deleteBlogByBlogId(Long.valueOf(blogId));
@@ -93,6 +101,7 @@ public class BlogController {
         blogService.banBlogByBlogId(blogId);
         return ResponseMessage.success();
     }
+
     @ApiOperation(value = "根据id取消封禁博客")
     @PutMapping("/cancelBan")
     public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
@@ -100,10 +109,18 @@ public class BlogController {
         return ResponseMessage.success();
     }
 
+    @ApiOperation(value = "根据博客id更新博客")
     @PutMapping
     public ResponseMessage updateBlogByBlogId(@RequestBody Blog blog, @RequestParam("blogId") int blogId) {
         blogService.updateBlogByBlogId(blog, Long.valueOf(blogId));
         //如果全为空怎么判断
+        return ResponseMessage.success();
+    }
+
+    @ApiOperation(value = "点赞（取消点赞）博客")
+    @PutMapping("/like/{flag}")
+    public ResponseMessage whetherLikeBlogOrNot(@PathVariable("flag") boolean flag, @RequestParam("blogId") int blogId) {
+        blogService.whetherLikeBlogOrNot(flag, Long.valueOf(blogId));
         return ResponseMessage.success();
     }
 
