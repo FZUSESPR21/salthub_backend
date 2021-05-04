@@ -14,6 +14,8 @@ import com.team_five.salthub.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务实现类
@@ -105,12 +107,11 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
     @Override
-    public Page<Blog> searchBlogByBlogId(Long blogId, Long current) {
+    public List<Blog> searchBlogByBlogId(Long blogId) {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("blog_id", blogId);
         wrapper.eq("state", BlogStateEnum.NORMAL.getId());
-        Page<Blog> page = new Page<Blog>(current, PAGESIZE);
-        Page<Blog> blogList = blogDao.selectPage(page, wrapper);
+        List<Blog> blogList = blogDao.selectList(wrapper);
         return blogList;
     }
 

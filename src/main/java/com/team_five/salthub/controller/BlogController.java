@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <p>
  * 前端控制器
@@ -65,8 +67,8 @@ public class BlogController {
     }
 
     @GetMapping
-    public ResponseMessage searchBlogByBolgId(@RequestParam("current") int current, @RequestParam("blogId") int blogId) {
-        Page<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(blogId), Long.valueOf(current));
+    public ResponseMessage searchBlogByBolgId(@RequestParam("blogId") int blogId) {
+        List<Blog> blogList = blogService.searchBlogByBlogId(Long.valueOf(blogId));
         return ResponseMessage.success(blogList);
 
     }
