@@ -108,12 +108,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
     @Override
-    public List<Blog> searchBlogByBlogId(Long blogId) {
-        QueryWrapper wrapper = new QueryWrapper();
+    public Blog searchBlogByBlogId(Long blogId) {
+        Blog blog = blogDao.selectById(blogId);
+        return blog;
+        /*QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("id", blogId);
         wrapper.eq("state", BlogStateEnum.NORMAL.getId());
         List<Blog> blogList = blogDao.selectList(wrapper);
-        return blogList;
+        return blogList;*/
     }
 
     @Override
@@ -161,9 +163,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         Blog blog = blogDao.selectById(blogId);//主键必须是id  否则应该用@TableId("主键名")
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<Blog>();
         if (flag) {
-            updateWrapper.set("like_num", blog.getLikeNumber() + 1);
+            updateWrapper.set("like_number", blog.getLikeNumber() + 1);
         } else {
-            updateWrapper.set("like_num", blog.getLikeNumber() - 1);
+            updateWrapper.set("like_number", blog.getLikeNumber() - 1);
         }
         updateWrapper.eq("id", blogId);
         blogDao.update(null, updateWrapper);

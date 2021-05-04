@@ -62,13 +62,13 @@ public class BlogController {
 
     }
 
-    @ApiOperation(value = "根据用户id查询博客")
+    @ApiOperation(value = "根据标签id查询博客")
     @PostMapping("/tag")
     public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
         blogService.tagIdValidityCheck(Long.valueOf(tagId));
 
-        blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
-        return ResponseMessage.success();
+        Page<Blog> blogPage = blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
+        return ResponseMessage.success(blogPage);
     }
 
     @ApiOperation(value = "根据用户名查询博客")
@@ -83,8 +83,8 @@ public class BlogController {
     @ApiOperation(value = "通过博客id查询博客")
     @GetMapping
     public ResponseMessage searchBlogByBolgId(@RequestParam("blogId") int blogId) {
-        List<Blog> blogList = blogService.searchBlogByBlogId(Long.valueOf(blogId));
-        return ResponseMessage.success(blogList);
+        Blog blog = blogService.searchBlogByBlogId(Long.valueOf(blogId));
+        return ResponseMessage.success(blog);
 
     }
 
