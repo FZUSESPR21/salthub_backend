@@ -17,6 +17,7 @@ import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.service.CollectionService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,13 +85,10 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         else if(!judgeAccount(collection)) {
             throw  new BaseException(ExceptionInfo.COLLECTION_Account_NOT_ERROR);
         }
-        System.out.println(collection.getAccountName());
-        Page<Blog> page = new Page<>(current,10);
-        List<Blog> list =blogDao.collectionBLog(collection.getAccountName());
-        page.setRecords(list);
-        page.setTotal(list.size());
-        list.forEach(item->System.out.println(item.toString()));
-        return page;
+
+        Page<Blog> page = new Page<Blog>(current, 10);
+        Page<Blog> blogList = blogDao.collectionBLog(page,collection.getAccountName());
+        return blogList;
 
 //        Page<Blog>  collectionBLog = new blogDao.collectionBLog(collection.getAccountName());
 //            collectionBLog.forEach(item->item.setState(null));
