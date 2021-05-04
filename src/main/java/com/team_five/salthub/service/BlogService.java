@@ -34,7 +34,7 @@ public interface BlogService extends IService<Blog> {
     public Page<Blog> searchBlogByTagId(Long tagId, Long current);
 
     //通过博客id查询博客
-    public Page<Blog> searchBlogByBlogId(Long blogId, Long current);
+    public List<Blog> searchBlogByBlogId(Long blogId);
 
     //用户名合法性验证
     void accountValidityCheck(String account);

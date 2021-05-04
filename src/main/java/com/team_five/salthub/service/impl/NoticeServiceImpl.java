@@ -104,13 +104,13 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	@Override
 	public void deleteNotice(String id) {
 
-//		wrapper.eq("id", id);    //判断该id是否存在
-//		//通知id不存在
-//		if (noticeDao.selectOne(wrapper) == null) {
-//			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
-//		}
-//
-//		noticeDao.delete(wrapper);
+		wrapper.eq("id", id);    //判断该id是否存在
+		//通知id不存在
+		if (noticeDao.selectList(wrapper).size() == 0) {
+			throw new BaseException(ExceptionInfo.NOTICE_NO_EXIST);
+		}
+
+		noticeDao.delete(wrapper);
 	}
 
 	/*** 

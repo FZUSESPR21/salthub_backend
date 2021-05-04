@@ -12,10 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import java.util.List;
-
 /**
  * <p>
  * 前端控制器
@@ -62,7 +60,7 @@ public class BlogController {
 
     @PostMapping("/tag")
     public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
-        blogService.moduleIdValidityCheck(Long.valueOf(tagId));
+        blogService.tagIdValidityCheck(Long.valueOf(tagId));
 
         blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
         return ResponseMessage.success();
@@ -77,8 +75,8 @@ public class BlogController {
     }
 
     @GetMapping
-    public ResponseMessage searchBlogByBolgId(@RequestParam("current") int current, @RequestParam("blogId") int blogId) {
-        Page<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(blogId), Long.valueOf(current));
+    public ResponseMessage searchBlogByBolgId(@RequestParam("blogId") int blogId) {
+        List<Blog> blogList = blogService.searchBlogByBlogId(Long.valueOf(blogId));
         return ResponseMessage.success(blogList);
 
     }
@@ -108,7 +106,6 @@ public class BlogController {
         //如果全为空怎么判断
         return ResponseMessage.success();
     }
-
 
     /**
      * 查询所有博客（智能推荐）

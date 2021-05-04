@@ -8,11 +8,9 @@ import com.team_five.salthub.model.TipOff;
 import com.team_five.salthub.service.CollectionService;
 import com.team_five.salthub.service.TipOffService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -31,7 +29,14 @@ public class TipOffController {
     @PostMapping
     public ResponseMessage tipOff(@RequestParam("id") long id) {
         tipOff.setBlogId(id);
-        return ResponseMessage.success(tipOffService.tipOffBlog(tipOff));
+        tipOffService.tipOffBlog(tipOff);
+        return ResponseMessage.success();
+    }
+    @DeleteMapping
+    public ResponseMessage deleteTipOff(@RequestParam("id") long id) {
+        tipOff.setBlogId(id);
+        tipOffService.deleteTipOff(tipOff);
+        return ResponseMessage.success();
     }
 
 }
