@@ -11,6 +11,7 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
+import com.team_five.salthub.userBasedCollaborativeFiltering.UserCF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -153,5 +154,31 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         }
         updateWrapper.eq("id", bolgId);
         blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void banBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.BAN.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public void cancelBanBlogByBlogId(Long blogId) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",blogId).set("state",BlogStateEnum.NORMAL.getId());
+        blogDao.update(null, updateWrapper);
+    }
+
+    @Override
+    public List<Blog> readAll(String name) {
+        List<Blog> blogList = blogDao.selectList(new QueryWrapper<Blog>().eq("state",
+            BlogStateEnum.NORMAL.getId()));
+        List<Blog> defaultBlog = blogList.subList(0, Math.min(blogList.size(), 500));
+        if ("".equals(name)) {
+            return defaultBlog;
+        }
+        List<Blog> result = UserCF.getResult(name);
+        return (result != null) ? result.subList(0, Math.min(result.size(), 500)) : defaultBlog;
     }
 }

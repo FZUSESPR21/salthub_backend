@@ -90,7 +90,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	public boolean isFirstCommentExist(Long id){
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("id",id);
-		if (firstCommentDao.selectOne(queryWrapper) == null) {
+		if (firstCommentDao.selectList(queryWrapper).size() == 0) {
 			return false;
 		}
 		return true;
@@ -106,7 +106,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	public boolean isSecondaryCommentExist(Long id){
 		QueryWrapper queryWrapper = new QueryWrapper();
 		queryWrapper.eq("id",id);
-		if (secondaryCommentDao.selectOne(queryWrapper) == null) {
+		if (secondaryCommentDao.selectList(queryWrapper).size() == 0) {
 			return false;
 		}
 		return true;
