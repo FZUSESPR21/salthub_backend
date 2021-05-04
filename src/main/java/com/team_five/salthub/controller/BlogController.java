@@ -52,7 +52,7 @@ public class BlogController {
 
     @PostMapping("/tag")
     public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
-        blogService.moduleIdValidityCheck(Long.valueOf(tagId));
+        blogService.tagIdValidityCheck(Long.valueOf(tagId));
 
         blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
         return ResponseMessage.success();
