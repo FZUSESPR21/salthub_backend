@@ -34,7 +34,7 @@ public interface BlogService extends IService<Blog> {
     public Page<Blog> searchBlogByTagId(Long tagId, Long current);
 
     //通过博客id查询博客
-    public Page<Blog> searchBlogByBlogId(Long blogId, Long current);
+    public Blog searchBlogByBlogId(Long blogId);
 
     //用户名合法性验证
     void accountValidityCheck(String account);
@@ -44,12 +44,17 @@ public interface BlogService extends IService<Blog> {
 
     //通过博客id删除博客
     public void deleteBlogByBlogId(Long blogId);
+
     public void cancelBanBlogByBlogId(Long blogId);
+
     public void banBlogByBlogId(Long blogId);
 
 
     //通过博客id更新博客
-    public void updateBlogByBlogId(Blog blog, Long bolgId);
+    public void updateBlogByBlogId(Blog blog, Long blogId);
+
+    //点赞（取消点赞）博客
+    public void whetherLikeBlogOrNot(Boolean flag, Long blogId);
 
     // 读取所有博客
     List<Blog> readAll(String name);
