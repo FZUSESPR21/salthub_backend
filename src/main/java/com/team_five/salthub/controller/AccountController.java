@@ -3,6 +3,7 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
@@ -94,7 +95,9 @@ public class AccountController {
         if (StrUtil.isEmpty(email)) {
             throw new BaseException(ExceptionInfo.MAIL_EMPTY);
         }
-        // TODO : 邮箱合法性
+        if (!Validator.isEmail(email)) {
+            throw new BaseException(ExceptionInfo.EMAIL_ILLEGAL);
+        }
         String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
         new VerificationCodeEmail(email, code).send();
         redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
