@@ -3,10 +3,14 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.mail.PasswordSecurityEmail;
 import com.team_five.salthub.mail.VerificationCodeEmail;
 import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.ResponseMessage;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * <p>
@@ -37,7 +42,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/account")
 @Slf4j
 public class AccountController {
+    private static final String LOGIN_PREFIX = "LOGIN_";
+    private static final String WAIT_PREFIX = "WAIT_";
+    private static final int LOGIN_MAX_COUNT = 3;
     private static final int CODE_LENGTH = 6;
+    private static final long WAIT_TIME = 3 * 60 * 1000;
 
     @Autowired
     private AccountService accountService;
@@ -59,15 +68,38 @@ public class AccountController {
                                  @PathVariable("flag") int flag,
                                  HttpServletResponse response,
                                  Device device) {
-        Account account1 = accountService.login(account);
-        StpUtil.logoutByLoginId(account.getName(), DeviceUtil.getDevice(device));
-        SaLoginModel saLoginModel = new SaLoginModel();
-        saLoginModel.setDevice(DeviceUtil.getDevice(device));
-        saLoginModel.setIsLastingCookie(flag != 0);
-        StpUtil.setLoginId(account.getName(), saLoginModel);
-        response.setHeader("jwt", StpUtil.getTokenValue());
-        log.info("用户：" + account.getName() + " 登录成功");
-        return ResponseMessage.success(account1);
+        try {
+            if (redisUtil.hasKey(WAIT_PREFIX + account.getName())) {
+                throw new BaseException(ExceptionInfo.WAIT);
+            }
+            Account account1 = accountService.login(account);
+            StpUtil.logoutByLoginId(account.getName(), DeviceUtil.getDevice(device));
+            SaLoginModel saLoginModel = new SaLoginModel();
+            saLoginModel.setDevice(DeviceUtil.getDevice(device));
+            saLoginModel.setIsLastingCookie(flag != 0);
+            StpUtil.setLoginId(account.getName(), saLoginModel);
+            response.setHeader("jwt", StpUtil.getTokenValue());
+            log.info("用户：" + account.getName() + " 登录成功");
+            redisUtil.delete(LOGIN_PREFIX + account.getName());
+            redisUtil.delete(WAIT_PREFIX + account.getName());
+            return ResponseMessage.success(account1);
+        } catch (BaseException e) {
+            if (ExceptionInfo.PASSWORD_ERROR.getMessage().equals(e.getMessage())) {
+                String key = LOGIN_PREFIX + account.getName();
+                int num = 1;
+                if (redisUtil.hasKey(key)) {
+                    num = (int) redisUtil.get(key) + 1;
+                    if (num > LOGIN_MAX_COUNT) {
+                        redisUtil.set(WAIT_PREFIX + account.getName(), num, WAIT_TIME);
+                        (new PasswordSecurityEmail(accountService.getById(account.getName()).getEmail())).send();
+                        throw e;
+                    }
+                }
+                redisUtil.set(key, num, DateUtil.between(new Date(),
+                    DateUtil.parseDate(DateUtil.formatDate(DateUtil.tomorrow())), DateUnit.MS));
+            }
+            throw e;
+        }
     }
 
     /**
@@ -94,7 +126,9 @@ public class AccountController {
         if (StrUtil.isEmpty(email)) {
             throw new BaseException(ExceptionInfo.MAIL_EMPTY);
         }
-        // TODO : 邮箱合法性
+        if (!Validator.isEmail(email)) {
+            throw new BaseException(ExceptionInfo.EMAIL_ILLEGAL);
+        }
         String code = VerificationCodeUtil.getCode(CODE_LENGTH).toLowerCase();
         new VerificationCodeEmail(email, code).send();
         redisUtil.set(email, code, VerificationCodeEmail.CODE_EXPIRE);
