@@ -7,6 +7,7 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.service.BlogService;
+import com.team_five.salthub.userBasedCollaborativeFiltering.BlogPage;
 import com.team_five.salthub.util.RedisUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import java.util.List;
 public class BlogController {
     private static final String BLOG_LIST_PREFIX = "BLOG_LIST_";
     private static final long EXPIRE_TIME = 60L * 60L * 1000L;
-    private static final int PAGE_SIZE = 50;
+    public static final int PAGE_SIZE = 50;
 
     @Resource
     private RedisUtil redisUtil;
@@ -139,11 +140,13 @@ public class BlogController {
         if (redisUtil.hasKey(key)) {
             page = (page < 0) ? 0 : page;
             long start = page * PAGE_SIZE;
-            return ResponseMessage.success(redisUtil.getList(key, start, start + PAGE_SIZE));
+            List<Object> blogList = redisUtil.getList(key, start, start + PAGE_SIZE);
+            return ResponseMessage.success(new BlogPage(redisUtil.getListSize(key), page, blogList));
         }
         List<Blog> blogList = blogService.readAll(name);
         redisUtil.setList(key, blogList, EXPIRE_TIME);
-        return ResponseMessage.success(redisUtil.getList(key, 0, PAGE_SIZE));
+        List<Object> objects = redisUtil.getList(key, 0, PAGE_SIZE);
+        return ResponseMessage.success(new BlogPage(blogList.size(), 0, objects));
     }
 }
 
