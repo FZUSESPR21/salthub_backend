@@ -47,8 +47,8 @@ public class AccountController {
     /**
      * 登录接口
      *
-     * @param account 用户
-     * @param flag true为记住我
+     * @param account  用户
+     * @param flag     true为记住我
      * @param response
      * @param device
      * @return
@@ -147,9 +147,21 @@ public class AccountController {
     @ApiOperation(value = "判断邮箱是否存在")
     public ResponseMessage emailExist(@RequestParam("email") String email) {
         return ResponseMessage.success(accountService.getOne(new QueryWrapper<Account>().
-            eq("email", email)) != null);
+                eq("email", email)) != null);
     }
 
-
+    /**
+     * 修改用户密码
+     *
+     * @param oldPassword,newPassword
+     * @return
+     */
+    @ApiOperation(value = "修改用户密码")
+    @PutMapping("/password")
+    public ResponseMessage updatePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+        String name = StpUtil.getLoginIdAsString();
+        Account account = accountService.updatePassword(name, oldPassword, newPassword);
+        return ResponseMessage.success(account);
+    }
 }
 

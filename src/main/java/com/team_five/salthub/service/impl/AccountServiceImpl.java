@@ -4,6 +4,7 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @date 2021/04/26
@@ -89,6 +90,26 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     }
 
     /**
+     * 修改用户密码
+     *
+     * @param oldPassword
+     * @return
+     */
+    @Override
+    public Account updatePassword(String accountName, String oldPassword, String newPassword) {
+        Account account = accountDao.selectById(accountName);
+        if (!account.getPassword().equals(md5BySalt(oldPassword))) {
+            throw new BaseException(ExceptionInfo.PASSWORD_ERROR);
+        } else {
+            UpdateWrapper<Account> updateWrapper = new UpdateWrapper<Account>();
+            updateWrapper.set("password", md5BySalt(newPassword));
+            updateWrapper.eq("name", accountName);
+            accountDao.update(null, updateWrapper);
+            return accountDao.selectById(accountName);
+        }
+    }
+
+    /**
      * md5加密（加盐）
      *
      * @param password
@@ -98,7 +119,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         password = new StringBuilder(password).reverse().toString();
         StringBuilder newPassword = new StringBuilder(password.length() + 8);
         boolean flag = false;
-        for (int i = 0;i < password.length();i++) {
+        for (int i = 0; i < password.length(); i++) {
             if (flag) {
                 flag = false;
                 newPassword.append(password.charAt(i));

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,17 +40,17 @@ public class BlogController {
     @PostMapping
     public ResponseMessage releaseBlog(@RequestBody Blog blog) {
         //, @RequestParam("attachments") MultipartFile[] attachments
+        blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
         blog.setAuthor(name);
         blog.setLikeNumber(Long.valueOf(0));
         blog.setCollectionNumber(Long.valueOf(0));
         blog.setState(BlogStateEnum.NORMAL.getId().intValue());
-
-        blogService.validityCheck(blog);//检查博客合法性
-
+        Date releaseTime = new Date();
+        blog.setReleaseTime(releaseTime);
         //处理一下文件
-        blogService.insert(blog);//将博客存储到数据库中
-        return ResponseMessage.success();
+        Long id = blogService.insert(blog);//将博客存储到数据库中
+        return ResponseMessage.success(id);
     }
 
     @ApiOperation(value = "根据板块id查询博客")

@@ -20,7 +20,7 @@ public interface BlogService extends IService<Blog> {
     public void validityCheck(Blog blog);
 
     //将博客数据插入数据库中
-    public boolean insert(Blog blog);
+    public Long insert(Blog blog);
 
     //板块id合法性验证
     public void moduleIdValidityCheck(Long moduleId);
