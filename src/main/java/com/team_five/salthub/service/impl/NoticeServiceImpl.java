@@ -87,9 +87,10 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 			throw new BaseException(ExceptionInfo.ACCOUNT_NO_EXIST);
 		}
 
+		wrapper.clear();
 		wrapper.eq("account_name", accountName);
 
-		Page<Notice> page = new Page<Notice>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+		Page<Notice> page = new Page<>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
 		Page<Notice> notices = noticeDao.selectPage(page, wrapper);
 
 		return notices;
@@ -104,6 +105,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	@Override
 	public void deleteNotice(String id) {
 
+		wrapper.clear();
 		wrapper.eq("id", id);    //判断该id是否存在
 		//通知id不存在
 		if (noticeDao.selectList(wrapper).size() == 0) {
@@ -122,6 +124,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 */
 	@Override
 	public void modifyNotice(Notice notice) {
+		wrapper.clear();
 		wrapper.eq("id", notice.getId());    //判断该id是否存在
 		//通知id不存在
 		if (noticeDao.selectList(wrapper).size()==0) {
@@ -139,9 +142,9 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	* @Date: 2021/5/2 
 	*/
 	private boolean isAccountExist(String name){
-		QueryWrapper queryWrapper = new QueryWrapper();
-		queryWrapper.eq("name", name);
-		if (accountDao.selectList(wrapper).size()==0){
+		wrapper.clear();
+		wrapper.eq("name", name);
+		if (accountDao.selectOne(wrapper)==null){
 			return false;
 		}
 		return true;

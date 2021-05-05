@@ -107,18 +107,18 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	 * @Date: 2021/5/2
 	 */
 	public boolean isBlogExist(Long blogId){
-		QueryWrapper queryWrapper = new QueryWrapper();
-		queryWrapper.eq("id", blogId);
-		if (blogDao.selectList(queryWrapper).size()==0) {
+		wrapper.clear();
+		wrapper.eq("id", blogId);
+		if (blogDao.selectList(wrapper).size()==0) {
 			return false;
 		}
 		return true;
 	}
 
 	public boolean isFirstCommentExist(Long id){
-		QueryWrapper queryWrapper = new QueryWrapper();
-		queryWrapper.eq("id", id);
-		if (firstCommentDao.selectList(queryWrapper).size()==0) {
+		wrapper.clear();
+		wrapper.eq("id", id);
+		if (firstCommentDao.selectList(wrapper).size()==0) {
 			return false;
 		}
 		return true;
