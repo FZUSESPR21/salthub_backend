@@ -82,7 +82,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }
-        else if(!judgeAccount(collection)) {
+        else if(!judgeAccount(collection.getAccountName())) {
             throw  new BaseException(ExceptionInfo.COLLECTION_Account_NOT_ERROR);
         }
 
@@ -110,11 +110,11 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         }
         return false;
     }
-    public boolean judgeAccount(Collection collection)
+    public boolean judgeAccount(String name)
     {
 
         HashMap<String,Object> map = new HashMap<>();
-        map.put("name",collection.getAccountName());
+        map.put("name",name);
         List<Account>  list = accountDao.selectByMap(map);
         if (list.size()>0) {
             return true;

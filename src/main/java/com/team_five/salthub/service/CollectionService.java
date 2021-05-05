@@ -18,4 +18,5 @@ public interface CollectionService extends IService<Collection> {
     public int addCollection(Collection collection);
     public int deleteCollection(Collection collection);
     public Page<Blog> queryCollection(Collection collection, long current);
+    public boolean judgeAccount(String name);
 }

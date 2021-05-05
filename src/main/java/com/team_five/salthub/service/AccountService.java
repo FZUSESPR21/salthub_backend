@@ -26,4 +26,8 @@ public interface AccountService extends IService<Account> {
      * @param account
      */
     void register(Account account);
+
+    void banAccount(Account account);
+    void cancelBanAccount(Account account);
+
 }
