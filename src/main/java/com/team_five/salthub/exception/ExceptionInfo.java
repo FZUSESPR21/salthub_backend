@@ -48,6 +48,7 @@ public enum ExceptionInfo {
     FLAG_ERROR(5511, "flag错误"),
     BLOG_NO_EXIST(5512,"该博客id不存在"),
     FIRST_COMMENT_NO_EXIST(5513,"该一级评论id不存在"),
+    SESONDARY_COMMENT_NO_EXIST(5514,"该二级评论id不存在"),
 
 
     //PASSWORD_ERROR(511, "密码错误");

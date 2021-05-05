@@ -15,4 +15,5 @@ import java.util.List;
 public interface SecondaryCommentService extends IService<SecondaryComment> {
 	void publishSecondaryComment(SecondaryComment comment);
 	List<SecondaryComment> querySecondaryComment(Long id);
+	void deleteComment(Long id);
 }

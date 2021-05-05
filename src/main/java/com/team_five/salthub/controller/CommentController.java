@@ -83,27 +83,27 @@ public class CommentController {
 		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
 	}
 
-//	/***
-//	* @Description: 删除评论
-//	* @Param:
-//	* @return:
-//	* @Author: top
-//	* @Date: 2021/5/2
-//	*/
-//	@ApiOperation(value = "删除评论")
-//	@DeleteMapping
-//	public ResponseMessage deleteComment(@RequestParam Long id, @RequestParam Integer flag){
-//		if (flag == 0){
-//			firstCommentService.deleteComment(id);
-//			return ResponseMessage.success();
-//		}
-//		else if (flag==1){
-//			secondaryCommentService.deleteComment(id);
-//			return ResponseMessage.success();
-//		}
-//
-//		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
-//	}
+	/***
+	* @Description: 删除评论
+	* @Param:
+	* @return:
+	* @Author: top
+	* @Date: 2021/5/2
+	*/
+	@ApiOperation(value = "删除评论")
+	@DeleteMapping
+	public ResponseMessage deleteComment(@RequestParam Long id, @RequestParam Integer flag){
+		if (flag == 0){
+			firstCommentService.deleteComment(id);
+			return ResponseMessage.success();
+		}
+		else if (flag==1){
+			secondaryCommentService.deleteComment(id);
+			return ResponseMessage.success();
+		}
+
+		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
+	}
 
 
 

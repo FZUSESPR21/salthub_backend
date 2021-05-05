@@ -17,5 +17,7 @@ import java.util.List;
 public interface FirstCommentService extends IService<FirstComment> {
 	void publishFirstComment(FirstComment firstComment);
 	List<FirstComment> queryFirstComment(Long blogId);
+	void deleteComment(Long id);
+
 
 }

@@ -79,6 +79,25 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		return secondaryComments;
 	}
 
+	/***
+	* @Description: 删除二级评论
+	* @Param:
+	* @return:
+	* @Author: top
+	* @Date: 2021/5/2
+	*/
+	@Override
+	public void deleteComment(Long id){
+		if (!isSecondaryCommentExist(id)) {
+			throw new BaseException(ExceptionInfo.SESONDARY_COMMENT_NO_EXIST);
+		}
+
+		wrapper.clear();
+		wrapper.eq("id", id);
+		firstCommentDao.delete(wrapper);
+	}
+
+
 
 	/***
 	 * @Description: 判断一级评论是否存在
