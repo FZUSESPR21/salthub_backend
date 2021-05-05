@@ -33,6 +33,7 @@ public enum ExceptionInfo {
     NAME_ILLEGAL(519, "用户名非法"),
     EMAIL_EXIST(5110, "邮箱已存在"),
     EMAIL_ILLEGAL(5111, "邮箱非法"),
+    WAIT(5112, "请休息一下再访问"),
 
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),
