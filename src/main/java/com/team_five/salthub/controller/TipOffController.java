@@ -21,18 +21,20 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/tipOff")
-@ApiOperation(value = "用户举报文章")
+
 public class TipOffController {
     @Autowired
     private TipOffService tipOffService;
     private TipOff tipOff=new TipOff();
     @PostMapping
+    @ApiOperation(value = "用户举报文章")
     public ResponseMessage tipOff(@RequestParam("id") long id) {
         tipOff.setBlogId(id);
         tipOffService.tipOffBlog(tipOff);
         return ResponseMessage.success();
     }
     @DeleteMapping
+    @ApiOperation(value = "管理员取消举报文章")
     public ResponseMessage deleteTipOff(@RequestParam("id") long id) {
         tipOff.setBlogId(id);
         tipOffService.deleteTipOff(tipOff);

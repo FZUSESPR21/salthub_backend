@@ -32,6 +32,8 @@ public enum ExceptionInfo {
     VERIFICATION_CODE_INVALID(518, "验证码无效"),
     NAME_ILLEGAL(519, "用户名非法"),
     EMAIL_EXIST(5110, "邮箱已存在"),
+    EMAIL_ILLEGAL(5111, "邮箱非法"),
+    WAIT(5112, "请休息一下再访问"),
 
     EMPTY_CONTENT(551,"内容为空"),
     EMPTY_TITLE(552,"标题为空"),
@@ -46,6 +48,7 @@ public enum ExceptionInfo {
     FLAG_ERROR(5511, "flag错误"),
     BLOG_NO_EXIST(5512,"该博客id不存在"),
     FIRST_COMMENT_NO_EXIST(5513,"该一级评论id不存在"),
+    SESONDARY_COMMENT_NO_EXIST(5514,"该二级评论id不存在"),
 
 
     //PASSWORD_ERROR(511, "密码错误");
@@ -57,7 +60,9 @@ public enum ExceptionInfo {
     COLLECTION_NOT_ERROR(535,"您未收藏该文章"),
     COLLECTION_Account_NOT_ERROR(536,"该收藏用户不存在"),
     TIP_OFF_EXIST_ERROR(561,"该举报记录不存"),
-
+    BAN_ACCOUNT_ERROR(562,"该封禁用户不存在"),
+    BAN_NOT_EXIST_ERROR(563,"该用户未被封禁"),
+    BAN_EXIST_ERROR(563,"该用户已是封禁状态"),
 
 
     MODULE_ID_EMPTY_ERROR(521,"博客模块id为空"),

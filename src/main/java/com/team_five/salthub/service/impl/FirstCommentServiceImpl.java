@@ -79,6 +79,25 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 		return firstComments;
 	}
 
+	/***
+	* @Description: 删除一级评论
+	* @Param:
+	* @return:
+	* @Author: top
+	* @Date: 2021/5/2
+	*/
+	@Override
+	public void deleteComment(Long id){
+		if (!isFirstCommentExist(id)) {
+			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
+		}
+
+		wrapper.clear();
+		wrapper.eq("id", id);
+		firstCommentDao.delete(wrapper);
+	}
+
+
 
 	/***
 	 * @Description: 判断博客是否存在
@@ -88,18 +107,18 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	 * @Date: 2021/5/2
 	 */
 	public boolean isBlogExist(Long blogId){
-		QueryWrapper queryWrapper = new QueryWrapper();
-		queryWrapper.eq("id", blogId);
-		if (blogDao.selectList(queryWrapper).size()==0) {
+		wrapper.clear();
+		wrapper.eq("id", blogId);
+		if (blogDao.selectList(wrapper).size()==0) {
 			return false;
 		}
 		return true;
 	}
 
 	public boolean isFirstCommentExist(Long id){
-		QueryWrapper queryWrapper = new QueryWrapper();
-		queryWrapper.eq("id", id);
-		if (firstCommentDao.selectList(queryWrapper).size()==0) {
+		wrapper.clear();
+		wrapper.eq("id", id);
+		if (firstCommentDao.selectList(wrapper).size()==0) {
 			return false;
 		}
 		return true;

@@ -26,4 +26,13 @@ public interface AccountService extends IService<Account> {
      * @param account
      */
     void register(Account account);
+    void banAccount(Account account);
+    void cancelBanAccount(Account account);
+    /**
+     * 修改用户密码
+     *
+     * @param oldPassword,newPassword
+     * @return
+     */
+    Account updatePassword(String accountName, String oldPassword, String newPassword);
 }
