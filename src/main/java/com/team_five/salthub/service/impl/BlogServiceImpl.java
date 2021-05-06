@@ -64,9 +64,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
     @Override
-    public boolean insert(Blog blog) {
+    public Long insert(Blog blog) {
         blogDao.insert(blog);
-        return true;
+
+        return blog.getId();
     }
 
     @Override

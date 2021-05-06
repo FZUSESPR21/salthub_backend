@@ -3,10 +3,10 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-
 /**
  * <p>
  * 用户controller
@@ -47,6 +46,7 @@ public class AccountController {
     private static final int LOGIN_MAX_COUNT = 3;
     private static final int CODE_LENGTH = 6;
     private static final long WAIT_TIME = 3 * 60 * 1000;
+
 
     @Autowired
     private AccountService accountService;
@@ -96,7 +96,7 @@ public class AccountController {
                     }
                 }
                 redisUtil.set(key, num, DateUtil.between(new Date(),
-                    DateUtil.parseDate(DateUtil.formatDate(DateUtil.tomorrow())), DateUnit.MS));
+                        DateUtil.parseDate(DateUtil.formatDate(DateUtil.tomorrow())), DateUnit.MS));
             }
             throw e;
         }
@@ -184,7 +184,18 @@ public class AccountController {
             eq("email", email)) != null);
     }
 
-
-
+    /**
+     * 修改用户密码
+     *
+     * @param oldPassword,newPassword
+     * @return
+     */
+    @ApiOperation(value = "修改用户密码")
+    @PutMapping("/password")
+    public ResponseMessage updatePassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+        String name = StpUtil.getLoginIdAsString();
+        Account account = accountService.updatePassword(name, oldPassword, newPassword);
+        return ResponseMessage.success(account);
+    }
 }
 
