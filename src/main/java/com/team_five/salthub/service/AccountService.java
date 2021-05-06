@@ -5,7 +5,7 @@ import com.team_five.salthub.model.Account;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @date 2021/04/26
@@ -26,8 +26,11 @@ public interface AccountService extends IService<Account> {
      * @param account
      */
     void register(Account account);
+
     void banAccount(Account account);
+
     void cancelBanAccount(Account account);
+
     /**
      * 修改用户密码
      *
@@ -35,4 +38,10 @@ public interface AccountService extends IService<Account> {
      * @return
      */
     Account updatePassword(String accountName, String oldPassword, String newPassword);
+
+    void nicknameValidityCheck(String nickname);
+
+    void sloganValidityCheck(String slogan);
+
+    void updateInformation(String name, String nickname, String slogan);
 }

@@ -3,10 +3,10 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+
 /**
  * <p>
  * 用户controller
@@ -56,8 +57,8 @@ public class AccountController {
     /**
      * 登录接口
      *
-     * @param account 用户
-     * @param flag true为记住我
+     * @param account  用户
+     * @param flag     true为记住我
      * @param response
      * @param device
      * @return
@@ -181,7 +182,7 @@ public class AccountController {
     @ApiOperation(value = "判断邮箱是否存在")
     public ResponseMessage emailExist(@RequestParam("email") String email) {
         return ResponseMessage.success(accountService.getOne(new QueryWrapper<Account>().
-            eq("email", email)) != null);
+                eq("email", email)) != null);
     }
 
     /**
@@ -196,6 +197,26 @@ public class AccountController {
         String name = StpUtil.getLoginIdAsString();
         Account account = accountService.updatePassword(name, oldPassword, newPassword);
         return ResponseMessage.success(account);
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param account
+     * @return
+     */
+    @ApiOperation(value = "修改用户信息")
+    @PutMapping
+    public ResponseMessage upadateInformation(@RequestBody Account account) {
+        if (!StrUtil.isEmpty(account.getNickname())) {
+            accountService.nicknameValidityCheck(account.getNickname());
+        }
+        if (!StrUtil.isEmpty(account.getSlogan())) {
+            accountService.sloganValidityCheck(account.getSlogan());
+        }
+        String name = StpUtil.getLoginIdAsString();
+        accountService.updateInformation(name, account.getNickname(), account.getSlogan());
+        return ResponseMessage.success();
     }
 }
 
