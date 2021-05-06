@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.Account;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * <p>
  * 服务类
@@ -55,4 +58,13 @@ public interface AccountService extends IService<Account> {
     void sloganValidityCheck(String slogan);
 
     void updateInformation(String name, String nickname, String slogan);
+
+    /**
+     * 修改头像
+     *
+     * @param name
+     * @param avatar
+     * @throws IOException
+     */
+    void updateAvatar(String name, File avatar) throws IOException;
 }

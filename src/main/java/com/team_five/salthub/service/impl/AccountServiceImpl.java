@@ -4,21 +4,22 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Account;
-import com.team_five.salthub.model.Blog;
-import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
+import com.team_five.salthub.util.ImageUtil;
 import io.swagger.annotations.ApiOperation;
-import com.team_five.salthub.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * <p>
@@ -34,6 +35,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private static final int NAME_MAX_LENGTH = 32;
     private static final int NICKNAME_MAX_LENGTH = 32;
     private static final int SLOGAN_MAX_LENGTH = 256;
+    private static final int PAGESIZE = 20;
     @Autowired
     private AccountDao accountDao;
 
@@ -168,6 +170,41 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         updateWrapper.eq("name", name);
         accountDao.update(null, updateWrapper);
     }
+
+    /**
+     * 修改头像
+     *
+     * @param name
+     * @param avatar
+     * @throws IOException
+     */
+    @Override
+    public void updateAvatar(String name, File avatar) throws IOException {
+        if ((!avatar.exists()) || (avatar.length() < 1)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_EMPTY);
+        }
+        String ext = (avatar.getName().substring(avatar.getName().lastIndexOf(".") + 1)).toLowerCase();
+        if (!ImageUtil.imageSuffix(ext)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_EXT_ILLEGAL);
+        }
+        if (!ImageUtil.isLegal(avatar)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_INVALID);
+        }
+        ImageUtil.processing(avatar);
+        Account account = accountDao.selectById(name);
+        account.setAvatar(avatar.getName());
+        accountDao.updateById(account);
+    }
+
     /**
      * md5加密（加盐）
      *

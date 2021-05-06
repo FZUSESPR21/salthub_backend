@@ -36,6 +36,10 @@ public enum ExceptionInfo {
     WAIT(5112, "请休息一下再访问"),
     NICKNAME_ERROR(5113, "昵称过长"),
     SLOGAN_ERROR(5114, "个性签名过长"),
+    UPLOAD_FAIL(5115, "文件上传失败"),
+    IMAGE_EMPTY(5116, "图片为空"),
+    IMAGE_EXT_ILLEGAL(5117, "图片格式错误"),
+    IMAGE_INVALID(5118, "图片无效"),
 
     EMPTY_CONTENT(551, "内容为空"),
     EMPTY_TITLE(552, "标题为空"),
