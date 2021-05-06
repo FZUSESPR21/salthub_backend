@@ -1,7 +1,9 @@
 package com.team_five.salthub.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.Account;
+import io.swagger.models.auth.In;
 
 /**
  * <p>
@@ -11,6 +13,7 @@ import com.team_five.salthub.model.Account;
  * @date 2021/04/26
  */
 public interface AccountService extends IService<Account> {
+    Integer PAGESIZE = 5;
 
     /**
      * 登录
@@ -29,5 +32,19 @@ public interface AccountService extends IService<Account> {
 
     void banAccount(Account account);
     void cancelBanAccount(Account account);
+
+
+
+
+    /***
+    * @Description: 获取用户列表（分页）
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/5/5
+    */
+    Page<Account> queryAll(Integer current);
+
+
 
 }

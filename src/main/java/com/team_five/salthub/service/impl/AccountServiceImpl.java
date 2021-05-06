@@ -4,17 +4,16 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Account;
-import com.team_five.salthub.model.Blog;
-import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
-import com.team_five.salthub.service.CollectionService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -142,6 +141,28 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         }
         return SaSecureUtil.md5(newPassword.toString());
     }
+
+
+
+    /***
+    * @Description: 获取用户列表 除去代表所有人的用户******
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/5/5
+    */
+    @Override
+    @ApiOperation(value = "获取用户列表(分页)")
+    public Page<Account> queryAll(Integer current){
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.ne("name","******");
+        Page<Account> page = new Page<Account>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+        Page<Account> accountPage = accountDao.selectPage(page, wrapper);
+
+        return accountPage;
+    }
+
+
 
 
 }
