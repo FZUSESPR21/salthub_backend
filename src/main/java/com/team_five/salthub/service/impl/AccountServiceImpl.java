@@ -4,6 +4,7 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
@@ -14,6 +15,7 @@ import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
+import io.swagger.annotations.ApiOperation;
 import com.team_five.salthub.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private static final int PASSWORD_MAX_LENGTH = 16;
     private static final int PASSWORD_MIN_LENGTH = 6;
     private static final int NAME_MAX_LENGTH = 32;
-
+    private static final int NICKNAME_MAX_LENGTH = 32;
+    private static final int SLOGAN_MAX_LENGTH = 256;
     @Autowired
     private AccountDao accountDao;
 
@@ -139,7 +142,32 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
             return accountDao.selectById(accountName);
         }
     }
+    @Override
+    public void nicknameValidityCheck(String nickname) {
+        if (nickname.length() > NICKNAME_MAX_LENGTH) {
+            throw new BaseException(ExceptionInfo.NICKNAME_ERROR);
+        }
+    }
 
+    @Override
+    public void sloganValidityCheck(String slogan) {
+        if (slogan.length() > SLOGAN_MAX_LENGTH) {
+            throw new BaseException((ExceptionInfo.SLOGAN_ERROR));
+        }
+    }
+
+    @Override
+    public void updateInformation(String name, String nickname, String slogan) {
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<Account>();
+        if (!StrUtil.isEmpty(nickname)) {
+            updateWrapper.set("nickname", nickname);
+        }
+        if (!StrUtil.isEmpty(slogan)) {
+            updateWrapper.set("slogan", slogan);
+        }
+        updateWrapper.eq("name", name);
+        accountDao.update(null, updateWrapper);
+    }
     /**
      * md5加密（加盐）
      *
@@ -163,5 +191,21 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return SaSecureUtil.md5(newPassword.toString());
     }
 
+    /***
+     * @Description: 获取用户列表 除去代表所有人的用户******
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    @Override
+    @ApiOperation(value = "获取用户列表(分页)")
+    public Page<Account> queryAll(Integer current){
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.ne("name","******");
+        Page<Account> page = new Page<Account>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+        Page<Account> accountPage = accountDao.selectPage(page, wrapper);
 
+        return accountPage;
+    }
 }

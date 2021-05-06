@@ -1,11 +1,20 @@
 package com.team_five.salthub.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
+import com.team_five.salthub.dao.AccountDao;
+import com.team_five.salthub.model.Account;
+import com.team_five.salthub.model.ResponseMessage;
+import com.team_five.salthub.service.AccountService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @date 2021/04/26
@@ -13,4 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 public class AdministratorController {
+
+	@Autowired
+	AccountService accountService;
+
+
+
+
+	/***
+	 * @Description: 获取用户列表
+	 * @Param: current:当前页 初始为1
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/6
+	 */
+	@GetMapping("/all")
+	@ApiOperation(value = "获取用户列表(分页)")
+	public ResponseMessage getAccountList(@RequestParam Integer current) {
+		return ResponseMessage.success(accountService.queryAll(current));
+	}
+
+
+
+
+
+
 }
