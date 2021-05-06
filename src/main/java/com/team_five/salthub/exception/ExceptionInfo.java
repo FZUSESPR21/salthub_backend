@@ -74,7 +74,8 @@ public enum ExceptionInfo {
     ACCOUNT_EMPTY_ERROR(527, "用户名为空"),
     TAG_ID_EMPTY_ERROR(528, "标签id为空"),
     BLOG_NOT_EXIST_ERROR(530, "该博客不存在"),
-    TAG_NOT_EXIST_ERROR(529, "该博客未设置标签");
+    BLOG_TAG_NOT_EXIST_ERROR(529, "该博客未设置标签"),
+    TAG_NOT_EXIST_ERROR(530, "输入的标签有误");
     private Integer code;
     private String message;
 

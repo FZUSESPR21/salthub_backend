@@ -1,6 +1,7 @@
 package com.team_five.salthub.controller;
 
 import com.team_five.salthub.model.Account;
+import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.BlogTag;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.AccountService;
@@ -36,5 +37,10 @@ public class TagController {
 
         return ResponseMessage.success(tagService.selectTag());
     }
-
+    @PutMapping
+    @ApiOperation(value = "修改博客标签")
+    public ResponseMessage setTag(@RequestParam("id") long blogId, @RequestBody int[] tag){
+        tagService.setTag(blogId,tag);
+        return ResponseMessage.success();
+    }
 }
