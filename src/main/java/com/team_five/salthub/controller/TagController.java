@@ -24,17 +24,17 @@ public class TagController {
     private BlogTag blogTag = new BlogTag();
     @Autowired
     TagService tagService;
-
-    @GetMapping("all")
-    @ApiOperation(value = "查询所有标签")
-    public ResponseMessage selectAllTag(){
-
-        return ResponseMessage.success(tagService.selectTag());
-    }
     @GetMapping()
     @ApiOperation(value = "查询博客标签")
     public ResponseMessage selectBlogTag(@RequestParam("id") long id){
 
         return ResponseMessage.success(tagService.selectBlogTag(id));
     }
+    @GetMapping("all")
+    @ApiOperation(value = "查询所有标签")
+    public ResponseMessage selectAllTag(){
+
+        return ResponseMessage.success(tagService.selectTag());
+    }
+
 }
