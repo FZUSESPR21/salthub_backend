@@ -34,6 +34,8 @@ public class BanController {
     private Account account = new Account();
     @Autowired
     AccountService accountService;
+    @Autowired
+    BlogService blogService;
     @PutMapping("account")
     @ApiOperation(value = "封禁用户接口")
     public ResponseMessage BanAccount(@RequestParam("name") String name){
@@ -46,6 +48,19 @@ public class BanController {
     public ResponseMessage CancelBanAccount(@RequestParam("name") String name){
         account.setName(name);
         accountService.cancelBanAccount(account);
+        return ResponseMessage.success();
+    }
+    @ApiOperation(value = "根据id封禁博客")
+    @PutMapping("/blog")
+    public ResponseMessage banBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.banBlogByBlogId(blogId);
+        return ResponseMessage.success();
+    }
+
+    @ApiOperation(value = "根据id取消封禁博客")
+    @DeleteMapping("/blog")
+    public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
+        blogService.cancelBanBlogByBlogId(blogId);
         return ResponseMessage.success();
     }
 }
