@@ -97,19 +97,7 @@ public class BlogController {
         return ResponseMessage.success();
     }
 
-    @ApiOperation(value = "根据id封禁博客")
-    @PutMapping("/ban")
-    public ResponseMessage banBlogByBlogId(@RequestParam("blogId") long blogId) {
-        blogService.banBlogByBlogId(blogId);
-        return ResponseMessage.success();
-    }
 
-    @ApiOperation(value = "根据id取消封禁博客")
-    @PutMapping("/cancelBan")
-    public ResponseMessage cancelBanBlogByBlogId(@RequestParam("blogId") long blogId) {
-        blogService.cancelBanBlogByBlogId(blogId);
-        return ResponseMessage.success();
-    }
 
     @ApiOperation(value = "根据博客id更新博客")
     @PutMapping

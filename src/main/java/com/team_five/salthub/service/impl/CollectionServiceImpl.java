@@ -31,6 +31,7 @@ import java.util.List;
  *
  * @date 2021/04/26
  */
+
 @Service
 public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection> implements CollectionService {
     @Autowired
@@ -43,7 +44,13 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     @Override
 
     public int addCollection(Collection collection) {
-
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id", collection.getBlogId());    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
        if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
@@ -59,7 +66,13 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     @Override
     public int deleteCollection(Collection collection) {
-
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id", collection.getBlogId());    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
         if (collection.getBlogId()==null) {
             throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
@@ -69,6 +82,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         else if(!judgeCollection(collection)) {
             throw new BaseException(ExceptionInfo.COLLECTION_NOT_ERROR);
         }
+
         HashMap<String,Object> map = new HashMap<>();
         map.put("account_name",collection.getAccountName());
         map.put("blog_id",collection.getBlogId());
@@ -85,7 +99,6 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         else if(!judgeAccount(collection.getAccountName())) {
             throw  new BaseException(ExceptionInfo.COLLECTION_Account_NOT_ERROR);
         }
-
         Page<Blog> page = new Page<Blog>(current, 10);
         Page<Blog> blogList = blogDao.collectionBLog(page,collection.getAccountName());
         return blogList;

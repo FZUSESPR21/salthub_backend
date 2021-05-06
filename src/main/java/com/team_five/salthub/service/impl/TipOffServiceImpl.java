@@ -1,7 +1,9 @@
 package com.team_five.salthub.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.team_five.salthub.dao.BlogDao;
 import com.team_five.salthub.dao.TipOffDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
@@ -25,6 +27,8 @@ import java.util.List;
 public class TipOffServiceImpl extends ServiceImpl<TipOffDao, TipOff> implements TipOffService {
     @Autowired
     private TipOffDao tipOffDao;
+    @Autowired
+    private BlogDao blogDao;
     @Override
     public boolean tipOffBlog(TipOff tipOff) {
         long count =judgeTipOff(tipOff);
@@ -47,13 +51,20 @@ public class TipOffServiceImpl extends ServiceImpl<TipOffDao, TipOff> implements
 
     @Override
     public void deleteTipOff(TipOff tipOff) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id", tipOff.getBlogId());    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
         long count =judgeTipOff(tipOff);
         if (count>0){//已有举报记录，删除该条举报
             HashMap<String,Object> map = new HashMap<>();
             map.put("blog_id",tipOff.getBlogId());
             tipOffDao.deleteByMap(map);
         }
-        else {//没有查到该id举报信息 新增一条，设置举报数为1
+        else {
             throw  new BaseException(ExceptionInfo.TIP_OFF_EXIST_ERROR);
         }
 
@@ -62,7 +73,13 @@ public class TipOffServiceImpl extends ServiceImpl<TipOffDao, TipOff> implements
 
     public long judgeTipOff(TipOff tipOff)
     {
-
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id", tipOff.getBlogId());    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
         HashMap<String,Object> map = new HashMap<>();
         map.put("blog_id",tipOff.getBlogId());
         List<TipOff> list = tipOffDao.selectByMap(map);
