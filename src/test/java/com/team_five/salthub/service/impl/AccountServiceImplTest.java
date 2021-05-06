@@ -76,4 +76,15 @@ class AccountServiceImplTest {
 //                ""), "密码非法")
 //        );
 //    }
+
+//    @ParameterizedTest
+//    @MethodSource("queryOneArgs")
+//    void queryOne(String name, String expect){
+//        try {
+//            accountService.queryOne(name);
+//        }catch (BaseException e){
+//            Assertions.assertEquals(expect, e.getMessage());
+//        }
+//    }
+
 }

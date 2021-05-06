@@ -54,7 +54,7 @@ public class Notice implements Serializable {
     @TableField("release_time")
     private Date releaseTime;
 
-    @ApiModelProperty(value = "接收用户, -1则为全部用户")
+    @ApiModelProperty(value = "接收用户, ***则为全部用户")
     @TableField(value = "account_name", select = true)
     private String accountName;
 
