@@ -43,7 +43,7 @@ public class NoticeController {
 	*/
 	@ApiOperation(value = "公告发布接口")
 	@PostMapping
-	public ResponseMessage publishNotice(@RequestBody Notice notice, @RequestParam String name){
+	public ResponseMessage publishNotice(@RequestBody Notice notice){
 		noticeService.publishNotice(notice);		//service层实现业务逻辑
 
 		return ResponseMessage.success();
