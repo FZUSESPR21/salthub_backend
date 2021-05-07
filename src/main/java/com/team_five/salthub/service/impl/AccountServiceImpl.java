@@ -182,7 +182,52 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         return accountPage;
     }
 
+    /***
+     * @Description: 查询单个用户
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    @Override
+    public Account queryOne(String name){
+        if (!isAccountExist(name)){
+            throw new BaseException(ExceptionInfo.NAME_NOT_EXIST);
+        }
 
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name",name);
+        Account account = accountDao.selectOne(wrapper);
+
+        return account;
+    }
+
+
+    @Override
+    @ApiOperation(value = "获取用户个数")
+    public Integer getCount(){
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.ne("name","******");
+        return accountDao.selectList(wrapper).size();
+    }
+
+
+    /***
+     * @Description: 判断用户是否存在
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/2
+     */
+    private boolean isAccountExist(String name){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name", name);
+        if (accountDao.selectOne(queryWrapper)==null){
+            return false;
+        }
+        return true;
+    }
 
 
 }
