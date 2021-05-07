@@ -27,6 +27,8 @@ import java.util.List;
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogService {
     private static final long PAGESIZE = 10;
+    private static final int TITLE_MAX_LENGTH = 256;
+    private static final int CONTENT_MAX_LENGTH = 65535;
     @Autowired
     private BlogDao blogDao;
 
@@ -52,13 +54,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         if (blog.getTitle() == null) {
             throw new BaseException(ExceptionInfo.TITLE_EMPTY_ERROR);
         }
-        if (blog.getTitle().length() > 256) {
+        if (blog.getTitle().length() > TITLE_MAX_LENGTH) {
             throw new BaseException(ExceptionInfo.TITLE_ERROR);
         }
         if (blog.getContent() == null) {
             throw new BaseException(ExceptionInfo.CONTENT_EMPTY_ERROR);
         }
-        if (blog.getContent().length() > 65535) {
+        if (blog.getContent().length() > CONTENT_MAX_LENGTH) {
             throw new BaseException(ExceptionInfo.CONTENT_ERROR);
         }
     }

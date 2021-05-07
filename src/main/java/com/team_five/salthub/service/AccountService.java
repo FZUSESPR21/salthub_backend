@@ -3,11 +3,13 @@ package com.team_five.salthub.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.team_five.salthub.model.Account;
-import io.swagger.models.auth.In;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @date 2021/04/26
@@ -29,19 +31,18 @@ public interface AccountService extends IService<Account> {
      * @param account
      */
     void register(Account account);
+
     void banAccount(Account account);
+
     void cancelBanAccount(Account account);
 
-
-
-
     /***
-    * @Description: 获取用户列表（分页）
-    * @Param:
-    * @return:
-    * @Author: top
-    * @Date: 2021/5/5
-    */
+     * @Description: 获取用户列表（分页）
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
     Page<Account> queryAll(Integer current);
 
     /***
@@ -69,5 +70,21 @@ public interface AccountService extends IService<Account> {
      * @param oldPassword,newPassword
      * @return
      */
+
     Account updatePassword(String accountName, String oldPassword, String newPassword);
+
+    void nicknameValidityCheck(String nickname);
+
+    void sloganValidityCheck(String slogan);
+
+    void updateInformation(String name, String nickname, String slogan);
+
+    /**
+     * 修改头像
+     *
+     * @param name
+     * @param avatar
+     * @throws IOException
+     */
+    void updateAvatar(String name, File avatar) throws IOException;
 }

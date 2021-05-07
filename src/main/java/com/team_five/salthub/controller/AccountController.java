@@ -3,11 +3,13 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.team_five.salthub.config.AddressMapping;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.mail.PasswordSecurityEmail;
@@ -25,10 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+
 /**
  * <p>
  * 用户controller
@@ -56,8 +62,8 @@ public class AccountController {
     /**
      * 登录接口
      *
-     * @param account 用户
-     * @param flag true为记住我
+     * @param account  用户
+     * @param flag     true为记住我
      * @param response
      * @param device
      * @return
@@ -82,6 +88,7 @@ public class AccountController {
             log.info("用户：" + account.getName() + " 登录成功");
             redisUtil.delete(LOGIN_PREFIX + account.getName());
             redisUtil.delete(WAIT_PREFIX + account.getName());
+            account1.setAvatar("/avatar/" + account1.getAvatar());
             return ResponseMessage.success(account1);
         } catch (BaseException e) {
             if (ExceptionInfo.PASSWORD_ERROR.getMessage().equals(e.getMessage())) {
@@ -181,7 +188,7 @@ public class AccountController {
     @ApiOperation(value = "判断邮箱是否存在")
     public ResponseMessage emailExist(@RequestParam("email") String email) {
         return ResponseMessage.success(accountService.getOne(new QueryWrapper<Account>().
-            eq("email", email)) != null);
+                eq("email", email)) != null);
     }
 
     /**
@@ -196,6 +203,44 @@ public class AccountController {
         String name = StpUtil.getLoginIdAsString();
         Account account = accountService.updatePassword(name, oldPassword, newPassword);
         return ResponseMessage.success(account);
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param account
+     * @return
+     */
+    @ApiOperation(value = "修改用户信息")
+    @PutMapping
+    public ResponseMessage upadateInformation(@RequestBody Account account) {
+        if (!StrUtil.isEmpty(account.getNickname())) {
+            accountService.nicknameValidityCheck(account.getNickname());
+        }
+        if (!StrUtil.isEmpty(account.getSlogan())) {
+            accountService.sloganValidityCheck(account.getSlogan());
+        }
+        String name = StpUtil.getLoginIdAsString();
+        accountService.updateInformation(name, account.getNickname(), account.getSlogan());
+        return ResponseMessage.success();
+    }
+
+    @PutMapping("/avatar")
+    @ApiOperation(value = "头像上传")
+    public ResponseMessage uploadAvatar(@RequestParam("avatar") MultipartFile avatar) throws IOException {
+        File file = new File((AddressMapping.FILE_SAVE_ROOT + UUID.randomUUID() + avatar.getOriginalFilename())
+            .replace("-", ""));
+        try {
+            avatar.transferTo(file);
+        } catch (IOException e) {
+            if (file.exists()) {
+                file.delete();
+            }
+            e.printStackTrace();
+            throw new BaseException(ExceptionInfo.UPLOAD_FAIL);
+        }
+        accountService.updateAvatar(StpUtil.getLoginIdAsString(), file);
+        return ResponseMessage.success("/avatar/" + file.getName());
     }
 }
 

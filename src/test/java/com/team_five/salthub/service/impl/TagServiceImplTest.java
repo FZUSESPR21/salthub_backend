@@ -15,8 +15,12 @@ class TagServiceImplTest {
     TagService tagService;
     @Test
     void selectTag() {
-        List<Tag> list=tagService.selectTag();
-        System.out.println(list.size());
-        list.forEach(item->System.out.println(item.toString()));
+//        List<Tag> list=tagService.selectTag();
+//        System.out.println(list.size());
+//        list.forEach(item->System.out.println(item.toString()));
+        int[] a = new int[2];
+        a[0]=1;
+        a[1]=2;
+        tagService.setTag((long)6,a);
     }
 }

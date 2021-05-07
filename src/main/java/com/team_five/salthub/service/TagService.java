@@ -16,4 +16,6 @@ import java.util.List;
 public interface TagService extends IService<Tag> {
     public List<Tag> selectTag();
     public List<Tag> selectBlogTag(long id);
+    public void setTag(long blogId,int[] tag);
+
 }
