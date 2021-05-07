@@ -3,6 +3,10 @@ package com.team_five.salthub.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.team_five.salthub.config.AddressMapping;
+import com.team_five.salthub.exception.BaseException;
+import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
@@ -12,10 +16,14 @@ import com.team_five.salthub.util.RedisUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -39,7 +47,7 @@ public class BlogController {
 
     @ApiOperation(value = "发布博客")
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog) {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) throws IOException {
         //, @RequestParam("attachments") MultipartFile[] attachments
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
@@ -49,8 +57,27 @@ public class BlogController {
         blog.setState(BlogStateEnum.NORMAL.getId().intValue());
         Date releaseTime = new Date();
         blog.setReleaseTime(releaseTime);
-        //处理一下文件
+
         Long id = blogService.insert(blog);//将博客存储到数据库中
+        //处理一下文件
+        for (MultipartFile attachment : attachments
+        ) {
+            File file = new File((AddressMapping.FILE_ATTACHMENT_SAVE_ROOT + UUID.randomUUID() + attachment.getOriginalFilename()).replace("-", ""));
+            try {
+                attachment.transferTo(file);
+            } catch (IOException e) {
+                if (file.exists()) {
+                    file.delete();
+                }
+                e.printStackTrace();
+                throw new BaseException(ExceptionInfo.UPLOAD_ATTACHMENT);
+            }
+            blogService.validityCheckFile(file);
+            Attachment attachment1 = new Attachment();
+            attachment1.setBlogId(id);
+            attachment1.setName(file.getName());
+            blogService.insertAttachment(attachment1);
+        }
         return ResponseMessage.success(id);
     }
 
@@ -96,7 +123,6 @@ public class BlogController {
         blogService.deleteBlogByBlogId(Long.valueOf(blogId));
         return ResponseMessage.success();
     }
-
 
 
     @ApiOperation(value = "根据博客id更新博客")
