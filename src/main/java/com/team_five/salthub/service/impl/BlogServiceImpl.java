@@ -4,17 +4,22 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.team_five.salthub.dao.AttachmentDao;
 import com.team_five.salthub.dao.BlogDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
 import com.team_five.salthub.userBasedCollaborativeFiltering.UserCF;
+import com.team_five.salthub.util.AttachmentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,6 +36,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     private static final int CONTENT_MAX_LENGTH = 65535;
     @Autowired
     private BlogDao blogDao;
+    @Autowired
+    private AttachmentDao attachmentDao;
 
     @Override
     public void validityCheck(Blog blog) {
@@ -198,5 +205,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         }
         List<Blog> result = UserCF.getResult(name);
         return (result != null) ? result.subList(0, Math.min(result.size(), 500)) : defaultBlog;
+    }
+
+    @Override
+    public void validityCheckFile(File file) throws IOException {
+        if ((!file.exists()) || (file.length() < 1)) {
+            if (file.exists()) {
+                file.delete();
+            }
+            throw new BaseException(ExceptionInfo.ATTACHMENT_EMPTY);
+        }
+        String ext = (file.getName().substring(file.getName().lastIndexOf(".") + 1)).toLowerCase();
+        if (!AttachmentUtil.attachmentSuffix(ext)) {
+            if (file.exists()) {
+                file.delete();
+            }
+            throw new BaseException(ExceptionInfo.ATTACHMENT_EXT_ILLEGAL);
+        }
+    }
+
+    @Override
+    public void insertAttachment(Attachment attachment) {
+        attachmentDao.insert(attachment);
     }
 }

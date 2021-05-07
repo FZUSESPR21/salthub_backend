@@ -11,14 +11,15 @@ import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Account;
-import com.team_five.salthub.model.Blog;
-import com.team_five.salthub.model.constant.BlogStateEnum;
 import com.team_five.salthub.model.constant.RoleEnum;
 import com.team_five.salthub.service.AccountService;
+import com.team_five.salthub.util.ImageUtil;
 import io.swagger.annotations.ApiOperation;
-import com.team_five.salthub.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * <p>
@@ -34,6 +35,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private static final int NAME_MAX_LENGTH = 32;
     private static final int NICKNAME_MAX_LENGTH = 32;
     private static final int SLOGAN_MAX_LENGTH = 256;
+    private static final int PAGESIZE = 20;
     @Autowired
     private AccountDao accountDao;
 
@@ -168,6 +170,41 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
         updateWrapper.eq("name", name);
         accountDao.update(null, updateWrapper);
     }
+
+    /**
+     * 修改头像
+     *
+     * @param name
+     * @param avatar
+     * @throws IOException
+     */
+    @Override
+    public void updateAvatar(String name, File avatar) throws IOException {
+        if ((!avatar.exists()) || (avatar.length() < 1)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_EMPTY);
+        }
+        String ext = (avatar.getName().substring(avatar.getName().lastIndexOf(".") + 1)).toLowerCase();
+        if (!ImageUtil.imageSuffix(ext)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_EXT_ILLEGAL);
+        }
+        if (!ImageUtil.isLegal(avatar)) {
+            if (avatar.exists()) {
+                avatar.delete();
+            }
+            throw new BaseException(ExceptionInfo.IMAGE_INVALID);
+        }
+        ImageUtil.processing(avatar);
+        Account account = accountDao.selectById(name);
+        account.setAvatar(avatar.getName());
+        accountDao.updateById(account);
+    }
+
     /**
      * md5加密（加盐）
      *
@@ -192,12 +229,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     }
 
     /***
-     * @Description: 获取用户列表 除去代表所有人的用户******
-     * @Param:
-     * @return:
-     * @Author: top
-     * @Date: 2021/5/5
-     */
+    * @Description: 获取用户列表 除去代表所有人的用户***
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/5/5
+    */
     @Override
     @ApiOperation(value = "获取用户列表(分页)")
     public Page<Account> queryAll(Integer current){
@@ -208,4 +245,53 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
 
         return accountPage;
     }
+
+    /***
+     * @Description: 查询单个用户
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    @Override
+    public Account queryOne(String name){
+        if (!isAccountExist(name)){
+            throw new BaseException(ExceptionInfo.NAME_NOT_EXIST);
+        }
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name",name);
+        Account account = accountDao.selectOne(wrapper);
+
+        return account;
+    }
+
+
+    @Override
+    @ApiOperation(value = "获取用户个数")
+    public Integer getCount(){
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.ne("name","******");
+        return accountDao.selectList(wrapper).size();
+    }
+
+
+    /***
+     * @Description: 判断用户是否存在
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/2
+     */
+    private boolean isAccountExist(String name){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name", name);
+        if (accountDao.selectOne(queryWrapper)==null){
+            return false;
+        }
+        return true;
+    }
+
+
 }
