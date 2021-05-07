@@ -5,7 +5,9 @@ import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AttachmentServiceImpl implements AttachmentService {
 
     @Autowired
