@@ -85,7 +85,8 @@ public enum ExceptionInfo {
     UPLOAD_ATTACHMENT(5212, "附件上传失败"),
     ATTACHMENT_EMPTY(5213, "附件为空"),
     ATTACHMENT_EXT_ILLEGAL(5214, "附件格式错误"),
-    ATTACHMENT_INVALID(5215, "图片无效");
+    ATTACHMENT_INVALID(5215, "图片无效"),
+    ATTACHMENT_ID_EXIST(5216, "附件id为空");
     private Integer code;
     private String message;
 
