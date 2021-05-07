@@ -27,8 +27,6 @@ public class AdministratorController {
 	AccountService accountService;
 
 
-
-
 	/***
 	 * @Description: 获取用户列表
 	 * @Param: current:当前页 初始为1
@@ -42,7 +40,20 @@ public class AdministratorController {
 		return ResponseMessage.success(accountService.queryAll(current));
 	}
 
+	/***
+	 * @Description: 查询单个用户
+	 * @Param: 用户名name
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/7
+	 */
+	@GetMapping
+	@ApiOperation(value = "查询单个用户信息")
+	public ResponseMessage queryOne(@RequestParam String name) {
+		Account account = accountService.queryOne(name);
 
+		return ResponseMessage.success(account);
+	}
 
 
 

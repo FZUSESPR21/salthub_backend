@@ -15,6 +15,7 @@ import java.io.IOException;
  * @date 2021/04/26
  */
 public interface AccountService extends IService<Account> {
+    Integer PAGESIZE = 5;
 
     /**
      * 登录
@@ -43,6 +44,25 @@ public interface AccountService extends IService<Account> {
      * @Date: 2021/5/5
      */
     Page<Account> queryAll(Integer current);
+
+    /***
+     * @Description: 查询单个用户
+     * @Param:  用户名 name
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    Account queryOne(String name);
+
+    /***
+     * @Description: 获取用户个数（扣除代表所有人的那个账户）
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    Integer getCount();
+
 
     /**
      * 修改用户密码

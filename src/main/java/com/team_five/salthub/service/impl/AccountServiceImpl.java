@@ -4,8 +4,8 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.exception.BaseException;
@@ -229,12 +229,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     }
 
     /***
-     * @Description: 获取用户列表 除去代表所有人的用户******
-     * @Param:
-     * @return:
-     * @Author: top
-     * @Date: 2021/5/5
-     */
+    * @Description: 获取用户列表 除去代表所有人的用户***
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/5/5
+    */
     @Override
     @ApiOperation(value = "获取用户列表(分页)")
     public Page<Account> queryAll(Integer current){
@@ -245,4 +245,53 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
 
         return accountPage;
     }
+
+    /***
+     * @Description: 查询单个用户
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/5
+     */
+    @Override
+    public Account queryOne(String name){
+        if (!isAccountExist(name)){
+            throw new BaseException(ExceptionInfo.NAME_NOT_EXIST);
+        }
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name",name);
+        Account account = accountDao.selectOne(wrapper);
+
+        return account;
+    }
+
+
+    @Override
+    @ApiOperation(value = "获取用户个数")
+    public Integer getCount(){
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.ne("name","******");
+        return accountDao.selectList(wrapper).size();
+    }
+
+
+    /***
+     * @Description: 判断用户是否存在
+     * @Param:
+     * @return:
+     * @Author: top
+     * @Date: 2021/5/2
+     */
+    private boolean isAccountExist(String name){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name", name);
+        if (accountDao.selectOne(queryWrapper)==null){
+            return false;
+        }
+        return true;
+    }
+
+
 }
