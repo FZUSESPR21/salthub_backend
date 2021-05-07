@@ -2,9 +2,12 @@ package com.team_five.salthub.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.model.Blog;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -59,4 +62,7 @@ public interface BlogService extends IService<Blog> {
     // 读取所有博客
     List<Blog> readAll(String name);
 
+    void validityCheckFile(File file) throws IOException;
+
+    void insertAttachment(Attachment attachment);
 }

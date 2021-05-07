@@ -79,9 +79,13 @@ public enum ExceptionInfo {
     CONTENT_ERROR(526, "内容过长"),
     ACCOUNT_EMPTY_ERROR(527, "用户名为空"),
     TAG_ID_EMPTY_ERROR(528, "标签id为空"),
-    BLOG_NOT_EXIST_ERROR(530, "该博客不存在"),
-    BLOG_TAG_NOT_EXIST_ERROR(529, "该博客未设置标签"),
-    TAG_NOT_EXIST_ERROR(530, "输入的标签有误");
+    BLOG_NOT_EXIST_ERROR(529, "该博客不存在"),
+    BLOG_TAG_NOT_EXIST_ERROR(5210, "该博客未设置标签"),
+    TAG_NOT_EXIST_ERROR(5211, "输入的标签有误"),
+    UPLOAD_ATTACHMENT(5212, "附件上传失败"),
+    ATTACHMENT_EMPTY(5213, "附件为空"),
+    ATTACHMENT_EXT_ILLEGAL(5214, "附件格式错误"),
+    ATTACHMENT_INVALID(5215, "图片无效");
     private Integer code;
     private String message;
 
