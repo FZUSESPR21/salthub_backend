@@ -15,4 +15,9 @@ public class BaseException extends RuntimeException {
         super(exceptionInfo.getMessage());
         code = exceptionInfo.getCode();
     }
+
+    public BaseException(Integer code, String message) {
+        super(message);
+        this.code = code;
+    }
 }
