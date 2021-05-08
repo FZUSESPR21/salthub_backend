@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class AddressMapping implements WebMvcConfigurer {
-    // public static final String FILE_SAVE_ROOT = "C:/Users/Administrator/Desktop/salthub_backend/avatar/";
+//    public static final String FILE_SAVE_ROOT = "C:/Users/Administrator/Desktop/salthub_backend/avatar/";
     public static final String FILE_SAVE_ROOT = "/root/salthub_backend/avatar/";
     public static final String ORIGINAL_ADDRESS = "/avatar/**";
     public static final String FILE_ATTACHMENT_SAVE_ROOT = "/root/salthub_backend/attachment/";

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.team_five.salthub.config.AddressMapping;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.interceptor.RequestLimit;
 import com.team_five.salthub.mail.PasswordSecurityEmail;
 import com.team_five.salthub.mail.VerificationCodeEmail;
 import com.team_five.salthub.model.Account;
@@ -129,6 +130,7 @@ public class AccountController {
      */
     @GetMapping("/code")
     @ApiOperation(value = "发送邮箱验证码")
+    @RequestLimit(limitCount = 1, limitTime = 60 * 1000L)
     public ResponseMessage getMailCode(@RequestParam("email") String email) {
         if (StrUtil.isEmpty(email)) {
             throw new BaseException(ExceptionInfo.MAIL_EMPTY);

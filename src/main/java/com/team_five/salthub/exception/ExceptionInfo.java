@@ -21,6 +21,10 @@ import lombok.Getter;
 public enum ExceptionInfo {
     OK(200, "OK"),
 
+    //异常输入
+    ILLEGAL_REQUESTBODY(301, "这么low的手段想攻击我？回去再练练⑧"),
+
+
     // 用户异常
     NAME_EMPTY(511, "用户名为空"),
     PASSWORD_EMPTY(512, "密码为空"),
@@ -87,6 +91,9 @@ public enum ExceptionInfo {
     ATTACHMENT_EXT_ILLEGAL(5214, "附件格式错误"),
     ATTACHMENT_INVALID(5215, "图片无效"),
     ATTACHMENT_ID_EXIST(5216, "附件id为空");
+
+
+
     private Integer code;
     private String message;
 

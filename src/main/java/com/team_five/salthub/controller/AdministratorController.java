@@ -1,10 +1,13 @@
 package com.team_five.salthub.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.model.Account;
+import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.AccountService;
+import com.team_five.salthub.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,8 @@ public class AdministratorController {
 
 	@Autowired
 	AccountService accountService;
+	@Autowired
+	NoticeService noticeService;
 
 
 	/***
@@ -55,6 +60,26 @@ public class AdministratorController {
 		return ResponseMessage.success(account);
 	}
 
+	@GetMapping("/count")
+	@ApiOperation(value = "获取用户个数")
+	public ResponseMessage getAccountCount() {
+		return ResponseMessage.success(accountService.getCount());
+	}
+
+	/***
+	 * @Description: 管理员获取所有通知
+	 * @Param:  获取当前页
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/7
+	 */
+	@ApiOperation(value = "获取所有通知")
+	@GetMapping("/getnoticelist")
+	public ResponseMessage getAllNotice(@RequestParam Integer current){
+		Page<Notice> notices = noticeService.getAllNotice(current);
+
+		return ResponseMessage.success(notices);
+	}
 
 
 

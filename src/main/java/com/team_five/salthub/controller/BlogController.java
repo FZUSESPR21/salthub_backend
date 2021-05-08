@@ -61,23 +61,24 @@ public class BlogController {
 
         Long id = blogService.insert(blog);//将博客存储到数据库中
         //处理一下文件
-        for (MultipartFile attachment : attachments
-        ) {
-            File file = new File((AddressMapping.FILE_ATTACHMENT_SAVE_ROOT + UUID.randomUUID() + attachment.getOriginalFilename()).replace("-", ""));
-            try {
-                attachment.transferTo(file);
-            } catch (IOException e) {
-                if (file.exists()) {
-                    file.delete();
+        if (attachments != null) {
+            for (MultipartFile attachment : attachments) {
+                File file = new File((AddressMapping.FILE_ATTACHMENT_SAVE_ROOT + UUID.randomUUID() + attachment.getOriginalFilename()).replace("-", ""));
+                try {
+                    attachment.transferTo(file);
+                } catch (IOException e) {
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    e.printStackTrace();
+                    throw new BaseException(ExceptionInfo.UPLOAD_ATTACHMENT);
                 }
-                e.printStackTrace();
-                throw new BaseException(ExceptionInfo.UPLOAD_ATTACHMENT);
+                blogService.validityCheckFile(file);
+                Attachment attachment1 = new Attachment();
+                attachment1.setBlogId(id);
+                attachment1.setName(file.getName());
+                blogService.insertAttachment(attachment1);
             }
-            blogService.validityCheckFile(file);
-            Attachment attachment1 = new Attachment();
-            attachment1.setBlogId(id);
-            attachment1.setName(file.getName());
-            blogService.insertAttachment(attachment1);
         }
         return ResponseMessage.success(id);
     }
