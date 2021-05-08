@@ -15,6 +15,7 @@ import com.team_five.salthub.model.constant.ModuleEnum;
 import com.team_five.salthub.service.BlogService;
 import com.team_five.salthub.userBasedCollaborativeFiltering.UserCF;
 import com.team_five.salthub.util.AttachmentUtil;
+import com.team_five.salthub.wordFliter.WordFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +71,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         if (blog.getContent().length() > CONTENT_MAX_LENGTH) {
             throw new BaseException(ExceptionInfo.CONTENT_ERROR);
         }
+
     }
 
     @Override
     public Long insert(Blog blog) {
+        String content= WordFilter.doFilter(blog.getContent());
+        blog.setContent(content);
         blogDao.insert(blog);
 
         return blog.getId();
