@@ -3,6 +3,7 @@ package com.team_five.salthub.service.impl;
 import com.team_five.salthub.dao.AttachmentDao;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
+import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,11 @@ public class AttachmentServiceImpl implements AttachmentService {
     public void deleteAttachment(Long id) {
         attachmentDao.deleteById(id);
         //如果id为空
+    }
+
+    @Override
+    public Attachment searchAttachmentById(Long id) {
+        Attachment attachment = attachmentDao.selectById(id);
+        return attachment;
     }
 }

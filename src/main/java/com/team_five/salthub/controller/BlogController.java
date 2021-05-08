@@ -47,7 +47,8 @@ public class BlogController {
 
     @ApiOperation(value = "发布博客")
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog) throws IOException {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog,
+                                       @RequestParam(value = "attachments",required = false) MultipartFile[] attachments) throws IOException {
         //, @RequestParam("attachments") MultipartFile[] attachments
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
@@ -60,24 +61,25 @@ public class BlogController {
 
         Long id = blogService.insert(blog);//将博客存储到数据库中
         //处理一下文件
-//        for (MultipartFile attachment : attachments
-//        ) {
-//            File file = new File((AddressMapping.FILE_ATTACHMENT_SAVE_ROOT + UUID.randomUUID() + attachment.getOriginalFilename()).replace("-", ""));
-//            try {
-//                attachment.transferTo(file);
-//            } catch (IOException e) {
-//                if (file.exists()) {
-//                    file.delete();
-//                }
-//                e.printStackTrace();
-//                throw new BaseException(ExceptionInfo.UPLOAD_ATTACHMENT);
-//            }
-//            blogService.validityCheckFile(file);
-//            Attachment attachment1 = new Attachment();
-//            attachment1.setBlogId(id);
-//            attachment1.setName(file.getName());
-//            blogService.insertAttachment(attachment1);
-       // }
+        if (attachments != null) {
+            for (MultipartFile attachment : attachments) {
+                File file = new File((AddressMapping.FILE_ATTACHMENT_SAVE_ROOT + UUID.randomUUID() + attachment.getOriginalFilename()).replace("-", ""));
+                try {
+                    attachment.transferTo(file);
+                } catch (IOException e) {
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    e.printStackTrace();
+                    throw new BaseException(ExceptionInfo.UPLOAD_ATTACHMENT);
+                }
+                blogService.validityCheckFile(file);
+                Attachment attachment1 = new Attachment();
+                attachment1.setBlogId(id);
+                attachment1.setName(file.getName());
+                blogService.insertAttachment(attachment1);
+            }
+        }
         return ResponseMessage.success(id);
     }
 

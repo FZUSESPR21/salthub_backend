@@ -23,6 +23,5 @@ public interface NoticeService extends IService<Notice> {
 	Page<Notice> queryNoticeByName(String accountName, Long current);
 	void deleteNotice(String id);
 	void modifyNotice(Notice notice);
-
-
+	Page<Notice> getAllNotice(Integer current);
 }
