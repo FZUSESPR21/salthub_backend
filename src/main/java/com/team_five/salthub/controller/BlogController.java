@@ -47,7 +47,8 @@ public class BlogController {
 
     @ApiOperation(value = "发布博客")
     @PostMapping
-    public ResponseMessage releaseBlog(@RequestBody Blog blog, @RequestParam("attachments") MultipartFile[] attachments) throws IOException {
+    public ResponseMessage releaseBlog(@RequestBody Blog blog,
+                                       @RequestParam(value = "attachments",required = false) MultipartFile[] attachments) throws IOException {
         //, @RequestParam("attachments") MultipartFile[] attachments
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名

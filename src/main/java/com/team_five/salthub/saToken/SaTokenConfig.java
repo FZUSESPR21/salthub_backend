@@ -71,6 +71,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
         // 登录
         whiteList.add("/account/login/*");
         whiteList.add("/oauth/**");
+        whiteList.add("/avatar/**");
         // 注册
         whiteList.add("/account/register");
         whiteList.add("/account/name");
@@ -92,6 +93,9 @@ public class SaTokenConfig implements WebMvcConfigurer {
         // 博客
         whiteList.add("/blog/**");
         whiteList.add("/blog");
+        // 标签
+        whiteList.add("/tag");
+        whiteList.add("/tag/all");
         return whiteList;
     }
 }
