@@ -135,6 +135,22 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	}
 
 	/*** 
+	* @Description: 返回所有通告
+	* @Param:  当前页
+	* @return:  
+	* @Author: top
+	* @Date: 2021/5/7 
+	*/
+	@Override
+	public Page<Notice> getAllNotice(Integer current){
+		Page<Notice> page = new Page<>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+		Page<Notice> notices = noticeDao.selectPage(page, null);
+
+		return notices;
+	}
+
+
+	/*** 
 	* @Description: 判断用户是否存在
 	* @Param:  
 	* @return:  
