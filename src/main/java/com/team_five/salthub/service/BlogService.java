@@ -65,4 +65,6 @@ public interface BlogService extends IService<Blog> {
     void validityCheckFile(File file) throws IOException;
 
     void insertAttachment(Attachment attachment);
+
+    public Page<Blog> selectBlogByTitle(String title,Long current);
 }

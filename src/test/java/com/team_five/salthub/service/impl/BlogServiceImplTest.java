@@ -1,5 +1,6 @@
 package com.team_five.salthub.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.constant.ModuleEnum;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
@@ -76,6 +78,13 @@ class BlogServiceImplTest {
     void banBlogByBlogIdTest(){
 
         blogService.banBlogByBlogId((long)7);
+
+    }
+    @Test
+    void selectblogbytitle( ){
+
+        Page<Blog> blogList=blogService.selectBlogByTitle("2323232323",(long)1);
+
 
     }
 }

@@ -232,4 +232,18 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     public void insertAttachment(Attachment attachment) {
         attachmentDao.insert(attachment);
     }
+
+
+
+    @Override
+    public Page<Blog> selectBlogByTitle(String title,Long current) {
+
+
+        Page<Blog> page = new Page<Blog>(current, 10);
+        Page<Blog> blogList = blogDao.selectBlogByTitle(page,title);
+        if (blogList.getTotal()<=0){
+            throw new BaseException(ExceptionInfo.BLOG_NOT_MATCH_ERROR);
+        }
+        return blogList;
+    }
 }

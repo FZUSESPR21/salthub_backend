@@ -118,7 +118,14 @@ public class BlogController {
         return ResponseMessage.success(blog);
 
     }
+    @ApiOperation(value = "通过title模糊查询博客")
+    @GetMapping("title")
+    public ResponseMessage selectBlogByTitle(@RequestParam("title") String title,@RequestParam("current") Long current) {
 
+        Page<Blog> blogPage = blogService.selectBlogByTitle(title,current);
+        return ResponseMessage.success(blogPage);
+
+    }
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {

@@ -88,7 +88,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	@Override
 	public void deleteComment(Long id) {
 		if (!isSecondaryCommentExist(id)) {
-			throw new BaseException(ExceptionInfo.SESONDARY_COMMENT_NO_EXIST);
+			throw new BaseException(ExceptionInfo.SECONDARY_COMMENT_NO_EXIST);
 		}
 
 		wrapper.clear();
