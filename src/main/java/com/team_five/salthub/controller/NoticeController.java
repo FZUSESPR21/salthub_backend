@@ -1,6 +1,7 @@
 package com.team_five.salthub.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.Date;
+
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @date 2021/04/26
@@ -28,8 +31,8 @@ public class NoticeController {
 //region 	公告增删改查
 
 	/***
-	* @Description: 发布通知
-	* @Param:  body：公告主体
+	 * @Description: 发布通知
+	 * @Param: body：公告主体
 	 * {
 	 *     "title":,
 	 *     "content":,
@@ -37,59 +40,61 @@ public class NoticeController {
 	 *
 	 *
 	 * }
-	* @return:
-	* @Author: top
-	* @Date: 2021/4/28
-	*/
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/4/28
+	 */
 	@ApiOperation(value = "公告发布接口")
 	@PostMapping
-	public ResponseMessage publishNotice(@RequestBody Notice notice){
-		noticeService.publishNotice(notice);		//service层实现业务逻辑
+	public ResponseMessage publishNotice(@RequestBody Notice notice) {
+		Date releaseTime = new Date();
+		notice.setReleaseTime(releaseTime);
+		notice.setAuthor(StpUtil.getLoginIdAsString());		//获取登陆用户名
+		noticeService.publishNotice(notice);        //service层实现业务逻辑
 
 		return ResponseMessage.success();
 	}
 
 	/*** 
-	* @Description: 通过用户名查询公告
-	* @Param:  用户名 name
-	* @return:  Notice
-	* @Author: top
-	* @Date: 2021/4/28 
-	*/
+	 * @Description: 通过用户名查询公告
+	 * @Param: 用户名 name
+	 * @return: Notice
+	 * @Author: top
+	 * @Date: 2021/4/28
+	 */
 	@ApiOperation(value = "公告查询接口")
 	@GetMapping
-	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Long current){
-
+	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Integer current) {
 		Page<Notice> notices = noticeService.queryNoticeByName(accountName, current);
 
 		return ResponseMessage.success(notices);
 	}
 
 	/*** 
-	* @Description: 删除公告 
-	* @Param:  
-	* @return:  
-	* @Author: top
-	* @Date: 2021/4/28 
-	*/
+	 * @Description: 删除公告
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/4/28
+	 */
 	@ApiOperation(value = "公告删除接口")
 	@DeleteMapping
-	public ResponseMessage deleteNotice(@RequestParam String id){
+	public ResponseMessage deleteNotice(@RequestParam String id) {
 		noticeService.deleteNotice(id);
-		
+
 		return ResponseMessage.success();
 	}
 
 	/*** 
-	* @Description: 修改公告
-	* @Param:  
-	* @return:  
-	* @Author: top
-	* @Date: 2021/4/28 
-	*/
+	 * @Description: 修改公告
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/4/28
+	 */
 	@ApiOperation(value = "公告修改")
 	@PutMapping
-	public ResponseMessage modifyNotice(@RequestBody Notice notice){
+	public ResponseMessage modifyNotice(@RequestBody Notice notice) {
 		noticeService.modifyNotice(notice);
 
 		return ResponseMessage.success();

@@ -20,7 +20,7 @@ public interface NoticeService extends IService<Notice> {
 	Integer MAX_TITLE_LENGTH = 256;
 
 	void publishNotice(Notice notice);
-	Page<Notice> queryNoticeByName(String accountName, Long current);
+	Page<Notice> queryNoticeByName(String accountName, Integer current);
 	void deleteNotice(String id);
 	void modifyNotice(Notice notice);
 	Page<Notice> getAllNotice(Integer current);

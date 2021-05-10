@@ -1,8 +1,6 @@
 package com.team_five.salthub.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.team_five.salthub.dao.AccountDao;
 import com.team_five.salthub.model.Account;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
@@ -74,7 +72,7 @@ public class AdministratorController {
 	 * @Date: 2021/5/7
 	 */
 	@ApiOperation(value = "获取所有通知")
-	@GetMapping("/getnoticelist")
+	@GetMapping("/notice/all")
 	public ResponseMessage getAllNotice(@RequestParam Integer current){
 		Page<Notice> notices = noticeService.getAllNotice(current);
 
