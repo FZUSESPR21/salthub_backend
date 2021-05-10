@@ -1,6 +1,7 @@
 package com.team_five.salthub.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.service.NoticeService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.Date;
 
 
 /**
@@ -44,6 +47,9 @@ public class NoticeController {
 	@ApiOperation(value = "公告发布接口")
 	@PostMapping
 	public ResponseMessage publishNotice(@RequestBody Notice notice) {
+		Date releaseTime = new Date();
+		notice.setReleaseTime(releaseTime);
+		notice.setAuthor(StpUtil.getLoginIdAsString());		//获取登陆用户名
 		noticeService.publishNotice(notice);        //service层实现业务逻辑
 
 		return ResponseMessage.success();
@@ -58,7 +64,7 @@ public class NoticeController {
 	 */
 	@ApiOperation(value = "公告查询接口")
 	@GetMapping
-	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Long current) {
+	public ResponseMessage queryNoticeByName(@RequestParam String accountName, @RequestParam Integer current) {
 		Page<Notice> notices = noticeService.queryNoticeByName(accountName, current);
 
 		return ResponseMessage.success(notices);
