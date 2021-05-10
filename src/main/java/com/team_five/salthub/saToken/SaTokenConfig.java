@@ -25,17 +25,28 @@ public class SaTokenConfig implements WebMvcConfigurer {
             // 白名单
             SaRouterUtil.match(Collections.singletonList("/**"), getWhiteList(), StpUtil::checkLogin);
 
-            // TODO : 举报权限、标签权限
-
             // 角色验证
             SaRouterUtil.match("/test/**", () -> StpUtil.checkRoleOr("administrators"));
+            SaRouterUtil.match("/test", () -> StpUtil.checkRoleOr("administrators"));
             SaRouterUtil.match("/admin/**", () -> StpUtil.checkRoleOr("administrators"));
+            SaRouterUtil.match("/admin", () -> StpUtil.checkRoleOr("administrators"));
+            SaRouterUtil.match("/ban/**", () -> StpUtil.checkRoleOr("administrators"));
+            SaRouterUtil.match("/ban", () -> StpUtil.checkRoleOr("administrators"));
             SaRouterUtil.match("/collection/**", () -> StpUtil.checkRoleOr("normal", "administrators"));
-            SaRouterUtil.match("/comment/**", () -> StpUtil.checkRoleOr("normal", "administrators"));
+            SaRouterUtil.match("/collection", () -> StpUtil.checkRoleOr("normal", "administrators"));
 
             // 公告权限管理
-            SaRouterUtil.match("/notice/**", () -> {
+            SaRouterUtil.match("/notice", () -> {
                 if (httpServletRequest.getMethod().equals(HttpMethod.GET.toString())) {
+                    StpUtil.checkRoleOr("normal", "administrators");
+                } else {
+                    StpUtil.checkRoleOr("administrators");
+                }
+            });
+
+            // 举报权限管理
+            SaRouterUtil.match("/tipOff", () -> {
+                if (httpServletRequest.getMethod().equals(HttpMethod.POST.toString())) {
                     StpUtil.checkRoleOr("normal", "administrators");
                 } else {
                     StpUtil.checkRoleOr("administrators");
@@ -49,20 +60,15 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     StpUtil.checkLogin();
                     StpUtil.checkRoleOr("normal", "administrators");
                 }
-                if (method.equals(HttpMethod.GET.toString())) {
-//                    StpUtil.checkRoleOr("tourist", "normal", "ban", "administrators");
-                }
                 if (method.equals(HttpMethod.DELETE.toString())) {
                     StpUtil.checkLogin();
                     StpUtil.checkRoleOr("normal", "administrators");
                 }
+                if (method.equals(HttpMethod.PUT.toString())) {
+                    StpUtil.checkLogin();
+                    StpUtil.checkRoleOr("normal", "administrators");
+                }
             });
-            SaRouterUtil.match("/blog/account", () -> {
-                StpUtil.checkLogin();
-                StpUtil.checkRoleOr("normal", "administrators");
-            });
-//            SaRouterUtil.match("/blog/**", () -> StpUtil.checkRoleOr("tourist", "normal", "ban",
-//                "administrators"));
         })).addPathPatterns("/**");
     }
 
@@ -96,6 +102,10 @@ public class SaTokenConfig implements WebMvcConfigurer {
         // 标签
         whiteList.add("/tag");
         whiteList.add("/tag/all");
+        // 附件
+        whiteList.add("/attachment/**");
+        // 评论
+        whiteList.add("/comment/2");
         return whiteList;
     }
 }

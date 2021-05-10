@@ -14,15 +14,14 @@ public class AttachmentController {
 
     @DeleteMapping
     public ResponseMessage deleteAttachment(@RequestParam("id") int id) {
-        attachmentService.attachmentIdValidityCheck(Long.valueOf(id));
-
-        attachmentService.deleteAttachment(Long.valueOf(id));
+        attachmentService.attachmentIdValidityCheck((long) id);
+        attachmentService.deleteAttachment((long) id);
         return ResponseMessage.success();
     }
     @GetMapping
     public ResponseMessage searchAttachmentById(@RequestParam("id") int id){
-        attachmentService.attachmentIdValidityCheck(Long.valueOf(id));
-        Attachment attachment= attachmentService.searchAttachmentById(Long.valueOf(id));
+        attachmentService.attachmentIdValidityCheck((long) id);
+        Attachment attachment= attachmentService.searchAttachmentById((long) id);
         attachment.setName("/attachment/"+attachment.getName());
         return ResponseMessage.success(attachment);
     }

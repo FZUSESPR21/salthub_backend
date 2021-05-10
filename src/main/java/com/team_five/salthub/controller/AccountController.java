@@ -215,7 +215,7 @@ public class AccountController {
      */
     @ApiOperation(value = "修改用户信息")
     @PutMapping
-    public ResponseMessage upadateInformation(@RequestBody Account account) {
+    public ResponseMessage updateInformation(@RequestBody Account account) {
         if (!StrUtil.isEmpty(account.getNickname())) {
             accountService.nicknameValidityCheck(account.getNickname());
         }
