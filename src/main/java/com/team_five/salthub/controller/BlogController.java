@@ -53,8 +53,8 @@ public class BlogController {
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
         blog.setAuthor(name);
-        blog.setLikeNumber(Long.valueOf(0));
-        blog.setCollectionNumber(Long.valueOf(0));
+        blog.setLikeNumber(0L);
+        blog.setCollectionNumber(0L);
         blog.setState(BlogStateEnum.NORMAL.getId().intValue());
         Date releaseTime = new Date();
         blog.setReleaseTime(releaseTime);
@@ -86,9 +86,9 @@ public class BlogController {
     @ApiOperation(value = "根据板块id查询博客")
     @PostMapping("/module")
     public ResponseMessage searchBlogByModuleId(@RequestParam("current") int current, @RequestParam("moduleId") int moduleId) {
-        blogService.moduleIdValidityCheck(Long.valueOf(moduleId));
+        blogService.moduleIdValidityCheck((long) moduleId);
 
-        Page<Blog> blogList = blogService.searchBlogByModuleId(Long.valueOf(moduleId), Long.valueOf(current));
+        Page<Blog> blogList = blogService.searchBlogByModuleId((long) moduleId, (long) current);
         return ResponseMessage.success(blogList);
 
     }
@@ -96,9 +96,9 @@ public class BlogController {
     @ApiOperation(value = "根据标签id查询博客")
     @PostMapping("/tag")
     public ResponseMessage searchBlogByTagId(@RequestParam("current") int current, @RequestParam("tagId") int tagId) {
-        blogService.tagIdValidityCheck(Long.valueOf(tagId));
+        blogService.tagIdValidityCheck((long) tagId);
 
-        Page<Blog> blogPage = blogService.searchBlogByTagId(Long.valueOf(tagId), Long.valueOf(current));
+        Page<Blog> blogPage = blogService.searchBlogByTagId((long) tagId, (long) current);
         return ResponseMessage.success(blogPage);
     }
 
@@ -107,14 +107,14 @@ public class BlogController {
     public ResponseMessage searchBlogByAccount(@RequestParam("current") int current, @RequestParam("account") String account) {
         blogService.accountValidityCheck(account);
 
-        Page<Blog> blogList = blogService.searchBlogByAccount(account, Long.valueOf(current));
+        Page<Blog> blogList = blogService.searchBlogByAccount(account, (long) current);
         return ResponseMessage.success(blogList);
     }
 
     @ApiOperation(value = "通过博客id查询博客")
     @GetMapping
     public ResponseMessage searchBlogByBolgId(@RequestParam("blogId") int blogId) {
-        Blog blog = blogService.searchBlogByBlogId(Long.valueOf(blogId));
+        Blog blog = blogService.searchBlogByBlogId((long) blogId);
         return ResponseMessage.success(blog);
 
     }
@@ -122,7 +122,7 @@ public class BlogController {
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
-        blogService.deleteBlogByBlogId(Long.valueOf(blogId));
+        blogService.deleteBlogByBlogId((long) blogId);
         return ResponseMessage.success();
     }
 
@@ -130,7 +130,7 @@ public class BlogController {
     @ApiOperation(value = "根据博客id更新博客")
     @PutMapping
     public ResponseMessage updateBlogByBlogId(@RequestBody Blog blog, @RequestParam("blogId") int blogId) {
-        blogService.updateBlogByBlogId(blog, Long.valueOf(blogId));
+        blogService.updateBlogByBlogId(blog, (long) blogId);
         //如果全为空怎么判断
         return ResponseMessage.success();
     }
@@ -138,7 +138,7 @@ public class BlogController {
     @ApiOperation(value = "点赞（取消点赞）博客")
     @PutMapping("/like/{flag}")
     public ResponseMessage whetherLikeBlogOrNot(@PathVariable("flag") boolean flag, @RequestParam("blogId") int blogId) {
-        blogService.whetherLikeBlogOrNot(flag, Long.valueOf(blogId));
+        blogService.whetherLikeBlogOrNot(flag, (long) blogId);
         return ResponseMessage.success();
     }
 

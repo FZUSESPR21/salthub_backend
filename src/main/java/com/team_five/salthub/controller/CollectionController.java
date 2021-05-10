@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class CollectionController {
     @Autowired
     private CollectionService collectionService;
-    private Collection collection=new Collection();
+    private Collection collection = new Collection();
     @ApiOperation(value = "用户收藏文章")
     @PostMapping
     public ResponseMessage addCollection(@RequestParam("id") long id) {
