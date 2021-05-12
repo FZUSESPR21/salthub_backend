@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
@@ -75,16 +74,207 @@ class BlogServiceImplTest {
     }
 
     @Test
-    void banBlogByBlogIdTest(){
+    void banBlogByBlogIdTest() {
 
-        blogService.banBlogByBlogId((long)7);
+        blogService.banBlogByBlogId((long) 7);
 
     }
+
     @Test
-    void selectblogbytitle( ){
+    void selectblogbytitle() {
 
-        Page<Blog> blogList=blogService.selectBlogByTitle("2323232323",(long)1);
+        Page<Blog> blogList = blogService.selectBlogByTitle("2323232323", (long) 1);
 
 
+    }
+
+    @Test
+    void searchBlogByModuleId() {
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("test1")
+    void searchBlogByModuleId(Long moduleId, Long current, String correct) {
+        try {
+            this.blogService.searchBlogByModuleId(moduleId, current);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test1() {
+        return Stream.of(
+                Arguments.of(ModuleEnum.FZU.getId(), 1L, ""),
+                Arguments.of(ModuleEnum.OTHER_SCHOOL.getId(), 1L, ""),
+                Arguments.of(ModuleEnum.MISCELLANY.getId(), 1L, ""),
+                Arguments.of(ModuleEnum.GROUP_COURSE.getId(), 1L, "")
+        );
+    }
+
+    @Test
+    void tagIdValidityCheck() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test2")
+    void tagIdValidityCheck(Long tagId, String correct) {
+        try {
+            this.blogService.tagIdValidityCheck(tagId);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test2() {
+        return Stream.of(
+                Arguments.of(null, "标签id为空")
+        );
+    }
+
+    @Test
+    void searchBlogByTagId() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test3")
+    void searchBlogByTagId(Long tagId, Long current, String correct) {
+        try {
+            this.blogService.searchBlogByTagId(tagId, current);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test3() {
+        return Stream.of(
+                Arguments.of(1L, 1L, ""),
+                Arguments.of(2L, 2L, "")
+        );
+    }
+
+    @Test
+    void searchBlogByBlogId() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test4")
+    void searchBlogByBlogId(Long blogId, String correct) {
+        try {
+            this.blogService.searchBlogByBlogId(blogId);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test4() {
+        return Stream.of(
+                Arguments.of(1L, ""),
+                Arguments.of(2L, ""),
+                Arguments.of(3L, ""),
+                Arguments.of(6L, "")
+        );
+    }
+
+    @Test
+    void accountValidityCheck() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test5")
+    void accountValidityCheck(String account, String correct) {
+        try {
+            this.blogService.accountValidityCheck(account);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test5() {
+        return Stream.of(
+                Arguments.of(null, "用户名为空"),
+                Arguments.of("", "用户名为空")
+        );
+    }
+
+    @Test
+    void searchBlogByAccount() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test6")
+    void searchBlogByAccount(String account, Long current, String correct) {
+        try {
+            this.blogService.searchBlogByAccount(account, current);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test6() {
+        return Stream.of(
+                Arguments.of("123456", 1L, ""),
+                Arguments.of("1", 2L, "")
+        );
+    }
+
+//    @Test
+//    void deleteBlogByBlogId() {
+//    }
+//    @ParameterizedTest
+//    @MethodSource("test7")
+//    void deleteBlogByBlogId(Long blogId, String correct) {
+//        try {
+//            this.blogService.deleteBlogByBlogId(blogId);
+//        } catch (BaseException baseException) {
+//            Assertions.assertEquals(correct, baseException.getMessage());
+//        }
+//    }
+//
+//    static Stream test7() {
+//        return Stream.of(
+
+//        );
+//    }
+
+
+//    @Test
+//    void updateBlogByBlogId() {
+//    }
+//    @ParameterizedTest
+//    @MethodSource("test8")
+//    void updateBlogByBlogId(Blog blog,Long blogId, String correct) {
+//        try {
+//            this.blogService.updateBlogByBlogId(blog,blogId);
+//        } catch (BaseException baseException) {
+//            Assertions.assertEquals(correct, baseException.getMessage());
+//        }
+//    }
+//
+//    static Stream test8() {
+//        return Stream.of(
+
+//        );
+//    }
+
+    @Test
+    void whetherLikeBlogOrNot() {
+    }
+
+    @ParameterizedTest
+    @MethodSource("test9")
+    void whetherLikeBlogOrNot(Boolean flag, Long blogId, String correct) {
+        try {
+            this.blogService.whetherLikeBlogOrNot(flag, blogId);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream test9() {
+        return Stream.of(
+                Arguments.of(true, 1L, ""),
+                Arguments.of(false, 1L, "")
+        );
     }
 }

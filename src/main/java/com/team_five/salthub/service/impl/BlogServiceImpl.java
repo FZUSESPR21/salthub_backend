@@ -1,5 +1,6 @@
 package com.team_five.salthub.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -59,13 +60,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             }
         }
 
-        if (blog.getTitle() == null) {
+        if (StrUtil.isEmpty(blog.getTitle())) {
             throw new BaseException(ExceptionInfo.TITLE_EMPTY_ERROR);
         }
         if (blog.getTitle().length() > TITLE_MAX_LENGTH) {
             throw new BaseException(ExceptionInfo.TITLE_ERROR);
         }
-        if (blog.getContent() == null) {
+        if (StrUtil.isEmpty(blog.getContent())) {
             throw new BaseException(ExceptionInfo.CONTENT_EMPTY_ERROR);
         }
         if (blog.getContent().length() > CONTENT_MAX_LENGTH) {
@@ -76,7 +77,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public Long insert(Blog blog) {
-        String content= WordFilter.doFilter(blog.getContent());
+        String content = WordFilter.doFilter(blog.getContent());
         blog.setContent(content);
         blogDao.insert(blog);
 
@@ -134,7 +135,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void accountValidityCheck(String account) {
-        if (account == null) {
+        if (StrUtil.isEmpty(account)) {
             throw new BaseException(ExceptionInfo.ACCOUNT_EMPTY_ERROR);
         }
     }
@@ -162,10 +163,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         if (blog.getModuleId() != null) {
             updateWrapper.set("module_id", blog.getModuleId());
         }
-        if (blog.getTitle() != null) {
+        if (StrUtil.isEmpty(blog.getTitle())) {
             updateWrapper.set("title", blog.getTitle());
         }
-        if (blog.getContent() != null) {
+        if (StrUtil.isEmpty(blog.getContent())) {
             updateWrapper.set("content", blog.getContent());
         }
         updateWrapper.eq("id", blogId);
@@ -234,14 +235,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
 
 
-
     @Override
-    public Page<Blog> selectBlogByTitle(String title,Long current) {
+    public Page<Blog> selectBlogByTitle(String title, Long current) {
 
 
         Page<Blog> page = new Page<Blog>(current, 10);
-        Page<Blog> blogList = blogDao.selectBlogByTitle(page,title);
-        if (blogList.getTotal()<=0){
+        Page<Blog> blogList = blogDao.selectBlogByTitle(page, title);
+        if (blogList.getTotal() <= 0) {
             throw new BaseException(ExceptionInfo.BLOG_NOT_MATCH_ERROR);
         }
         return blogList;
