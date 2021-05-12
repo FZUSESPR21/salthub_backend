@@ -21,6 +21,10 @@ import lombok.Getter;
 public enum ExceptionInfo {
     OK(200, "OK"),
 
+    //异常输入
+    ILLEGAL_REQUESTBODY(301, "这么low的手段想攻击我？回去再练练⑧"),
+
+
     // 用户异常
     NAME_EMPTY(511, "用户名为空"),
     PASSWORD_EMPTY(512, "密码为空"),
@@ -54,7 +58,7 @@ public enum ExceptionInfo {
     FLAG_ERROR(5511, "flag错误"),
     BLOG_NO_EXIST(5512, "该博客id不存在"),
     FIRST_COMMENT_NO_EXIST(5513, "该一级评论id不存在"),
-    SESONDARY_COMMENT_NO_EXIST(5514, "该二级评论id不存在"),
+    SECONDARY_COMMENT_NO_EXIST(5514, "该二级评论id不存在"),
 
 
     //PASSWORD_ERROR(511, "密码错误");
@@ -80,6 +84,7 @@ public enum ExceptionInfo {
     ACCOUNT_EMPTY_ERROR(527, "用户名为空"),
     TAG_ID_EMPTY_ERROR(528, "标签id为空"),
     BLOG_NOT_EXIST_ERROR(529, "该博客不存在"),
+    BLOG_NOT_MATCH_ERROR(530, "无匹配博客"),
     BLOG_TAG_NOT_EXIST_ERROR(5210, "该博客未设置标签"),
     TAG_NOT_EXIST_ERROR(5211, "输入的标签有误"),
     UPLOAD_ATTACHMENT(5212, "附件上传失败"),
@@ -87,6 +92,9 @@ public enum ExceptionInfo {
     ATTACHMENT_EXT_ILLEGAL(5214, "附件格式错误"),
     ATTACHMENT_INVALID(5215, "图片无效"),
     ATTACHMENT_ID_EXIST(5216, "附件id为空");
+
+
+
     private Integer code;
     private String message;
 

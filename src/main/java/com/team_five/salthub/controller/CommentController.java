@@ -1,6 +1,7 @@
 package com.team_five.salthub.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +43,8 @@ public class CommentController {
 	@ApiOperation(value = "一级评论发布接口")
 	@PostMapping("/0")
 	public ResponseMessage publishFirstComment(@RequestBody FirstComment firstComment) {
+		firstComment.setAuthor(StpUtil.getLoginIdAsString());    //设置评论者	登陆后可使用
+		firstComment.setReleaseTime(new Date());                //设置发布时间
 		firstCommentService.publishFirstComment(firstComment);
 
 		return ResponseMessage.success();
@@ -56,6 +60,8 @@ public class CommentController {
 	@ApiOperation(value = "二级评论发布接口")
 	@PostMapping("/1")
 	public ResponseMessage publishSecondaryComment(@RequestBody SecondaryComment secondaryComment) {
+		secondaryComment.setAuthor(StpUtil.getLoginIdAsString());    //设置评论者	登陆后可使用
+		secondaryComment.setReleaseTime(new Date());                //设置发布时间
 		secondaryCommentService.publishSecondaryComment(secondaryComment);
 
 		return ResponseMessage.success();

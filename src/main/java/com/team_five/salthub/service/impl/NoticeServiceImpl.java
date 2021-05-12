@@ -10,6 +10,7 @@ import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.exception.ExceptionInfo;
 import com.team_five.salthub.model.Notice;
 import com.team_five.salthub.service.NoticeService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -50,24 +51,13 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 			throw new BaseException(ExceptionInfo.EMPTY_TITLE);
 		} else if (StrUtil.isEmpty(notice.getAccountName())) {
 			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
-		} else if (StrUtil.isEmpty(StpUtil.getLoginIdAsString())) {
-			throw new BaseException(ExceptionInfo.EMPTY_AUTHOR);
-		}
-		//合法性检测
-		else if (notice.getContent().length() > MAX_CONTENT_LENGTH) {
+		} else if (notice.getContent().length() > MAX_CONTENT_LENGTH) {		//合法性检测
 			throw new BaseException(ExceptionInfo.ILLEGAL_LENGTH);
 		} else if (notice.getTitle().length() > MAX_TITLE_LENGTH) {
 			throw new BaseException(ExceptionInfo.ILLEGAL_TITLE_LENGTH);
-		}
-		//判断要通知的用户是否存在
-		else if (!isAccountExist(notice.getAccountName())){
+		} else if (!isAccountExist(notice.getAccountName())){	//判断要通知的用户是否存在
 			throw new BaseException(ExceptionInfo.ACCOUNT_NO_EXIST);
 		}
-
-		Date releaseTime = new Date();
-		notice.setReleaseTime(releaseTime);
-		notice.setAuthor(StpUtil.getLoginIdAsString());
-
 
 		noticeDao.insert(notice);
 	}
@@ -80,7 +70,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 	 * @Date: 2021/4/30
 	 */
 	@Override
-	public Page<Notice> queryNoticeByName(String accountName, Long current) {
+	public Page<Notice> queryNoticeByName(String accountName, Integer current) {
 		if (StrUtil.isEmpty(accountName)) {
 			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
 		} else if (!isAccountExist(accountName)){
@@ -133,6 +123,22 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 
 		noticeDao.update(notice, wrapper);
 	}
+
+	/*** 
+	* @Description: 返回所有通告
+	* @Param:  当前页
+	* @return:  
+	* @Author: top
+	* @Date: 2021/5/7 
+	*/
+	@Override
+	public Page<Notice> getAllNotice(Integer current){
+		Page<Notice> page = new Page<>(current, PAGESIZE);        //当前页数， 页面大小(定义在接口中的常量)
+		Page<Notice> notices = noticeDao.selectPage(page, null);
+
+		return notices;
+	}
+
 
 	/*** 
 	* @Description: 判断用户是否存在

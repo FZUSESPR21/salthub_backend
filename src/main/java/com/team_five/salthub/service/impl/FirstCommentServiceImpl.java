@@ -48,12 +48,9 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 			throw new BaseException(ExceptionInfo.EMPTY_CONTENT);
 		} else if (firstComment.getBlogId() == null) {
 			throw new BaseException(ExceptionInfo.EMPTY_BLOG_ID);
-		} else if (!isBlogExist(firstComment.getBlogId())){		//判断博客是否存在
+		} else if (!isBlogExist(firstComment.getBlogId())) {        //判断博客是否存在
 			throw new BaseException(ExceptionInfo.BLOG_NO_EXIST);
 		}
-
-		firstComment.setAuthor(StpUtil.getLoginIdAsString());    //设置评论者	登陆后可使用
-		firstComment.setReleaseTime(new Date());                //设置发布时间
 
 		firstCommentDao.insert(firstComment);
 	}
@@ -80,14 +77,14 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	}
 
 	/***
-	* @Description: 删除一级评论
-	* @Param:
-	* @return:
-	* @Author: top
-	* @Date: 2021/5/2
-	*/
+	 * @Description: 删除一级评论
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/2
+	 */
 	@Override
-	public void deleteComment(Long id){
+	public void deleteComment(Long id) {
 		if (!isFirstCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
@@ -98,32 +95,30 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	}
 
 
-
 	/***
 	 * @Description: 判断博客是否存在
-	 * @Param:  blogId
-	 * @return:  true：存在 false：不存在
+	 * @Param: blogId
+	 * @return: true：存在 false：不存在
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
-	public boolean isBlogExist(Long blogId){
+	public boolean isBlogExist(Long blogId) {
 		wrapper.clear();
 		wrapper.eq("id", blogId);
-		if (blogDao.selectList(wrapper).size()==0) {
+		if (blogDao.selectList(wrapper).size() == 0) {
 			return false;
 		}
 		return true;
 	}
 
-	public boolean isFirstCommentExist(Long id){
+	public boolean isFirstCommentExist(Long id) {
 		wrapper.clear();
 		wrapper.eq("id", id);
-		if (firstCommentDao.selectList(wrapper).size()==0) {
+		if (firstCommentDao.selectList(wrapper).size() == 0) {
 			return false;
 		}
 		return true;
 	}
-
 
 
 }

@@ -4,6 +4,7 @@ import com.team_five.salthub.userBasedCollaborativeFiltering.UserCF;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 /**
  * 启动类
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan("com.team_five.salthub.dao")
+@ServletComponentScan(basePackages ="com.team_five.salthub.filter")
 public class SaltHubApplication {
 
     public static void main(String[] args) {

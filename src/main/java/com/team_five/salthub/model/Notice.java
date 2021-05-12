@@ -27,6 +27,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("notice")
 @AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(value="Notice对象", description="")
 public class Notice implements Serializable {
 

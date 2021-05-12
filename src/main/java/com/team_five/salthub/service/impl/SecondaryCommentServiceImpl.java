@@ -48,12 +48,11 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 			throw new BaseException(ExceptionInfo.EMPTY_COMMENT_ID);
 		} else if (secondaryComment.getAccountName() == null) {
 			throw new BaseException(ExceptionInfo.EMPTY_ACCOUNT_NAME);
-		} else if(!isFirstCommentExist(secondaryComment.getCommentId())){
+		} else if (!isFirstCommentExist(secondaryComment.getCommentId())) {
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
 
-		secondaryComment.setAuthor(StpUtil.getLoginIdAsString());    //设置评论者	登陆后可使用
-		secondaryComment.setReleaseTime(new Date());                //设置发布时间
+
 
 		secondaryCommentDao.insert(secondaryComment);
 	}
@@ -68,7 +67,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 */
 	@Override
 	public List<SecondaryComment> querySecondaryComment(Long id) {
-		if(!isFirstCommentExist(id)){
+		if (!isFirstCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.BLOG_NO_EXIST);
 		}
 
@@ -80,23 +79,22 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	}
 
 	/***
-	* @Description: 删除二级评论
-	* @Param:
-	* @return:
-	* @Author: top
-	* @Date: 2021/5/2
-	*/
+	 * @Description: 删除二级评论
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/2
+	 */
 	@Override
-	public void deleteComment(Long id){
+	public void deleteComment(Long id) {
 		if (!isSecondaryCommentExist(id)) {
-			throw new BaseException(ExceptionInfo.SESONDARY_COMMENT_NO_EXIST);
+			throw new BaseException(ExceptionInfo.SECONDARY_COMMENT_NO_EXIST);
 		}
 
 		wrapper.clear();
 		wrapper.eq("id", id);
 		firstCommentDao.delete(wrapper);
 	}
-
 
 
 	/***
@@ -106,9 +104,9 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
-	public boolean isFirstCommentExist(Long id){
+	public boolean isFirstCommentExist(Long id) {
 		wrapper.clear();
-		wrapper.eq("id",id);
+		wrapper.eq("id", id);
 		if (firstCommentDao.selectList(wrapper).size() == 0) {
 			return false;
 		}
@@ -116,15 +114,15 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	}
 
 	/*** 
-	* @Description: 判断二级评论是否存在
-	* @Param:  
-	* @return:  
-	* @Author: top
-	* @Date: 2021/5/2 
-	*/
-	public boolean isSecondaryCommentExist(Long id){
+	 * @Description: 判断二级评论是否存在
+	 * @Param:
+	 * @return:
+	 * @Author: top
+	 * @Date: 2021/5/2
+	 */
+	public boolean isSecondaryCommentExist(Long id) {
 		wrapper.clear();
-		wrapper.eq("id",id);
+		wrapper.eq("id", id);
 		if (secondaryCommentDao.selectList(wrapper).size() == 0) {
 			return false;
 		}
