@@ -1,9 +1,5 @@
 package com.team_five.salthub.wordFliter;
 
-/**
- * 功不唐捐
- * @author 庞健松 ~ 2014年11月6日 下午6:13:37
- */
 public class FilterSet{
 
     private final long[] elements;

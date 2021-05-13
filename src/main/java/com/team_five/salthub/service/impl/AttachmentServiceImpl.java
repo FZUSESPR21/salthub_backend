@@ -24,7 +24,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public void deleteAttachment(Long id) {
         attachmentDao.deleteById(id);
-        //如果id为空
+        
     }
 
     @Override
