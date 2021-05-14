@@ -15,9 +15,12 @@ public class MyInterceptor implements WebMvcConfigurer {
 
     @Autowired
     private AccessInterceptor accessInterceptor;
+    @Autowired
+    private OptionInterceptor optionInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(optionInterceptor).addPathPatterns("/**");
         registry.addInterceptor(accessInterceptor).addPathPatterns("/**");
     }
 }
