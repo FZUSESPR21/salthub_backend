@@ -69,6 +69,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     StpUtil.checkRoleOr("normal", "administrators");
                 }
             });
+            SaRouterUtil.match("/blog/like/**", StpUtil::checkLogin);
         })).addPathPatterns("/**");
     }
 
