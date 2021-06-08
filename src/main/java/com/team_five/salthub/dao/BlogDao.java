@@ -26,7 +26,7 @@ public interface BlogDao extends BaseMapper<Blog> {
     @Select("update blog set collection_number=collection_number-1 where id=#{id}")
     void deleteCollectionCount(long id);
 //    @Select("SELECT * FROM blog  WHERE title like '%',#{title},'%'")
-    @Select("SELECT * FROM blog WHERE title LIKE CONCAT(CONCAT('%', #{title}),'%')")
+    @Select("SELECT * FROM blog WHERE title LIKE CONCAT(CONCAT('%', #{title}),'%') and state=2")
     Page<Blog> selectBlogByTitle(Page<Blog> page,String title);
 
 }

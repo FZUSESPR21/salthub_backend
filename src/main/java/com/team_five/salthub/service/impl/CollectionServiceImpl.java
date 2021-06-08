@@ -44,15 +44,15 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
     @Override
 
     public int addCollection(Collection collection) {
+        if (collection.getBlogId()==null) {
+            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
+        }
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.clear();
         wrapper.eq("id", collection.getBlogId());    //判断该id是否存在
         //通知id不存在
         if (blogDao.selectList(wrapper).size()==0) {
             throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
-        }
-       if (collection.getBlogId()==null) {
-            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
         }
        else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
@@ -66,6 +66,9 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
 
     @Override
     public int deleteCollection(Collection collection) {
+        if (collection.getBlogId()==null) {
+            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
+        }
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.clear();
         wrapper.eq("id", collection.getBlogId());    //判断该id是否存在
@@ -73,9 +76,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionDao, Collection
         if (blogDao.selectList(wrapper).size()==0) {
             throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
         }
-        if (collection.getBlogId()==null) {
-            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
-        }
+
         else if(StrUtil.isEmpty(collection.getAccountName())) {
             throw new BaseException(ExceptionInfo.COLLECTION_ACCOUNT_EMPTY_ERROR);
         }

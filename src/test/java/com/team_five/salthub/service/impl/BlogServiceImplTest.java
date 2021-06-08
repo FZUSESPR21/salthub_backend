@@ -34,7 +34,7 @@ class BlogServiceImplTest {
 
     @Test
     void insert() {
-        Assertions.assertEquals(true, this.blogService.insert(blog));
+        Assertions.assertEquals(79, this.blogService.insert(blog));
     }
 
     @Test
@@ -83,7 +83,7 @@ class BlogServiceImplTest {
     @Test
     void selectblogbytitle() {
 
-        Page<Blog> blogList = blogService.selectBlogByTitle("2323232323", (long) 1);
+        Page<Blog> blogList = blogService.selectBlogByTitle("考研", (long) 1);
 
 
     }
