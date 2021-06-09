@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 public class WordFilter {
-
+    private static final String FILE_ROOT = "/root/salthub_backend/word.txt";
     private static final FilterSet set = new FilterSet();
     private static final Map<Integer, WordNode> nodes = new HashMap<Integer, WordNode>(1024, 1);
 
@@ -32,7 +32,7 @@ public class WordFilter {
         List<String> words;
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream("src/main/java/com/team_five/salthub/wordFliter/word.txt")));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(FILE_ROOT)));
             words = new ArrayList<String>(1200);
             for(String buf="";(buf = br.readLine())!=null;){
                 if(buf==""||buf==null)

@@ -10,7 +10,8 @@
     </parent>
     <groupId>com.team_five</groupId>
     <artifactId>salthub</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>salthub</name>
     <description>An information platform for postgraduate examination</description>
     <properties>

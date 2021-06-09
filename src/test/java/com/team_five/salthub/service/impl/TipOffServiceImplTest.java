@@ -23,7 +23,7 @@ class TipOffServiceImplTest {
     TipOffService tipOffService;
     @ParameterizedTest
     @MethodSource("args3")
-    void queryCollectionTest(TipOff tipOff, String correct) {
+    void TipOffTest(TipOff tipOff, String correct) {
         try {
             this.tipOffService.tipOffBlog(tipOff);
         } catch (BaseException baseException) {
