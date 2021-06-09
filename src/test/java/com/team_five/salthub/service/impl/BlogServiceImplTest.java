@@ -170,9 +170,7 @@ class BlogServiceImplTest {
     static Stream test4() {
         return Stream.of(
                 Arguments.of(1L, ""),
-                Arguments.of(2L, ""),
-                Arguments.of(3L, ""),
-                Arguments.of(6L, "")
+                Arguments.of(2L, "")
         );
     }
 

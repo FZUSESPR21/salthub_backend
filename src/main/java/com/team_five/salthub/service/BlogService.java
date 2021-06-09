@@ -66,5 +66,11 @@ public interface BlogService extends IService<Blog> {
 
     void insertAttachment(Attachment attachment);
 
-    public Page<Blog> selectBlogByTitle(String title,Long current);
+    public Page<Blog> selectBlogByTitle(String title, Long current);
+
+    //获取所有博客数量
+    public int searchBlogCount();
+
+    //获取当天新增博客数量
+    public int searchIntradayBlogCount();
 }

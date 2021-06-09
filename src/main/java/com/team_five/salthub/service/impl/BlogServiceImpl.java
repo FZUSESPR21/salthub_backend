@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -245,5 +246,20 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             throw new BaseException(ExceptionInfo.BLOG_NOT_MATCH_ERROR);
         }
         return blogList;
+    }
+
+    @Override
+    public int searchBlogCount() {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("state", BlogStateEnum.NORMAL.getId());
+        int count = blogDao.selectCount(wrapper);
+        return count;
+    }
+
+    @Override
+    public int searchIntradayBlogCount() {
+        Date date = new java.sql.Date(new java.util.Date().getTime());
+        int count = blogDao.searchIntradayBlogCount(date);
+        return count;
     }
 }

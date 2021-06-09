@@ -48,7 +48,7 @@ public class BlogController {
     @ApiOperation(value = "发布博客")
     @PostMapping
     public ResponseMessage releaseBlog(@RequestBody Blog blog,
-                                       @RequestParam(value = "attachments",required = false) MultipartFile[] attachments) throws IOException {
+                                       @RequestParam(value = "attachments", required = false) MultipartFile[] attachments) throws IOException {
         //, @RequestParam("attachments") MultipartFile[] attachments
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
@@ -118,14 +118,16 @@ public class BlogController {
         return ResponseMessage.success(blog);
 
     }
+
     @ApiOperation(value = "通过title模糊查询博客")
     @GetMapping("title")
-    public ResponseMessage selectBlogByTitle(@RequestParam("title") String title,@RequestParam("current") Long current) {
+    public ResponseMessage selectBlogByTitle(@RequestParam("title") String title, @RequestParam("current") Long current) {
 
-        Page<Blog> blogPage = blogService.selectBlogByTitle(title,current);
+        Page<Blog> blogPage = blogService.selectBlogByTitle(title, current);
         return ResponseMessage.success(blogPage);
 
     }
+
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
@@ -170,6 +172,20 @@ public class BlogController {
         redisUtil.setList(key, blogList, EXPIRE_TIME);
         List<Object> objects = redisUtil.getList(key, 0, PAGE_SIZE);
         return ResponseMessage.success(new BlogPage(blogList.size(), 0, objects));
+    }
+
+    @GetMapping("/count")
+    @ApiOperation(value = "博客数量")
+    public ResponseMessage readAllCount() {
+        int count = blogService.searchBlogCount();
+        return ResponseMessage.success(count);
+    }
+
+    @GetMapping("/count/intraday")
+    @ApiOperation(value = "当天的博客数量")
+    public ResponseMessage readIntradayCount() {
+        int count = blogService.searchIntradayBlogCount();
+        return ResponseMessage.success(count);
     }
 }
 
