@@ -262,4 +262,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         int count = blogDao.searchIntradayBlogCount(date);
         return count;
     }
+
+    @Override
+    public Blog selectTreeHoleByRand() {
+        Blog blog = blogDao.selectTreeHoleByRand();
+        blog.setCollectionNumber(null);
+        blog.setState(null);
+        blog.setTitle(null);
+        blog.setReleaseTime(null);
+        blog.setLikeNumber(null);
+        blog.setId(null);
+        blog.setModuleId(null);
+        return blog;
+    }
 }

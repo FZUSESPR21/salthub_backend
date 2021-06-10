@@ -32,4 +32,9 @@ public interface BlogDao extends BaseMapper<Blog> {
 
     @Select("select COUNT(*) from blog where DATE_FORMAT(release_time,'%Y-%m-%d') = #{date} and state=2")
     int searchIntradayBlogCount(Date date);
+
+
+
+    @Select("SELECT * FROM blog WHERE state =3  ORDER BY RAND() LIMIT 1")
+    Blog selectTreeHoleByRand( );
 }

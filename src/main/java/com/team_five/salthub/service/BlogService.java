@@ -73,4 +73,7 @@ public interface BlogService extends IService<Blog> {
 
     //获取当天新增博客数量
     public int searchIntradayBlogCount();
+
+    //随机取一条树洞
+    public Blog selectTreeHoleByRand();
 }
