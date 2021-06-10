@@ -127,7 +127,14 @@ public class BlogController {
         return ResponseMessage.success(blogPage);
 
     }
+    @ApiOperation(value = "获取树洞")
+    @GetMapping("hole")
+    public ResponseMessage selectTreeByRand( ) {
 
+        Blog blog = blogService.selectTreeHoleByRand();
+        return ResponseMessage.success(blog);
+
+    }
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {

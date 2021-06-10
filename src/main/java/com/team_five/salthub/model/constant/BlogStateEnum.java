@@ -13,8 +13,8 @@ import lombok.Getter;
 public enum BlogStateEnum {
     DELETE(0L, "删除"),
     BAN(1L, "封禁"),
-    NORMAL(2L, "正常");
-
+    NORMAL(2L, "正常"),
+    TreeHole(3L,"树洞");
     private Long id;
     private String name;
 }
