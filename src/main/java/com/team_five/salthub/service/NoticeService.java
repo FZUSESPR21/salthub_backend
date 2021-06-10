@@ -15,7 +15,7 @@ import java.util.List;
 public interface NoticeService extends IService<Notice> {
 
 	//定义常量
-	Long PAGESIZE = 20L;
+	Long PAGESIZE = 10L;
 	Integer MAX_CONTENT_LENGTH = 65536;
 	Integer MAX_TITLE_LENGTH = 256;
 

@@ -15,6 +15,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+/*** 
+* @Description:  
+* @Param:  
+* @return:  
+* @Author: top
+* @Date: 2021/5/14 
+*/
 @Component
 @Slf4j
 @WebFilter(
@@ -33,20 +41,21 @@ public class XssAndSqlFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
 						 FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		XssAndSqlHttpServletRequestWrapper xssRequest=new XssAndSqlHttpServletRequestWrapper(
+		XssAndSqlHttpServletRequestWrapper xssRequest = new XssAndSqlHttpServletRequestWrapper(
 				request);
 
 		String method = ((HttpServletRequest) request).getMethod();
 //		System.out.println("请求方式："+method);
 		String param = "";
-		if ("POST".equalsIgnoreCase(method)||"PUT".equalsIgnoreCase(method)) {
+		if ("POST".equalsIgnoreCase(method) || "PUT".equalsIgnoreCase(method)) {
 			param = this.getBodyString(xssRequest.getReader());
 
-			if(StringUtils.isNotBlank(param)){
-				if(xssRequest.checkXSSAndSql(param)){
+			if (StringUtils.isNotBlank(param)) {
+				if (xssRequest.checkXSSAndSql(param)) {
 					servletResponse.setCharacterEncoding("UTF-8");
 					servletResponse.setContentType("application/json;charset=UTF-8");
 					PrintWriter out = servletResponse.getWriter();
+
 
 					out.write(JSONObject.toJSONString(ResponseMessage.fail(new BaseException(ExceptionInfo.ILLEGAL_REQUESTBODY))));
 					return;
@@ -62,10 +71,9 @@ public class XssAndSqlFilter implements Filter {
 			return;
 		}
 
-		if (xssRequest==null){
+		if (xssRequest == null) {
 			filterChain.doFilter(request, servletResponse);
-		}
-		else {
+		} else {
 			filterChain.doFilter(xssRequest, servletResponse);
 		}
 	}

@@ -35,7 +35,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> impleme
     private static final int NAME_MAX_LENGTH = 32;
     private static final int NICKNAME_MAX_LENGTH = 32;
     private static final int SLOGAN_MAX_LENGTH = 256;
-    private static final int PAGESIZE = 20;
+    private static final int PAGESIZE = 10;
     @Autowired
     private AccountDao accountDao;
 
