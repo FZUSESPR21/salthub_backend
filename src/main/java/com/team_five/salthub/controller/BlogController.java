@@ -83,6 +83,24 @@ public class BlogController {
         return ResponseMessage.success(id);
     }
 
+    @ApiOperation(value = "树洞发布")
+    @PostMapping("/treeHole")
+    public ResponseMessage releaseTreeHole(@RequestBody Blog blog) {
+        String name = StpUtil.getLoginIdAsString();
+        blog.setAuthor(name);
+        blog.setModuleId(Long.valueOf(0));
+        blog.setTitle("树洞");
+        blogService.validityCheck(blog);//检查博客合法性
+        blog.setLikeNumber(0L);
+        blog.setCollectionNumber(0L);
+        blog.setState(BlogStateEnum.TREEHOLE.getId().intValue());
+        Date releaseTime = new Date();
+        blog.setReleaseTime(releaseTime);
+
+        Long id = blogService.insert(blog);
+        return ResponseMessage.success(id);
+    }
+
     @ApiOperation(value = "根据板块id查询博客")
     @PostMapping("/module")
     public ResponseMessage searchBlogByModuleId(@RequestParam("current") int current, @RequestParam("moduleId") int moduleId) {

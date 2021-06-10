@@ -61,13 +61,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             }
         }
 
-        if (StrUtil.isEmpty(blog.getTitle())) {
+        if (StrUtil.isEmpty(blog.getTitle())) {//标题是否为空
             throw new BaseException(ExceptionInfo.TITLE_EMPTY_ERROR);
         }
-        if (blog.getTitle().length() > TITLE_MAX_LENGTH) {
+        if (blog.getTitle().length() > TITLE_MAX_LENGTH) {//标题是否过长
             throw new BaseException(ExceptionInfo.TITLE_ERROR);
         }
-        if (StrUtil.isEmpty(blog.getContent())) {
+        if (StrUtil.isEmpty(blog.getContent())) {//内容是否为空
             throw new BaseException(ExceptionInfo.CONTENT_EMPTY_ERROR);
         }
         if (blog.getContent().length() > CONTENT_MAX_LENGTH) {
