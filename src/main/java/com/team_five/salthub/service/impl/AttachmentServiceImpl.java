@@ -24,12 +24,15 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public void deleteAttachment(Long id) {
         attachmentDao.deleteById(id);
-        
+
     }
 
     @Override
     public Attachment searchAttachmentById(Long id) {
         Attachment attachment = attachmentDao.selectById(id);
+        if (attachment == null) {
+            throw new BaseException((ExceptionInfo.ATTACHMENT_EMPTY));
+        }
         return attachment;
     }
 }
