@@ -10,6 +10,7 @@ import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
+import com.team_five.salthub.service.BlogModuleService;
 import com.team_five.salthub.service.BlogService;
 import com.team_five.salthub.userBasedCollaborativeFiltering.BlogPage;
 import com.team_five.salthub.util.RedisUtil;
@@ -44,6 +45,9 @@ public class BlogController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private BlogModuleService blogModuleService;
 
     @ApiOperation(value = "发布博客")
     @PostMapping
@@ -145,14 +149,16 @@ public class BlogController {
         return ResponseMessage.success(blogPage);
 
     }
+
     @ApiOperation(value = "获取树洞")
     @GetMapping("hole")
-    public ResponseMessage selectTreeByRand( ) {
+    public ResponseMessage selectTreeByRand() {
 
         Blog blog = blogService.selectTreeHoleByRand();
         return ResponseMessage.success(blog);
 
     }
+
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
@@ -211,6 +217,12 @@ public class BlogController {
     public ResponseMessage readIntradayCount() {
         int count = blogService.searchIntradayBlogCount();
         return ResponseMessage.success(count);
+    }
+
+    @GetMapping("/module/all")
+    @ApiOperation(value = "查询所有模块")
+    public ResponseMessage selectAllModule() {
+        return ResponseMessage.success(blogModuleService.selectModule());
     }
 }
 

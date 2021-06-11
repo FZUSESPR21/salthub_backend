@@ -1,11 +1,11 @@
 package com.team_five.salthub.service;
 
-import com.team_five.salthub.model.BlogModule;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.team_five.salthub.model.BlogModule;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author xydf
@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BlogModuleService extends IService<BlogModule> {
 
+    Object selectModule();
 }
