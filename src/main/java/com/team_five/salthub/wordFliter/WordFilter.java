@@ -11,7 +11,8 @@ import java.util.Map;
 
 
 public class WordFilter {
-    private static final String FILE_ROOT = "/root/salthub_backend/word.txt";
+    //private static final String FILE_ROOT = "/root/salthub_backend/word.txt";
+    private static final String FILE_ROOT = "src/main/java/com/team_five/salthub/wordFliter/word.txt";
     private static final FilterSet set = new FilterSet();
     private static final Map<Integer, WordNode> nodes = new HashMap<Integer, WordNode>(1024, 1);
 

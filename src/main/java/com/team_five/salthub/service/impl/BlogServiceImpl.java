@@ -189,6 +189,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void banBlogByBlogId(Long blogId) {
+        if (blogId==null) {
+            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
+        }
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id",blogId);    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.BAN.getId());
         blogDao.update(null, updateWrapper);
@@ -196,6 +206,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void cancelBanBlogByBlogId(Long blogId) {
+
+
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.NORMAL.getId());
         blogDao.update(null, updateWrapper);
