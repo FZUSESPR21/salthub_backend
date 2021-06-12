@@ -43,4 +43,24 @@ class FirstCommentServiceImplTest {
 
 		);
 	}
+
+
+	@ParameterizedTest
+	@MethodSource("args2")
+	void testQuery(Long id, String correct){
+		try {
+			firstCommentService.queryFirstComment(id);
+
+		} catch (BaseException exception){
+			Assertions.assertEquals(correct,exception.getMessage());
+		}
+	}
+
+	static Stream args2(){
+		return Stream.of(
+				Arguments.of(1L,"该博客id不存在")
+		);
+	}
+
+
 }

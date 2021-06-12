@@ -61,6 +61,7 @@ public interface BlogService extends IService<Blog> {
 
     // 读取所有博客
     List<Blog> readAll(String name);
+    Page<Blog> queryAllBlog(Integer current);
 
     void validityCheckFile(File file) throws IOException;
 
@@ -76,4 +77,6 @@ public interface BlogService extends IService<Blog> {
 
     //随机取一条树洞
     public Blog selectTreeHoleByRand();
+
+
 }

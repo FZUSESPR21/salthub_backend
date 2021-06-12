@@ -224,5 +224,21 @@ public class BlogController {
     public ResponseMessage selectAllModule() {
         return ResponseMessage.success(blogModuleService.selectModule());
     }
+
+    /*** 
+    * @Description: 分页返回文章列表 
+    * @Param:  
+    * @return:  
+    * @Author: top
+    * @Date: 2021/6/12 
+    */
+    @GetMapping("/queryall")
+    @ApiOperation(value = "分页获取所有博客")
+    public ResponseMessage queryAll(@RequestParam Integer current){
+        Page<Blog> blogList = blogService.queryAllBlog(current);
+        return ResponseMessage.success(blogList);
+    }
+
+
 }
 

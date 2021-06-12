@@ -46,7 +46,7 @@ public class AdministratorController {
 	/***
 	 * @Description: 查询单个用户
 	 * @Param: 用户名name
-	 * @return:
+	 * @return:`
 	 * @Author: top
 	 * @Date: 2021/5/7
 	 */

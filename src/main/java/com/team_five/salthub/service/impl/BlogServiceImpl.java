@@ -287,4 +287,23 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         blog.setModuleId(null);
         return blog;
     }
+
+
+    /***
+    * @Description:  分页获取所有博客
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/6/12
+    */
+    @Override
+    public Page<Blog>queryAllBlog(Integer current){
+        Page<Blog> page = new Page<>(current, 10);
+
+
+        Page<Blog> blogList = blogDao.selectPage(page, null);
+        return blogList;
+    }
+
+
 }
