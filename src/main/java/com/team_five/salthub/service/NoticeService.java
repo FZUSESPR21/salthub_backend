@@ -24,4 +24,7 @@ public interface NoticeService extends IService<Notice> {
 	void deleteNotice(String id);
 	void modifyNotice(Notice notice);
 	Page<Notice> getAllNotice(Integer current);
+	Integer getAmount();
+
+
 }

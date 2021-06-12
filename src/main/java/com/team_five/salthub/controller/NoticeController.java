@@ -100,6 +100,23 @@ public class NoticeController {
 		return ResponseMessage.success();
 	}
 
+	/*** 
+	* @Description: 获取公告总数
+	* @Param:  
+	* @return:  
+	* @Author: top
+	* @Date: 2021/6/12 
+	*/
+	@ApiOperation(value = "公告总数")
+	@GetMapping("/getamount")
+	public ResponseMessage getAmount(){
+		Integer amount = noticeService.getAmount();
+
+		return ResponseMessage.success(amount);
+	}
+
+
+
 //endregion
 
 
