@@ -94,8 +94,7 @@ public enum ExceptionInfo {
     ATTACHMENT_ID_EXIST(5216, "附件id为空");
 
 
-
-    private Integer code;
+	private Integer code;
     private String message;
 
 

@@ -10,6 +10,7 @@ import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.SecondaryComment;
 import com.team_five.salthub.service.FirstCommentService;
 import com.team_five.salthub.service.SecondaryCommentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +75,7 @@ public class CommentController {
 	 * @Author: top
 	 * @Date: 2021/5/2
 	 */
-	@ApiOperation(value = "一级评论查询接口")
+	@ApiOperation(value = "一级与二级评论查询接口")
 	@GetMapping("/2")
 	public ResponseMessage queryComment(@RequestParam Long id, @RequestParam Integer flag) {
 		if (flag == 0){		//查询一级评论

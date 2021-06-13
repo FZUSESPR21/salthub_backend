@@ -68,7 +68,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	@Override
 	public List<SecondaryComment> querySecondaryComment(Long id) {
 		if (!isFirstCommentExist(id)) {
-			throw new BaseException(ExceptionInfo.BLOG_NO_EXIST);
+			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
 
 		wrapper.clear();

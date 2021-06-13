@@ -44,4 +44,17 @@ class SecondaryCommentServiceImplTest {
 		);
 	}
 
+	@ParameterizedTest
+	@MethodSource("args2")
+	void testQuery(Long id, String correct){
+		try {
+			Assertions.assertEquals(correct, secondaryCommentService.querySecondaryComment(id));
+		} catch (BaseException exception){
+			Assertions.assertEquals(correct,exception.getMessage());
+		}
+
+	}
+
+
+
 }
