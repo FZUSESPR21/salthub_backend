@@ -11,39 +11,40 @@ import java.util.Map;
 
 
 public class WordFilter {
-    private static final String FILE_ROOT = "/root/salthub_backend/word.txt";
+    //private static final String FILE_ROOT = "/root/salthub_backend/word.txt";
+    private static final String FILE_ROOT = "src/main/java/com/team_five/salthub/wordFliter/word.txt";
     private static final FilterSet set = new FilterSet();
     private static final Map<Integer, WordNode> nodes = new HashMap<Integer, WordNode>(1024, 1);
 
 
-    static{
+    static {
         try {
             long a = System.nanoTime();
             init();
-            a = System.nanoTime()-a;
-            System.out.println("加载时间 : "+a+"ns");
-            System.out.println("加载时间 : "+a/1000000+"ms");
+            a = System.nanoTime() - a;
+            System.out.println("加载时间 : " + a + "ns");
+            System.out.println("加载时间 : " + a / 1000000 + "ms");
         } catch (Exception e) {
             throw new RuntimeException("初始化过滤器失败");
         }
     }
 
-    private static void init(){
+    private static void init() {
         List<String> words;
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(FILE_ROOT)));
             words = new ArrayList<String>(1200);
-            for(String buf="";(buf = br.readLine())!=null;){
-                if(buf==""||buf==null)
+            for (String buf = ""; (buf = br.readLine()) != null; ) {
+                if (buf == "" || buf == null)
                     continue;
                 words.add(buf);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally{
+        } finally {
             try {
-                if(br != null)
+                if (br != null)
                     br.close();
             } catch (IOException e) {
             }
@@ -52,73 +53,73 @@ public class WordFilter {
         addSensitiveWord(words);
     }
 
-    private static void addSensitiveWord(final List<String> words){
+    private static void addSensitiveWord(final List<String> words) {
         char[] chs;
         int fchar;
         int lastIndex;
         WordNode fnode;
-        for(String curr : words){
+        for (String curr : words) {
             chs = curr.toCharArray();
             fchar = chs[0];
-            if(!set.contains(fchar)){//没有首字定义
+            if (!set.contains(fchar)) {//没有首字定义
                 set.add(fchar);//首字标志位	可重复add,反正判断了，不重复了
-                fnode = new WordNode(fchar, chs.length==1);
+                fnode = new WordNode(fchar, chs.length == 1);
                 nodes.put(fchar, fnode);
-            }else{
+            } else {
                 fnode = nodes.get(fchar);
-                if(!fnode.isLast() && chs.length==1)
+                if (!fnode.isLast() && chs.length == 1)
                     fnode.setLast(true);
             }
-            lastIndex = chs.length-1;
-            for(int i=1; i<chs.length; i++){
-                fnode = fnode.addIfNoExist(chs[i], i==lastIndex);
+            lastIndex = chs.length - 1;
+            for (int i = 1; i < chs.length; i++) {
+                fnode = fnode.addIfNoExist(chs[i], i == lastIndex);
             }
         }
     }
 
     private static final char SIGN = '*';
-    public static final String doFilter(final String src){
+
+    public static final String doFilter(final String src) {
         char[] chs = src.toCharArray();
         int length = chs.length;
         int currc;
         int k;
         WordNode node;
-        for(int i=0;i<length;i++){
+        for (int i = 0; i < length; i++) {
             currc = chs[i];
-            if(!set.contains(currc)){
+            if (!set.contains(currc)) {
                 continue;
             }
             node = nodes.get(currc);
-            if(node == null)
+            if (node == null)
                 continue;
             boolean couldMark = false;
             int markNum = -1;
-            if(node.isLast()){//单字匹配（日）
+            if (node.isLast()) {//单字匹配（日）
                 couldMark = true;
                 markNum = 0;
             }
-            k=i;
-            for( ; ++k<length; ){
+            k = i;
+            for (; ++k < length; ) {
 
                 node = node.querySub(chs[k]);
-                if(node==null)
+                if (node == null)
                     break;
-                if(node.isLast()){
+                if (node.isLast()) {
                     couldMark = true;
-                    markNum = k-i;//3-2
+                    markNum = k - i;//3-2
                 }
             }
-            if(couldMark){
-                for(k=0;k<=markNum;k++){
-                    chs[k+i] = SIGN;
+            if (couldMark) {
+                for (k = 0; k <= markNum; k++) {
+                    chs[k + i] = SIGN;
                 }
-                i = i+markNum;
+                i = i + markNum;
             }
         }
 
         return new String(chs);
     }
-
 
 
 }

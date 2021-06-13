@@ -10,6 +10,7 @@ import com.team_five.salthub.model.Attachment;
 import com.team_five.salthub.model.Blog;
 import com.team_five.salthub.model.ResponseMessage;
 import com.team_five.salthub.model.constant.BlogStateEnum;
+import com.team_five.salthub.service.BlogModuleService;
 import com.team_five.salthub.service.BlogService;
 import com.team_five.salthub.userBasedCollaborativeFiltering.BlogPage;
 import com.team_five.salthub.util.RedisUtil;
@@ -45,10 +46,13 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    @Autowired
+    private BlogModuleService blogModuleService;
+
     @ApiOperation(value = "发布博客")
     @PostMapping
     public ResponseMessage releaseBlog(@RequestBody Blog blog,
-                                       @RequestParam(value = "attachments",required = false) MultipartFile[] attachments) throws IOException {
+                                       @RequestParam(value = "attachments", required = false) MultipartFile[] attachments) throws IOException {
         //, @RequestParam("attachments") MultipartFile[] attachments
         blogService.validityCheck(blog);//检查博客合法性
         String name = StpUtil.getLoginIdAsString();//发布者的用户名
@@ -80,6 +84,24 @@ public class BlogController {
                 blogService.insertAttachment(attachment1);
             }
         }
+        return ResponseMessage.success(id);
+    }
+
+    @ApiOperation(value = "树洞发布")
+    @PostMapping("/treeHole")
+    public ResponseMessage releaseTreeHole(@RequestBody Blog blog) {
+        String name = StpUtil.getLoginIdAsString();
+        blog.setAuthor(name);
+        blog.setModuleId(Long.valueOf(0));
+        blog.setTitle("树洞");
+        blogService.validityCheck(blog);//检查博客合法性
+        blog.setLikeNumber(0L);
+        blog.setCollectionNumber(0L);
+        blog.setState(BlogStateEnum.TREEHOLE.getId().intValue());
+        Date releaseTime = new Date();
+        blog.setReleaseTime(releaseTime);
+
+        Long id = blogService.insert(blog);
         return ResponseMessage.success(id);
     }
 
@@ -118,14 +140,25 @@ public class BlogController {
         return ResponseMessage.success(blog);
 
     }
+
     @ApiOperation(value = "通过title模糊查询博客")
     @GetMapping("title")
-    public ResponseMessage selectBlogByTitle(@RequestParam("title") String title,@RequestParam("current") Long current) {
+    public ResponseMessage selectBlogByTitle(@RequestParam("title") String title, @RequestParam("current") Long current) {
 
-        Page<Blog> blogPage = blogService.selectBlogByTitle(title,current);
+        Page<Blog> blogPage = blogService.selectBlogByTitle(title, current);
         return ResponseMessage.success(blogPage);
 
     }
+
+    @ApiOperation(value = "获取树洞")
+    @GetMapping("hole")
+    public ResponseMessage selectTreeByRand() {
+
+        Blog blog = blogService.selectTreeHoleByRand();
+        return ResponseMessage.success(blog);
+
+    }
+
     @ApiOperation(value = "根据博客id删除博客")
     @DeleteMapping
     public ResponseMessage deleteBlogByBlogId(@RequestParam("blogId") int blogId) {
@@ -171,5 +204,41 @@ public class BlogController {
         List<Object> objects = redisUtil.getList(key, 0, PAGE_SIZE);
         return ResponseMessage.success(new BlogPage(blogList.size(), 0, objects));
     }
+
+    @GetMapping("/count")
+    @ApiOperation(value = "博客数量")
+    public ResponseMessage readAllCount() {
+        int count = blogService.searchBlogCount();
+        return ResponseMessage.success(count);
+    }
+
+    @GetMapping("/count/intraday")
+    @ApiOperation(value = "当天的博客数量")
+    public ResponseMessage readIntradayCount() {
+        int count = blogService.searchIntradayBlogCount();
+        return ResponseMessage.success(count);
+    }
+
+    @GetMapping("/module/all")
+    @ApiOperation(value = "查询所有模块")
+    public ResponseMessage selectAllModule() {
+        return ResponseMessage.success(blogModuleService.selectModule());
+    }
+
+    /*** 
+    * @Description: 分页返回文章列表 
+    * @Param:  
+    * @return:  
+    * @Author: top
+    * @Date: 2021/6/12 
+    */
+    @GetMapping("/queryall")
+    @ApiOperation(value = "分页获取所有博客")
+    public ResponseMessage queryAll(@RequestParam Integer current){
+        Page<Blog> blogList = blogService.queryAllBlog(current);
+        return ResponseMessage.success(blogList);
+    }
+
+
 }
 

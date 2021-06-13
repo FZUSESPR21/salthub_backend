@@ -61,10 +61,22 @@ public interface BlogService extends IService<Blog> {
 
     // 读取所有博客
     List<Blog> readAll(String name);
+    Page<Blog> queryAllBlog(Integer current);
 
     void validityCheckFile(File file) throws IOException;
 
     void insertAttachment(Attachment attachment);
 
-    public Page<Blog> selectBlogByTitle(String title,Long current);
+    public Page<Blog> selectBlogByTitle(String title, Long current);
+
+    //获取所有博客数量
+    public int searchBlogCount();
+
+    //获取当天新增博客数量
+    public int searchIntradayBlogCount();
+
+    //随机取一条树洞
+    public Blog selectTreeHoleByRand();
+
+
 }

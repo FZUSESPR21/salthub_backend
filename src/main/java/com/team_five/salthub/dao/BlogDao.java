@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.model.Blog;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +30,11 @@ public interface BlogDao extends BaseMapper<Blog> {
     @Select("SELECT * FROM blog WHERE title LIKE CONCAT(CONCAT('%', #{title}),'%')")
     Page<Blog> selectBlogByTitle(Page<Blog> page,String title);
 
+    @Select("select COUNT(*) from blog where DATE_FORMAT(release_time,'%Y-%m-%d') = #{date} and state=2")
+    int searchIntradayBlogCount(Date date);
+
+
+
+    @Select("SELECT * FROM blog WHERE state =3  ORDER BY RAND() LIMIT 1")
+    Blog selectTreeHoleByRand( );
 }

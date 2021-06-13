@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,13 +61,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             }
         }
 
-        if (StrUtil.isEmpty(blog.getTitle())) {
+        if (StrUtil.isEmpty(blog.getTitle())) {//标题是否为空
             throw new BaseException(ExceptionInfo.TITLE_EMPTY_ERROR);
         }
-        if (blog.getTitle().length() > TITLE_MAX_LENGTH) {
+        if (blog.getTitle().length() > TITLE_MAX_LENGTH) {//标题是否过长
             throw new BaseException(ExceptionInfo.TITLE_ERROR);
         }
-        if (StrUtil.isEmpty(blog.getContent())) {
+        if (StrUtil.isEmpty(blog.getContent())) {//内容是否为空
             throw new BaseException(ExceptionInfo.CONTENT_EMPTY_ERROR);
         }
         if (blog.getContent().length() > CONTENT_MAX_LENGTH) {
@@ -188,6 +189,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void banBlogByBlogId(Long blogId) {
+        if (blogId==null) {
+            throw new BaseException(ExceptionInfo.BLOG_ID_EMPTY_ERROR);
+        }
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.clear();
+        wrapper.eq("id",blogId);    //判断该id是否存在
+        //通知id不存在
+        if (blogDao.selectList(wrapper).size()==0) {
+            throw new BaseException(ExceptionInfo.BLOG_NOT_EXIST_ERROR);
+        }
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.BAN.getId());
         blogDao.update(null, updateWrapper);
@@ -195,6 +206,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public void cancelBanBlogByBlogId(Long blogId) {
+
+
         UpdateWrapper<Blog> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", blogId).set("state", BlogStateEnum.NORMAL.getId());
         blogDao.update(null, updateWrapper);
@@ -246,4 +259,51 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         }
         return blogList;
     }
+
+    @Override
+    public int searchBlogCount() {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("state", BlogStateEnum.NORMAL.getId());
+        int count = blogDao.selectCount(wrapper);
+        return count;
+    }
+
+    @Override
+    public int searchIntradayBlogCount() {
+        Date date = new java.sql.Date(new java.util.Date().getTime());
+        int count = blogDao.searchIntradayBlogCount(date);
+        return count;
+    }
+
+    @Override
+    public Blog selectTreeHoleByRand() {
+        Blog blog = blogDao.selectTreeHoleByRand();
+        blog.setCollectionNumber(null);
+        blog.setState(null);
+        blog.setTitle(null);
+        blog.setReleaseTime(null);
+        blog.setLikeNumber(null);
+        blog.setId(null);
+        blog.setModuleId(null);
+        return blog;
+    }
+
+
+    /***
+    * @Description:  分页获取所有博客
+    * @Param:
+    * @return:
+    * @Author: top
+    * @Date: 2021/6/12
+    */
+    @Override
+    public Page<Blog>queryAllBlog(Integer current){
+        Page<Blog> page = new Page<>(current, 10);
+
+
+        Page<Blog> blogList = blogDao.selectPage(page, null);
+        return blogList;
+    }
+
+
 }

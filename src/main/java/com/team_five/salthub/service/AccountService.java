@@ -15,8 +15,6 @@ import java.io.IOException;
  * @date 2021/04/26
  */
 public interface AccountService extends IService<Account> {
-    Integer PAGESIZE = 5;
-
     /**
      * 登录
      *

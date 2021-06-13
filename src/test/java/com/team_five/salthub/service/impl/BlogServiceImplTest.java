@@ -3,6 +3,7 @@ package com.team_five.salthub.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.team_five.salthub.exception.BaseException;
 import com.team_five.salthub.model.Blog;
+import com.team_five.salthub.model.Collection;
 import com.team_five.salthub.model.constant.ModuleEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class BlogServiceImplTest {
 
     @Test
     void insert() {
-        Assertions.assertEquals(true, this.blogService.insert(blog));
+        Assertions.assertEquals(79, this.blogService.insert(blog));
     }
 
     @Test
@@ -72,6 +73,25 @@ class BlogServiceImplTest {
                         , 1l, 1l, 1), "模块id不属于预设模块")
         );
     }
+    @ParameterizedTest
+    @MethodSource("args3")
+    void banBlogByBlogIdTest(Long id, String correct) {
+        try {
+            this.blogService.banBlogByBlogId(id);
+        } catch (BaseException baseException) {
+            Assertions.assertEquals(correct, baseException.getMessage());
+        }
+    }
+
+    static Stream args3() {
+
+        return Stream.of(
+                Arguments.of(null,"博客id为空"),
+                Arguments.of((long)7,""),
+                Arguments.of((long)1000,"该博客不存在")
+        );
+    }
+
 
     @Test
     void banBlogByBlogIdTest() {
@@ -83,7 +103,7 @@ class BlogServiceImplTest {
     @Test
     void selectblogbytitle() {
 
-        Page<Blog> blogList = blogService.selectBlogByTitle("2323232323", (long) 1);
+        Page<Blog> blogList = blogService.selectBlogByTitle("考研", (long) 1);
 
 
     }
@@ -170,9 +190,7 @@ class BlogServiceImplTest {
     static Stream test4() {
         return Stream.of(
                 Arguments.of(1L, ""),
-                Arguments.of(2L, ""),
-                Arguments.of(3L, ""),
-                Arguments.of(6L, "")
+                Arguments.of(2L, "")
         );
     }
 

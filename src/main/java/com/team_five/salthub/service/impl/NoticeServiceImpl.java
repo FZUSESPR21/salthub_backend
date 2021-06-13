@@ -139,6 +139,22 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeDao, Notice> implements
 		return notices;
 	}
 
+	/***
+	* @Description: 返回公告总条数
+	* @Param:
+	* @return:
+	* @Author: top
+	* @Date: 2021/6/12
+	*/
+	@Override
+	public Integer getAmount(){
+		Integer amout = noticeDao.selectList(null).size();
+
+		return amout;
+	}
+
+
+
 
 	/*** 
 	* @Description: 判断用户是否存在
