@@ -35,7 +35,7 @@ class BlogServiceImplTest {
 
     @Test
     void insert() {
-        Assertions.assertEquals(79, this.blogService.insert(blog));
+        Assertions.assertEquals(152, this.blogService.insert(blog));
     }
 
     @Test

@@ -70,11 +70,12 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		if (!isFirstCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
-
-		wrapper.clear();
-		wrapper.eq("comment_id", id);
-		List<SecondaryComment> secondaryComments = secondaryCommentDao.selectList(wrapper);
-
+		List<SecondaryComment> secondaryComments=null;
+		synchronized (wrapper) {
+			wrapper.clear();
+			wrapper.eq("comment_id", id);
+			secondaryComments= secondaryCommentDao.selectList(wrapper);
+		}
 		return secondaryComments;
 	}
 
@@ -90,10 +91,11 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		if (!isSecondaryCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.SECONDARY_COMMENT_NO_EXIST);
 		}
-
-		wrapper.clear();
-		wrapper.eq("id", id);
-		firstCommentDao.delete(wrapper);
+		synchronized (wrapper) {
+			wrapper.clear();
+			wrapper.eq("id", id);
+			firstCommentDao.delete(wrapper);
+		}
 	}
 
 
@@ -105,10 +107,12 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isFirstCommentExist(Long id) {
-		wrapper.clear();
-		wrapper.eq("id", id);
-		if (firstCommentDao.selectList(wrapper).size() == 0) {
-			return false;
+		synchronized (wrapper) {
+			wrapper.clear();
+			wrapper.eq("id", id);
+			if (firstCommentDao.selectList(wrapper).size() == 0) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -121,10 +125,12 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isSecondaryCommentExist(Long id) {
-		wrapper.clear();
-		wrapper.eq("id", id);
-		if (secondaryCommentDao.selectList(wrapper).size() == 0) {
-			return false;
+		synchronized (wrapper) {
+			wrapper.clear();
+			wrapper.eq("id", id);
+			if (secondaryCommentDao.selectList(wrapper).size() == 0) {
+				return false;
+			}
 		}
 		return true;
 	}
