@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
  * 启动类
@@ -24,6 +25,7 @@ public class SaltHubApplication {
     }
 
     @Bean
+    @Scope("prototype")
     public QueryWrapper contsructWrapper(){
         return new QueryWrapper();
     }

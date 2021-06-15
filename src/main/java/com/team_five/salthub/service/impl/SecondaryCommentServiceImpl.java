@@ -30,7 +30,6 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	SecondaryCommentDao secondaryCommentDao;
 	@Autowired
 	FirstCommentDao firstCommentDao;
-
 	@Autowired
 	private QueryWrapper wrapper;
 
