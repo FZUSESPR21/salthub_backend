@@ -90,6 +90,12 @@ public class CommentController {
 		return ResponseMessage.fail(new BaseException(ExceptionInfo.FLAG_ERROR));
 	}
 
+//	@ApiOperation(value = "一级评论附属二级评论查询接口")
+//	@GetMapping("/3")
+//	public ResponseMessage querySecondaryComment(@RequestParam Long id)
+
+
+
 	/***
 	* @Description: 删除评论
 	* @Param:

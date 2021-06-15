@@ -122,14 +122,24 @@ class AccountServiceImplTest {
         );
     }
 
-//    @ParameterizedTest
-//    @MethodSource("queryOneArgs")
-//    void queryOne(String name, String expect){
-//        try {
-//            accountService.queryOne(name);
-//        }catch (BaseException e){
-//            Assertions.assertEquals(expect, e.getMessage());
-//        }
-//    }
+    @ParameterizedTest
+    @MethodSource("queryOneArgs")
+    void queryOne(String name, String expect){
+        try {
+            accountService.queryOne(name);
+        }catch (BaseException e){
+            Assertions.assertEquals(expect, e.getMessage());
+        }
+    }
+
+    static Stream queryOneArgs() {
+        return Stream.of(
+                Arguments.of("123123", "用户名不存在")
+        );
+    }
+
+
+
+
 
 }

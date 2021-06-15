@@ -69,9 +69,12 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 			throw new BaseException(ExceptionInfo.BLOG_NO_EXIST);
 		}
 
-		wrapper.clear();
-		wrapper.eq("blog_id", blogId);
-		List<FirstComment> firstComments = firstCommentDao.selectList(wrapper);
+		List<FirstComment> firstComments = null;
+		synchronized (wrapper){
+			wrapper.clear();
+			wrapper.eq("blog_id", blogId);
+			firstComments = firstCommentDao.selectList(wrapper);
+		}
 
 		return firstComments;
 	}
