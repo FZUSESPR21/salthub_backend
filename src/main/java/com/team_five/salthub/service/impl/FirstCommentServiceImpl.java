@@ -31,8 +31,8 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	FirstCommentDao firstCommentDao;
 	@Autowired
 	BlogDao blogDao;
-
-	private QueryWrapper wrapper = new QueryWrapper();
+	@Autowired
+	private QueryWrapper wrapper;
 
 	/*** 
 	 * @Description: 发布一级评论
@@ -70,11 +70,10 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 		}
 
 		List<FirstComment> firstComments = null;
-		synchronized (wrapper){
+
 			wrapper.clear();
 			wrapper.eq("blog_id", blogId);
 			firstComments = firstCommentDao.selectList(wrapper);
-		}
 
 		return firstComments;
 	}

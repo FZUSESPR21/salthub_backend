@@ -31,8 +31,8 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	@Autowired
 	FirstCommentDao firstCommentDao;
 
-
-	private QueryWrapper wrapper = new QueryWrapper();
+	@Autowired
+	private QueryWrapper wrapper;
 
 	/***
 	 * @Description: 发布二级评论
@@ -54,7 +54,6 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		}
 
 
-
 		secondaryCommentDao.insert(secondaryComment);
 	}
 
@@ -71,12 +70,12 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		if (!isFirstCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
-		List<SecondaryComment> secondaryComments=null;
-		synchronized (wrapper) {
-			wrapper.clear();
-			wrapper.eq("comment_id", id);
-			secondaryComments= secondaryCommentDao.selectList(wrapper);
-		}
+		List<SecondaryComment> secondaryComments = null;
+
+		wrapper.clear();
+		wrapper.eq("comment_id", id);
+		secondaryComments = secondaryCommentDao.selectList(wrapper);
+
 		return secondaryComments;
 	}
 
@@ -92,11 +91,11 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 		if (!isSecondaryCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.SECONDARY_COMMENT_NO_EXIST);
 		}
-		synchronized (wrapper) {
-			wrapper.clear();
-			wrapper.eq("id", id);
-			firstCommentDao.delete(wrapper);
-		}
+
+		wrapper.clear();
+		wrapper.eq("id", id);
+		firstCommentDao.delete(wrapper);
+
 	}
 
 
@@ -108,12 +107,10 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isFirstCommentExist(Long id) {
-		synchronized (wrapper) {
-			wrapper.clear();
-			wrapper.eq("id", id);
-			if (firstCommentDao.selectList(wrapper).size() == 0) {
-				return false;
-			}
+		wrapper.clear();
+		wrapper.eq("id", id);
+		if (firstCommentDao.selectList(wrapper).size() == 0) {
+			return false;
 		}
 		return true;
 	}
@@ -126,12 +123,11 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isSecondaryCommentExist(Long id) {
-		synchronized (wrapper) {
-			wrapper.clear();
-			wrapper.eq("id", id);
-			if (secondaryCommentDao.selectList(wrapper).size() == 0) {
-				return false;
-			}
+		wrapper.clear();
+		wrapper.eq("id", id);
+		if (secondaryCommentDao.selectList(wrapper).size() == 0) {
+			return false;
+
 		}
 		return true;
 	}
