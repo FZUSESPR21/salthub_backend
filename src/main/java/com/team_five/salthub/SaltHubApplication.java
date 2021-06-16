@@ -24,11 +24,4 @@ public class SaltHubApplication {
         UserCF.init();
     }
 
-    @Bean
-    @Scope("prototype")
-    public QueryWrapper contsructWrapper(){
-        return new QueryWrapper();
-    }
-
-
 }

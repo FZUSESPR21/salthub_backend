@@ -30,8 +30,6 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	SecondaryCommentDao secondaryCommentDao;
 	@Autowired
 	FirstCommentDao firstCommentDao;
-	@Autowired
-	private QueryWrapper wrapper;
 
 	/***
 	 * @Description: 发布二级评论
@@ -70,8 +68,8 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
 		List<SecondaryComment> secondaryComments = null;
+		QueryWrapper wrapper = new QueryWrapper();
 
-		wrapper.clear();
 		wrapper.eq("comment_id", id);
 		secondaryComments = secondaryCommentDao.selectList(wrapper);
 
@@ -91,7 +89,7 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 			throw new BaseException(ExceptionInfo.SECONDARY_COMMENT_NO_EXIST);
 		}
 
-		wrapper.clear();
+		QueryWrapper wrapper = new QueryWrapper();
 		wrapper.eq("id", id);
 		firstCommentDao.delete(wrapper);
 
@@ -106,7 +104,8 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isFirstCommentExist(Long id) {
-		wrapper.clear();
+
+		QueryWrapper wrapper = new QueryWrapper();
 		wrapper.eq("id", id);
 		if (firstCommentDao.selectList(wrapper).size() == 0) {
 			return false;
@@ -122,7 +121,8 @@ public class SecondaryCommentServiceImpl extends ServiceImpl<SecondaryCommentDao
 	 * @Date: 2021/5/2
 	 */
 	public boolean isSecondaryCommentExist(Long id) {
-		wrapper.clear();
+		QueryWrapper wrapper = new QueryWrapper();
+
 		wrapper.eq("id", id);
 		if (secondaryCommentDao.selectList(wrapper).size() == 0) {
 			return false;

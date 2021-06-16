@@ -31,8 +31,6 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	FirstCommentDao firstCommentDao;
 	@Autowired
 	BlogDao blogDao;
-	@Autowired
-	private QueryWrapper wrapper;
 
 	/*** 
 	 * @Description: 发布一级评论
@@ -68,12 +66,12 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 		if (!isBlogExist(blogId)) {
 			throw new BaseException(ExceptionInfo.BLOG_NO_EXIST);
 		}
-
+		QueryWrapper wrapper = new QueryWrapper();
 		List<FirstComment> firstComments = null;
 
-			wrapper.clear();
-			wrapper.eq("blog_id", blogId);
-			firstComments = firstCommentDao.selectList(wrapper);
+
+		wrapper.eq("blog_id", blogId);
+		firstComments = firstCommentDao.selectList(wrapper);
 
 		return firstComments;
 	}
@@ -90,8 +88,8 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 		if (!isFirstCommentExist(id)) {
 			throw new BaseException(ExceptionInfo.FIRST_COMMENT_NO_EXIST);
 		}
+		QueryWrapper wrapper = new QueryWrapper();
 
-		wrapper.clear();
 		wrapper.eq("id", id);
 		firstCommentDao.delete(wrapper);
 	}
@@ -105,7 +103,8 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	 * @Date: 2021/5/2
 	 */
 	public boolean isBlogExist(Long blogId) {
-		wrapper.clear();
+		QueryWrapper wrapper = new QueryWrapper();
+
 		wrapper.eq("id", blogId);
 		if (blogDao.selectList(wrapper).size() == 0) {
 			return false;
@@ -114,7 +113,8 @@ public class FirstCommentServiceImpl extends ServiceImpl<FirstCommentDao, FirstC
 	}
 
 	public boolean isFirstCommentExist(Long id) {
-		wrapper.clear();
+		QueryWrapper wrapper = new QueryWrapper();
+
 		wrapper.eq("id", id);
 		if (firstCommentDao.selectList(wrapper).size() == 0) {
 			return false;
